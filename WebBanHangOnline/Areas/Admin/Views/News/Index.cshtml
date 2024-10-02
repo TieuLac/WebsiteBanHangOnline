@@ -69,14 +69,14 @@
                         var i = 1;
                         foreach (var item in Model)
                         {
-                            var strCheck = item.IsActive ? "<a href='#'><i class='fa fa-check text-success'></i> </a>" : "<a href='#'><i class='fas fa-times text-danger'></i></a>";
+                            var strCheck = item.IsActive ? "<i class='fa fa-check text-success'></i>" : "<i class='fas fa-times text-danger'></i>";
                             <tr id="trow_@item.Id">
                                 <td>@i</td>
                                 <td><img src="@item.Image" width="100"/></td>
                                 <td>@item.Title</td>
                                 <td>@item.CreatedDate.ToString("dd/MM/yyyy")</td>
                                 <td class="text-center">
-                                    @Html.Raw(strCheck)
+                                    <a href='#' data-id="@item.Id" class="btnActive">@Html.Raw(strCheck)</a>
                                 </td>
                                 <td>
                                     <a href="/admin/news/edit/@item.Id" class="btn btn-sm btn-primary">Sửa</a>
@@ -122,7 +122,51 @@
                     });
                 }
             });
+
+            //@*$('body').on('click', '.btnActive', function (e) {
+            //    e.preventDefault();
+            //    var btn = $(this);
+            //    var id = btn.data("id");
+            //    $.ajax({
+            ////            url: '@Url.Action("IsActive", "News")',
+            //            type: 'POST',
+            //            data: { id: id },
+            //        success: function (rs) {
+            //            debugger;
+            //            if (rs.success) {
+            //                    if (rs.isActive) {
+            //                        btn.html("<i class='fa fa-check text-success'></i>");
+            //                    } else {
+            //                        btn.html("<i class='fas fa-times text-danger'></i>");
+            //                    }
+            //                }
+
+            //            }
+            //        });
+            //});*@
+
+            $('body').on('click', '.btnActive', function (e) {
+                //e.prevetDefault();
+                var btn = $(this);
+                var id = btn.data("id");
+                $.ajax({
+                    //url: '/admin/category/IsActive',
+                    url: '@Url.Action("IsActive", "News")',
+                    type: 'POST',
+                    data: { id: id },
+                    success: function (rs) {
+                        if (rs.success) {
+                            if (rs.isActive) {
+                                btn.html("<i class='fa fa-check text-success'></i>")
+                            } else {
+                                btn.html("<i class='fas fa-times text-danger'></i>")
+                            }
+                        }
+                    }
+                }); 
+            });
         });
     </script>
 }
+
 
