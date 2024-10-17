@@ -49,10 +49,21 @@
             </div>
         </div>
         <div class="card-body">
-
-        </div>
-        <!-- /.card-body -->
-        <div class="card-footer">
+            <div class="row">
+                <div class="col-6">
+                    @using (Html.BeginForm("index", "News", FormMethod.Get, new { }))
+                     {
+                        <div class="input-group input-group-sm">
+                            @*@Html.TextBox("Searchtext")*@
+                            @Html.TextBox("Searchtext", null, new { @class = "form-control", placeholder = "Nhập từ khóa tìm kiếm..." })
+                            @*<input type="text" name="searchtext" class="form-control">*@
+                            <span class="input-group-append">
+                                <button type="submit" class="btn btn-info btn-flat">Tìm kiếm</button>
+                            </span>
+                        </div>
+                     }
+                </div>
+            </div>
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -67,7 +78,7 @@
                 </thead>
                 <tbody>
                     @if (Model != null && Model.Any())
-                     {
+                    {
                         var i = ((ViewBag.Page - 1) * ViewBag.PageSize) + 1;
                         foreach (var item in Model)
                         {
@@ -88,11 +99,11 @@
                             </tr>
                             i++;
                         }
-                     }
+                    }
                     else
                     {
                         <tr>
-                            <td colspan="4">Không có bản ghi nào!</td>
+                           <td colspan="4">Không có bản ghi nào!</td>
                         </tr>
                     }
                 </tbody>
@@ -104,6 +115,10 @@
                     @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
                 </div>
             </div>
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer">
+            
         </div>
         <!-- /.card-footer-->
     </div>
