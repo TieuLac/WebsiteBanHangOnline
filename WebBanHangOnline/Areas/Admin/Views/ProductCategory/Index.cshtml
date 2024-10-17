@@ -55,14 +55,13 @@
                         <th>STT</th>
                         <th>Tiêu đề</th>
                         <th>Ngày tạo</th>
-                        <th class="text-center" style="width:150px">Hiển thị</th>
                         <th style="width:150px"></th>
                     </tr>
                 </thead>
                 <tbody>
                     @if (Model != null && Model.Any())
                     {
-                        var i = ((ViewBag.Page - 1) * ViewBag.PageSize) + 1;
+                        var i = 1;
                         foreach (var item in Model)
                         {
                             //var strCheck = item.IsActive ? "<i class='fa fa-check text-success'></i>" : "<i class='fas fa-times text-danger'></i>";
