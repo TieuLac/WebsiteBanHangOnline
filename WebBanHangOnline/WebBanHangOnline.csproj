@@ -183,6 +183,7 @@
     <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
     <Compile Include="Areas\Admin\Controllers\NewsController.cs" />
     <Compile Include="Areas\Admin\Controllers\PostsController.cs" />
+    <Compile Include="Areas\Admin\Controllers\ProductCategoryController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductsController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -209,6 +210,10 @@
     <Compile Include="Migrations\202410072251315_ChangeLengthModels.cs" />
     <Compile Include="Migrations\202410072251315_ChangeLengthModels.designer.cs">
       <DependentUpon>202410072251315_ChangeLengthModels.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202410171739311_UpdateProductCategory.cs" />
+    <Compile Include="Migrations\202410171739311_UpdateProductCategory.designer.cs">
+      <DependentUpon>202410171739311_UpdateProductCategory.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -3148,6 +3153,9 @@
     <Content Include="Areas\Admin\Views\Posts\Add.cshtml" />
     <Content Include="Areas\Admin\Views\Posts\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\Products\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Products\Add.cshtml" />
+    <Content Include="Areas\Admin\Views\ProductCategory\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\ProductCategory\Add.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -3241,6 +3249,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202410072251315_ChangeLengthModels.resx">
       <DependentUpon>202410072251315_ChangeLengthModels.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202410171739311_UpdateProductCategory.resx">
+      <DependentUpon>202410171739311_UpdateProductCategory.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

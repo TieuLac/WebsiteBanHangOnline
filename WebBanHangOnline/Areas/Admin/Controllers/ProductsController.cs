@@ -27,5 +27,10 @@ namespace WebBanHangOnline.Areas.Admin.Controllers
             ViewBag.Page = page;
             return View(items);
         }
+
+        public ActionResult Add()
+        {
+            return View();
+        }
     }
 }
