@@ -14,10 +14,11 @@
             <a href="/admin" class="nav-link">Trang chủ</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="/admin/news" class="nav-link">Sản phẩm</a>
+            <a href="/admin/products" class="nav-link">Sản phẩm</a>
         </li>
     </ul>
 }
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.14.0/themes/base/jquery-ui.css">
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <div class="container-fluid">
@@ -27,7 +28,7 @@
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
                     <li class="breadcrumb-item active">Sản phẩm</li>
                 </ol>
             </div>
@@ -37,7 +38,6 @@
 
 <!-- Main content -->
 <section class="content">
-
     <!-- Default box -->
     <div class="card">
         <div class="card-header">
@@ -51,14 +51,14 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-6">
-                    @using (Html.BeginForm("index", "ProductCategory", FormMethod.Get, new { }))
+                    @using (Html.BeginForm("index", "Products", FormMethod.Get, new { }))
                     {
                         <div class="input-group input-group-sm">
                             @*@Html.TextBox("Searchtext")*@
                             @Html.TextBox("Searchtext", null, new { @class = "form-control", placeholder = "Nhập từ khóa tìm kiếm..." })
                             @*<input type="text" name="searchtext" class="form-control">*@
                             <span class="input-group-append">
-                                <button type="submit" class="btn btn-info btn-flat">Tìm kiếm</button>
+                                <button type="submit" class="btn btn-primary">Tìm kiếm</button>
                             </span>
                         </div>
                     }
@@ -89,8 +89,8 @@
                             <tr id="trow_@item.Id">
                                 <td><input type="checkbox" class="cbkItem" value="@item.Id" /></td>
                                 <td>@i</td>
-                                <td><img src="@item.Image" width="100" /></td>
-                                <td>@item.Title</td>
+                                <td><img class="imgproduct" data-id="@item.Id" src="@item.ProductImage.FirstOrDefault(x=>x.IsDefault).Image" style="width:100px;height:100px;object-fit:contain" /></td>
+                                <td>@(item.Title.Length > 22 ? item.Title.Substring(0, 22) + "..." : item.Title)</td>
                                 <td>@item.ProductCategory.Title</td>
                                 <td>@item.Quatity</td>
                                 <td>@item.Price</td>
@@ -99,7 +99,7 @@
                                     <a href='#' data-id="@item.Id" class="btnActive">@Html.Raw(strCheck)</a>
                                 </td>
                                 <td>
-                                    <a href="/admin/news/edit/@item.Id" class="btn btn-sm btn-primary">Sửa</a>
+                                    <a href="/admin/products/edit/@item.Id" class="btn btn-sm btn-primary">Sửa</a>
                                     <a href="#" data-id="@item.Id" class="btn btn-sm btn-danger btnDelete">Xóa</a>
                                 </td>
                             </tr>
@@ -133,9 +133,34 @@
 </section>
 <!-- /.content -->
 
+<div id="dialog">
+    <iframe id="myIframe" style="border:0;width:100%;height:100%"></iframe>
+</div>
 @section scripts{
+    <script src="https://code.jquery.com/ui/1.14.0/jquery-ui.js"></script>
     <script>
         $(document).ready(function () {
+
+            //hiển thị form upload ảnh
+            $('#dialog').dialog({
+                autoOpen: false,
+                show: "fade",
+                hide: "fade",
+                modal: true,
+                height: '600',
+                width: '700',
+                resizable: true,
+                title: 'Quản lý ảnh sản phẩm',
+                close: function () {
+                    window.location.reload();
+                }
+            });
+            $('body').on("click", ".imgproduct", function () {
+                var proid = $(this).attr('data-id');
+                $("#dialog #myIframe").attr("src", "/admin/ProductImages/Index?id=" + proid);
+                $('#dialog').dialog('open');
+                return false;
+            });
 
             //Xóa nhiều sản phẩm
 
@@ -182,7 +207,7 @@
                     var conf = confirm('Bạn có muốn xóa các bản ghi này không?');
                     if (conf === true) {
                         $.ajax({
-                            url: '@Url.Action("DeleteAll", "News")',
+                            url: '@Url.Action("DeleteAll", "Products")',
                             type: 'POST',
                             data: { ids: str },
                             success: function (rs) {
@@ -204,7 +229,7 @@
                 if (conf === true) {
                     $.ajax({
                         //url: '/admin/category/delete',
-                        url: '@Url.Action("Delete", "News")',
+                        url: '@Url.Action("Delete", "Products")',
                         type: 'POST',
                         data: { id: id },
                         success: function (rs) {
@@ -221,7 +246,7 @@
             //    var btn = $(this);
             //    var id = btn.data("id");
             //    $.ajax({
-            ////            url: '@Url.Action("IsActive", "News")',
+            ////            url: '@Url.Action("IsActive", "Products")',
             //            type: 'POST',
             //            data: { id: id },
             //        success: function (rs) {
@@ -245,7 +270,7 @@
                 var id = btn.data("id");
                 $.ajax({
                     //url: '/admin/category/IsActive',
-                    url: '@Url.Action("IsActive", "News")',
+                    url: '@Url.Action("IsActive", "Products")',
                     type: 'POST',
                     data: { id: id },
                     success: function (rs) {
