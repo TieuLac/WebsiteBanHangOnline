@@ -80,7 +80,7 @@ namespace WebBanHangOnline.Areas.Admin.Controllers
                     model.SeoTitle = model.Title;
                 }
                 model.Alias = WebBanHangOnline.Models.Commons.Filter.FilterChar(model.Title);
-                model.ProductCode = WebBanHangOnline.Models.Commons.Filter.FilterChar(pcName);
+                //model.ProductCode = WebBanHangOnline.Models.Commons.Filter.FilterChar(pcName);
                 db.Products.Add(model);
                 db.SaveChanges();
                 return RedirectToAction("Index");

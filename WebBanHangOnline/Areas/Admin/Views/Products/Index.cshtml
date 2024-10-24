@@ -72,8 +72,8 @@
                         <th>Hình ảnh</th>
                         <th>Tên sản phẩm</th>
                         <th>Danh mục</th>
-                        <th>Số lượng</th>
-                        <th>Giá</th>
+                        @*<th>Số lượng</th>
+                        <th>Giá</th>*@
                         <th>Ngày tạo</th>
                         <th class="text-center" style="width:150px">Hiển thị</th>
                         <th style="width:150px"></th>
@@ -92,8 +92,8 @@
                                 <td><img class="imgproduct" data-id="@item.Id" src="@item.ProductImage.FirstOrDefault(x=>x.IsDefault).Image" style="width:100px;height:100px;object-fit:contain" /></td>
                                 <td>@(item.Title.Length > 22 ? item.Title.Substring(0, 22) + "..." : item.Title)</td>
                                 <td>@item.ProductCategory.Title</td>
-                                <td>@item.Quatity</td>
-                                <td>@item.Price</td>
+                                @*<td>@item.Quatity</td>
+                                <td>@item.Price</td>*@
                                 <td>@item.CreatedDate.ToString("dd/MM/yyyy")</td>
                                 <td class="text-center">
                                     <a href='#' data-id="@item.Id" class="btnActive">@Html.Raw(strCheck)</a>
