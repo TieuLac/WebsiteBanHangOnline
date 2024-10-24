@@ -1,0 +1,192 @@
+﻿@model IEnumerable<WebBanHangOnline.Models.EF.ProductImage>
+@{
+    ViewBag.Title = "Ảnh sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutEmpty.cshtml";
+}
+
+<style>
+    .glImage{
+        list-style:none;
+        margin:0;
+        padding:0;
+        display:block;
+    }
+    .glImage li{
+        display: inline-block;
+        /*display:list-item;*/
+        margin: 10px;
+        position: relative;
+    }
+    .box-btn{
+        position:absolute;
+        bottom:0;
+        left:0;
+        width:100%;
+        text-align:center;
+    }
+    .glImage a {
+        width:30px;
+        height:30px;
+        margin: 5px;
+    }
+    .glImage img {
+        width: 200px;
+        height: 200px;
+        object-fit:contain;
+        background-color: darkslategrey;
+    }
+    .btn-danger{
+/*        outline-style:solid;
+*/        outline-color:white;
+    }
+    .btn-success {
+/*        outline-style: solid;
+*/        outline-color: white;
+    }
+    .btn-warning {
+/*        outline-style: solid;
+*/        outline-color: #1F2D3D;
+    }
+</style>
+
+<!-- Main content -->
+<section class="content">
+
+    <!-- Default box -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Ảnh sản phẩm</h3>
+
+            <div class="card-tools">
+                <button type="button" id="btnDeleteAll"class="btn btn-danger" title="Collapse">
+                    Xóa hết
+                </button>
+                <input type="button" class="btn btn-success" value="Thêm ảnh" onclick="BrowseServer('txtImage');" />
+            </div>
+        </div>
+        <div class="card-body">
+            <ul class="glImage">
+                @if (Model != null) {
+                    foreach(var item in Model)
+                    {
+                        <li id="trow_@item.Id">
+                            <img src="@item.Image"/>
+                            <div class="box-btn">
+                                <a href="#" data-id="@item.Id" class="btn btn-sm btn-danger btnDelete"><i class="fa fa-trash"></i></a>
+                                @if (item.IsDefault)
+                                {
+                                    <a href="#" data-id="@item.Id" class="btn btn-sm btn-success btnDefault"><i class="fa fa-check"></i></a>
+                                }
+                                else
+                                {
+                                    <a href="#" data-id="@item.Id" class="btn btn-sm btn-warning btnDefault"><i class="fa fa-times"></i></a>
+                                }
+                            </div>
+                            @*<a href="#" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a>
+                            <a href="#" class="btn btn-sm btn-success"><i class="fa fa-check"></i></a>*@
+                        </li>
+                    }
+                 }
+            </ul>
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer">
+
+        </div>
+        <!-- /.card-footer-->
+    </div>
+    <!-- /.card -->
+
+</section>
+<!-- /.content -->
+
+<script>
+    //tải ảnh
+        function BrowseServer(field) {
+            var finder = new CKFinder();
+            finder.selectActionFunction = function (fileUrl) {
+                //document.getElementById(field).value = fileUrl;
+                AddImage(@ViewBag.productId,fileUrl);
+            };
+            finder.popup();
+        }
+
+    //thêm ảnh
+    function AddImage(id, url){
+        $.ajax({
+            //url: '/admin/productimage/AddImage',
+            url: '@Url.Action("AddImage", "ProductImages")',
+            type: 'POST',
+            data: { productId: id, url: url },
+            success: function (rs) {
+                if(rs.Success){
+                    window.location.reload();
+                }
+            }
+        });
+    }
+
+    //xoá ảnh
+    $(document).ready(function () {
+        $('body').on('click', '.btnDelete', function () {
+            var id = $(this).data('id');
+            var conf = confirm('Bạn có muốn xóa bản ghi này không?');
+            if (conf === true) {
+                $.ajax({
+                    //url: '/admin/productimage/delete',
+                    url: '@Url.Action("Delete", "ProductImages")',
+                    type: 'POST',
+                    data: { id: id },
+                    success: function (rs) {
+                        if (rs.success) {
+                            $('#trow_' + id).remove();
+                        }
+                    }
+                });
+            }
+        });
+    });
+
+    //IsDefault
+    $('body').on('click', '.btnDefault', function (e) {
+        e.preventDefault();
+        var btn = $(this);
+        var id = btn.data("id");
+        $.ajax({
+            url: '@Url.Action("IsDefault", "ProductImages")',
+            type: 'POST',
+            data: { id: id },
+            success: function (rs) {
+                if (rs.success) {
+                    $('.btnDefault').removeClass('btn-success').addClass('btn-warning').find('i').removeClass('fa-check').addClass('fa-times');
+                    btn.removeClass('btn-warning').addClass('btn-success').find('i').removeClass('fa-times').addClass('fa-check');
+                }
+            }
+        });
+    });
+
+    //xóa hết
+    $('#btnDeleteAll').on('click', function (e) {
+        e.preventDefault();
+        var conf = confirm('Bạn có chắc chắn muốn xóa tất cả ảnh của sản phẩm này không?');
+        if (conf === true) {
+            var productId = @ViewBag.productId;
+            $.ajax({
+                url: '@Url.Action("DeleteAll", "ProductImages")',
+                type: 'POST',
+                data: { productId: productId },
+                success: function (rs) {
+                    if (rs.success) {
+                        $('.glImage').empty();
+                        alert('Đã xóa tất cả ảnh của sản phẩm.');
+                    } else {
+                        alert('Có lỗi xảy ra khi xóa ảnh. Vui lòng thử lại.');
+                    }
+                },
+                error: function () {
+                    alert('Có lỗi xảy ra. Vui lòng thử lại sau.');
+                }
+            });
+        }
+    });
+</script>
