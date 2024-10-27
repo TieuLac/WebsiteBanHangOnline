@@ -19,6 +19,6 @@ namespace WebBanHangOnline.Models.EF
         public int Quatity { get; set; }
 
         public virtual Order Order { get; set; }
-        public virtual Product Product { get; set; }
+        public virtual ProductDetail ProductDetail { get; set; }
     }
 }

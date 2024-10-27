@@ -29,6 +29,10 @@
     <!-- Theme style -->
     <link rel="stylesheet" href="~/Content/clients/dist/css/adminlte.min.css">
     <link href="~/Content/PagedList.css" rel="stylesheet" />
+    @*bảng màu*@
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.8.0/spectrum.min.css" />
+    
+
 </head>
 <body class="hold-transition sidebar-mini">
     <div class="wrapper">
@@ -216,6 +220,8 @@
     <!-- AdminLTE App -->
     <script src="~/Content/clients/dist/js/adminlte.min.js"></script>
     <script src="~/Scripts/autoNumeric-1.9.45.js"></script>
+    @*bảng màu*@
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.8.0/spectrum.min.js"></script>
     <!-- AdminLTE for demo purposes -->
     @*<script src="~/Content/clients/dist/js/demo.js"></script>*@
     <!-- Page specific script -->
@@ -351,7 +357,7 @@
         document.querySelector("#actions .cancel").onclick = function () {
             myDropzone.removeAllFiles(true)
         }
-                      // DropzoneJS Demo Code End</script>
+        // DropzoneJS Demo Code End</script>
     <script src="~/Content/ckeditor/ckeditor.js"></script>
     <script src="~/Content/ckfinder/ckfinder.js"></script>
     @RenderSection("scripts", required: false)

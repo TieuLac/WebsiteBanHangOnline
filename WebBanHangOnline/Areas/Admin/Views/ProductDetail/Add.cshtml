@@ -1,0 +1,142 @@
+﻿@model WebBanHangOnline.Models.EF.ProductDetail
+@{
+    ViewBag.Title = "Thêm mới chi tiết sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@section naviheader{
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="/admin" class="nav-link">Trang chủ</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="/admin/productdetail" class="nav-link">Chi tiết sản phẩm</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="#" class="nav-link">Thêm mới</a>
+        </li>
+    </ul>
+}
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Thêm mới chi tiết sản phẩm</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Chi tiết sản phẩm</a></li>
+                    <li class="breadcrumb-item active">Thêm mới</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+
+    <!-- Default box -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Thông tin thêm mới chi tiết sản phẩm</h3>
+        </div>
+        <div class="card-body">
+            <div class="bs-stepper-content">
+                @using (Html.BeginForm("Add", "ProductDetail", FormMethod.Post, new { }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+                    
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Sản phẩm</label>
+                        @Html.DropDownListFor(x => x.ProductId, ViewBag.Product as SelectList, "-Chọn sản phẩm-", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(x => x.ProductId, null, new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Màu sắc</label>
+                        @Html.DropDownListFor(x => x.ColorId, ViewBag.Color as SelectList, "-Chọn màu sắc-", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(x => x.ColorId, null, new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Size</label>
+                        @Html.DropDownListFor(x => x.SizeId, ViewBag.Size as SelectList, "-Chọn kích cỡ-", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(x => x.SizeId, null, new { @class = "text-danger" })
+                    </div>
+
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Số lượng sản phẩm</label>
+                                @Html.TextBoxFor(x => x.Quantity, new { @class = "form-control", @Value = "1" })
+                                @Html.ValidationMessageFor(x => x.Quantity, null, new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Giá sản phẩm</label>
+                                <input type="text" name="demoPrice" id="demoPrice" class="form-control autoNum" placeholder="Giá chi tiết sản phẩm" data-a-dec="," data-a-sep=".">
+                                @Html.HiddenFor(x => x.Price, new { @class = "", @placeholder = "Giá" })
+                                @Html.ValidationMessageFor(x => x.Price, null, new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-3">
+                            <div class="form-group">
+                                <div class="custom-control custom-checkbox">
+                                    @Html.CheckBoxFor(x => x.IsActive, new { @class = "custom-control-input", @id = "IsActiveCheckbox", @checked = "checked" })
+                                    @*<input class="custom-control-input" type="checkbox" id="customCheckbox2" checked="">*@
+                                    <label for="IsActiveCheckbox" class="custom-control-label">Hiển thị</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <a href="/admin/productdetail" class="btn btn-danger">Quay lại</a>
+                        <button type="submit" class="btn btn-primary">Thêm mới</button>
+                    </div>
+            }
+            </div>
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer">
+
+        </div>
+        <!-- /.card-footer-->
+    </div>
+    <!-- /.card -->
+
+</section>
+<!-- /.content -->
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            //chuyển đổi số
+            $('.autoNum').autoNumeric('init');
+
+            //giá
+            $('#demoPrice').bind('blur focusout keypress keyup', function () {
+                var demoGet = $('#demoPrice').autoNumeric('get');
+                $('#Price').val(demoGet);
+                $('#Price').autoNumeric('set', demoGet);
+            });
+
+            //giá khuyến mãi
+            $('#demoPriceSale').bind('blur focusout keypress keyup', function () {
+                var demoGet = $('#demoPriceSale').autoNumeric('get');
+                $('#PriceSale').val(demoGet);
+                $('#PriceSale').autoNumeric('set', demoGet);
+            });
+
+            
+        });
+    </script>
+}
+
