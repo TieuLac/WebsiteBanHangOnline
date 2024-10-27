@@ -36,6 +36,9 @@ namespace WebBanHangOnline.Models
         public DbSet<ProductCategory> ProductCategories { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductImage> ProductImages { get; set; }
+        public DbSet<ProductDetail> ProductDetails { get; set; }
+        public DbSet<Color> Colors { get; set; }
+        public DbSet<Size> Sizes { get; set; }
         public DbSet<Contact> Contacts { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
@@ -45,5 +48,29 @@ namespace WebBanHangOnline.Models
         {
             return new ApplicationDbContext();
         }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<ProductDetail>()
+                .HasRequired(pd => pd.Product)
+                .WithMany(p => p.ProductDetail)
+                .HasForeignKey(pd => pd.ProductId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<ProductDetail>()
+                .HasRequired(pd => pd.Size)
+                .WithMany()
+                .HasForeignKey(pd => pd.SizeId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<ProductDetail>()
+                .HasRequired(pd => pd.Color)
+                .WithMany()
+                .HasForeignKey(pd => pd.ColorId)
+                .WillCascadeOnDelete(false);
+
+            base.OnModelCreating(modelBuilder);
+        }
+
     }
 }

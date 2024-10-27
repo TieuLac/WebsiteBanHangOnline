@@ -1,7 +1,7 @@
-﻿@model PagedList.PagedList<WebBanHangOnline.Models.EF.Product>
+﻿@model PagedList.PagedList<WebBanHangOnline.Models.EF.ProductDetail>
 @using PagedList.Mvc;
 @{
-    ViewBag.Title = "Danh sách sản phẩm";
+    ViewBag.Title = "Danh sách chi tiết sản phẩm";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
@@ -14,7 +14,7 @@
             <a href="/admin" class="nav-link">Trang chủ</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="/admin/products" class="nav-link">Sản phẩm</a>
+            <a href="/admin/productdetail" class="nav-link">Sản phẩm</a>
         </li>
     </ul>
 }
@@ -24,7 +24,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Quản lý sản phẩm</h1>
+                <h1>Quản lý chi tiết sản phẩm</h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
@@ -41,17 +41,17 @@
     <!-- Default box -->
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Danh sách sản phẩm</h3>
+            <h3 class="card-title">Danh sách chi tiết sản phẩm</h3>
 
             <div class="card-tools">
-                <a href="/admin/products/add" class="btn btn-primary">Thêm mới</a>
+                <a href="/admin/productdetail/add" class="btn btn-primary">Thêm mới</a>
                 <a href="#" class="btn btn-danger" id="BtnDeleteAll">Xóa</a>
             </div>
         </div>
         <div class="card-body">
             <div class="row">
                 <div class="col-6">
-                    @using (Html.BeginForm("index", "Products", FormMethod.Get, new { }))
+                    @using (Html.BeginForm("index", "ProductDetail", FormMethod.Get, new { }))
                     {
                         <div class="input-group input-group-sm">
                             @*@Html.TextBox("Searchtext")*@
@@ -69,12 +69,11 @@
                     <tr>
                         <th><input type="checkbox" id="SelectAll" /></th>
                         <th>STT</th>
-                        <th>Hình ảnh</th>
                         <th>Tên sản phẩm</th>
-                        <th>Danh mục</th>
-                        @*<th>Số lượng</th>
-                        <th>Giá</th>*@
-                        <th>Ngày tạo</th>
+                        <th>Size</th>
+                        <th>Màu sắc</th>
+                        <th>Số lượng</th>
+                        <th>Giá</th>
                         <th class="text-center" style="width:150px">Hiển thị</th>
                         <th style="width:150px"></th>
                     </tr>
@@ -89,17 +88,16 @@
                             <tr id="trow_@item.Id">
                                 <td><input type="checkbox" class="cbkItem" value="@item.Id" /></td>
                                 <td>@i</td>
-                                <td><img class="imgproduct" data-id="@item.Id" src="@item.ProductImage.FirstOrDefault(x=>x.IsDefault).Image" style="width:100px;height:100px;object-fit:contain" /></td>
-                                <td>@(item.Title.Length > 22 ? item.Title.Substring(0, 22) + "..." : item.Title)</td>
-                                <td>@item.ProductCategory.Title</td>
-                                @*<td>@item.Quatity</td>
-                                <td>@item.Price</td>*@
-                                <td>@item.CreatedDate.ToString("dd/MM/yyyy")</td>
+                                <td>@(item.Product.Title.Length > 22 ? item.Product.Title.Substring(0, 22) + "..." : item.Product.Title)</td>
+                                <td>@item.Size.Name</td>
+                                <td>@item.Color.Name</td>
+                                <td>@item.Quantity</td>
+                                <td>@item.Price</td>
                                 <td class="text-center">
                                     <a href='#' data-id="@item.Id" class="btnActive">@Html.Raw(strCheck)</a>
                                 </td>
                                 <td>
-                                    <a href="/admin/products/edit/@item.Id" class="btn btn-sm btn-primary">Sửa</a>
+                                    <a href="/admin/productdetail/edit/@item.Id" class="btn btn-sm btn-primary">Sửa</a>
                                     <a href="#" data-id="@item.Id" class="btn btn-sm btn-danger btnDelete">Xóa</a>
                                 </td>
                             </tr>
@@ -150,7 +148,7 @@
                 height: '600',
                 width: '700',
                 resizable: true,
-                title: 'Quản lý ảnh sản phẩm',
+                title: 'Quản lý ảnh chi tiết sản phẩm',
                 close: function () {
                     window.location.reload();
                 }
@@ -162,7 +160,7 @@
                 return false;
             });
 
-            //Xóa nhiều sản phẩm
+            //Xóa nhiều chi tiết sản phẩm
 
             //$('body').on('change', '#SelectAll', function () {
             //    var checkStatus = this.checked;
@@ -207,7 +205,7 @@
                     var conf = confirm('Bạn có muốn xóa các bản ghi này không?');
                     if (conf === true) {
                         $.ajax({
-                            url: '@Url.Action("DeleteAll", "Products")',
+                            url: '@Url.Action("DeleteAll", "ProductDetail")',
                             type: 'POST',
                             data: { ids: str },
                             success: function (rs) {
@@ -222,14 +220,14 @@
 
 
             //---------------------
-            //Xóa sản phẩm
+            //Xóa chi tiết sản phẩm
             $('body').on('click', '.btnDelete', function () {
                 var id = $(this).data("id");
                 var conf = confirm('Bạn có muốn xóa bản ghi này không?');
                 if (conf === true) {
                     $.ajax({
                         //url: '/admin/category/delete',
-                        url: '@Url.Action("Delete", "Products")',
+                        url: '@Url.Action("Delete", "ProductDetail")',
                         type: 'POST',
                         data: { id: id },
                         success: function (rs) {
@@ -246,7 +244,7 @@
             //    var btn = $(this);
             //    var id = btn.data("id");
             //    $.ajax({
-            ////            url: '@Url.Action("IsActive", "Products")',
+            ////            url: '@Url.Action("IsActive", "ProductDetail")',
             //            type: 'POST',
             //            data: { id: id },
             //        success: function (rs) {
@@ -263,14 +261,14 @@
             //        });
             //});*@
 
-            //bật tắt hiển thị sản phẩm
+            //bật tắt hiển thị chi tiết sản phẩm
             $('body').on('click', '.btnActive', function (e) {
                 //e.prevetDefault();
                 var btn = $(this);
                 var id = btn.data("id");
                 $.ajax({
                     //url: '/admin/category/IsActive',
-                    url: '@Url.Action("IsActive", "Products")',
+                    url: '@Url.Action("IsActive", "ProductDetail")',
                     type: 'POST',
                     data: { id: id },
                     success: function (rs) {
