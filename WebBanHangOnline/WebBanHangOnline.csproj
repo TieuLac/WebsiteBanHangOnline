@@ -178,6 +178,7 @@
     <Compile Include="Areas\Admin\Controllers\NewsController.cs" />
     <Compile Include="Areas\Admin\Controllers\PostsController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductCategoryController.cs" />
+    <Compile Include="Areas\Admin\Controllers\ProductDetailController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductImagesController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductsController.cs" />
     <Compile Include="Areas\Admin\Controllers\SizeController.cs" />
@@ -3268,6 +3269,9 @@
     <Content Include="Areas\Admin\Views\Size\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Size\Add.cshtml" />
     <Content Include="Areas\Admin\Views\Size\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\ProductDetail\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\ProductDetail\Add.cshtml" />
+    <Content Include="Areas\Admin\Views\ProductDetail\Edit.cshtml" />
     <None Include="Scripts\jquery-3.7.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.7.1.js" />
     <Content Include="Scripts\jquery-3.7.1.min.js" />

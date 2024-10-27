@@ -13,17 +13,15 @@ namespace WebBanHangOnline.Models.EF
         public ProductDetail()
         {
             this.OrderDetails = new HashSet<OrderDetail>();
-            this.Sizes = new HashSet<Size>();
-            this.Colors = new HashSet<Color>();
         }
 
         [Key]
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        public string Size { get; set; }
+        public int SizeId { get; set; }
 
-        public string Color { get; set; }
+        public int ColorId { get; set; }
 
         public decimal Price { get; set; }
 
@@ -31,11 +29,21 @@ namespace WebBanHangOnline.Models.EF
 
         public string SKU { get; set; }
 
+        public bool IsActive { get; set; }
+
         public int ProductId { get; set; }
 
+        [ForeignKey("ProductId")]
         public virtual Product Product { get; set; }
+
+        [ForeignKey("SizeId")]
+        public virtual Size Size { get; set; }
+
+        [ForeignKey("ColorId")]
+        public virtual Color Color { get; set; }
+
+
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }
-        public virtual ICollection<Size> Sizes { get; set; }
-        public virtual ICollection<Color> Colors { get; set; }
+
     }
 }

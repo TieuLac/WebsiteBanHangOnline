@@ -48,5 +48,29 @@ namespace WebBanHangOnline.Models
         {
             return new ApplicationDbContext();
         }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<ProductDetail>()
+                .HasRequired(pd => pd.Product)
+                .WithMany(p => p.ProductDetail)
+                .HasForeignKey(pd => pd.ProductId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<ProductDetail>()
+                .HasRequired(pd => pd.Size)
+                .WithMany()
+                .HasForeignKey(pd => pd.SizeId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<ProductDetail>()
+                .HasRequired(pd => pd.Color)
+                .WithMany()
+                .HasForeignKey(pd => pd.ColorId)
+                .WillCascadeOnDelete(false);
+
+            base.OnModelCreating(modelBuilder);
+        }
+
     }
 }
