@@ -1,0 +1,49 @@
+﻿@model IEnumerable<WebBanHangOnline.Models.EF.Product>
+
+<link rel="stylesheet" type="text/css" href="~/Content/assets/styles/bootstrap4/bootstrap.min.css">
+<link href="~/Content/assets/plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="~/Content/assets/plugins/OwlCarousel2-2.2.1/owl.carousel.css">
+<link rel="stylesheet" type="text/css" href="~/Content/assets/plugins/OwlCarousel2-2.2.1/owl.theme.default.css">
+<link rel="stylesheet" type="text/css" href="~/Content/assets/plugins/OwlCarousel2-2.2.1/animate.css">
+<link rel="stylesheet" type="text/css" href="~/Content/assets/styles/main_styles.css">
+<link rel="stylesheet" type="text/css" href="~/Content/assets/styles/responsive.css" />
+
+@if (Model != null && Model.Any())
+{
+    foreach (var item in Model)
+    {
+        var strImage = "";
+        var img = item.ProductImage.FirstOrDefault(x => x.IsDefault);
+        if (img != null)
+        {
+            strImage = img.Image;
+        }
+        <div class="product-item @item.ProductCategory.Alias">
+            <div class="product discount product_filter">
+                <div class="product_image">
+                    <img src="@strImage" alt="@item.Title">
+                </div>
+                <div class="favorite favorite_left"></div>
+                @*<div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>*@
+                <div class="product_info">
+                    <h6 class="product_name"><a href="@item.Alias">@item.Title</a></h6>
+                    @*khi nào có khuyến mãi thì thêm lại*@
+                    @*@if (item.)
+                        {
+                            <div class="product_price">@item.<span>$590.00</span></div>
+                        }*@
+                    <div class="product_price">@WebBanHangOnline.Common.Common.FormatNumber(item.Price)vnđ</div>
+                </div>
+            </div>
+            <div class="red_button add_to_cart_button"><a href="#">THÊM VÀO GIỎ HÀNG  @*<i class="fas fa-shopping-cart"></i>*@</a></div>
+        </div>
+    }
+}
+@section scripts {
+    <script src="~/Content/assets/js/jquery-3.2.1.min.js"></script>
+    <script src="~/Content/assets/styles/bootstrap4/popper.js"></script>
+    <script src="~/Content/assets/styles/bootstrap4/bootstrap.min.js"></script>
+    <script src="~/Content/assets/plugins/Isotope/isotope.pkgd.min.js"></script>
+    <script src="~/Content/assets/plugins/OwlCarousel2-2.2.1/owl.carousel.js"></script>
+}

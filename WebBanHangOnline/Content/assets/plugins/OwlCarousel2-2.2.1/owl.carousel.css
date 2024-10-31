@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Owl Carousel v2.2.1
  * Copyright 2013-2017 David Deutsch
  * Licensed under  ()
@@ -53,6 +53,10 @@
     -moz-transform: translate3d(0, 0, 0);
     -ms-transform: translate3d(0, 0, 0);
 }
+    .owl-carousel .owl-item {
+        margin-right: 15px; /* Tùy chỉnh khoảng cách */
+    }
+
 .owl-carousel .owl-item
 {
     position: relative;
@@ -241,5 +245,9 @@
     position: relative;
     z-index: 1;
     height: 100%;
+    width: 100%;
+}
+
+.product_slider.owl-carousel .product-item {
     width: 100%;
 }

@@ -70,21 +70,21 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-6">
+                        <div class="col-12">
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Số lượng sản phẩm</label>
                                 @Html.TextBoxFor(x => x.Quantity, new { @class = "form-control", @Value = "1" })
                                 @Html.ValidationMessageFor(x => x.Quantity, null, new { @class = "text-danger" })
                             </div>
                         </div>
-                        <div class="col-6">
+                        @*<div class="col-6">
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Giá sản phẩm</label>
                                 <input type="text" name="demoPrice" id="demoPrice" class="form-control autoNum" placeholder="Giá chi tiết sản phẩm" data-a-dec="," data-a-sep=".">
                                 @Html.HiddenFor(x => x.Price, new { @class = "", @placeholder = "Giá" })
                                 @Html.ValidationMessageFor(x => x.Price, null, new { @class = "text-danger" })
                             </div>
-                        </div>
+                        </div>*@
                     </div>
                     <div class="row">
                         <div class="col-3">
