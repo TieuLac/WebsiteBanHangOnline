@@ -72,10 +72,12 @@
                         <th>Hình ảnh</th>
                         <th>Tên sản phẩm</th>
                         <th>Danh mục</th>
-                        @*<th>Số lượng</th>
-                        <th>Giá</th>*@
+                        @*<th>Số lượng</th>*@
+                        <th>Giá</th>
                         <th>Ngày tạo</th>
-                        <th class="text-center" style="width:150px">Hiển thị</th>
+                        <th>Home</th>
+                        <th>Hot</th>
+                        <th>Hiển thị</th>
                         <th style="width:150px"></th>
                     </tr>
                 </thead>
@@ -86,15 +88,23 @@
                         foreach (var item in Model)
                         {
                             var strCheck = item.IsActive ? "<i class='fa fa-check text-success'></i>" : "<i class='fas fa-times text-danger'></i>";
+                            var strCheckHome = item.IsHome ? "<i class='fa fa-check text-success'></i>" : "<i class='fas fa-times text-danger'></i>";
+                            var strCheckHot = item.IsHot ? "<i class='fa fa-check text-success'></i>" : "<i class='fas fa-times text-danger'></i>";
                             <tr id="trow_@item.Id">
                                 <td><input type="checkbox" class="cbkItem" value="@item.Id" /></td>
                                 <td>@i</td>
                                 <td><img class="imgproduct" data-id="@item.Id" src="@item.ProductImage.FirstOrDefault(x=>x.IsDefault).Image" style="width:100px;height:100px;object-fit:contain" /></td>
                                 <td>@(item.Title.Length > 22 ? item.Title.Substring(0, 22) + "..." : item.Title)</td>
                                 <td>@item.ProductCategory.Title</td>
-                                @*<td>@item.Quatity</td>
-                                <td>@item.Price</td>*@
+                                @*<td>@item.Quatity</td>*@
+                                <td>@item.Price</td>
                                 <td>@item.CreatedDate.ToString("dd/MM/yyyy")</td>
+                                <td class="text-center">
+                                    <a href='#' data-id="@item.Id" class="btnHome">@Html.Raw(strCheckHome)</a>
+                                </td>
+                                <td class="text-center">
+                                    <a href='#' data-id="@item.Id" class="btnHot">@Html.Raw(strCheckHot)</a>
+                                </td>
                                 <td class="text-center">
                                     <a href='#' data-id="@item.Id" class="btnActive">@Html.Raw(strCheck)</a>
                                 </td>
@@ -144,6 +154,7 @@
             //hiển thị form upload ảnh
             $('#dialog').dialog({
                 autoOpen: false,
+                position: { my: "center", at: "center", of: window },
                 show: "fade",
                 hide: "fade",
                 modal: true,
@@ -283,7 +294,52 @@
                         }
                     }
                 });
+            }); 
+
+            //bật tắt home 
+            $('body').on('click', '.btnHome', function (e) {
+                //e.prevetDefault();
+                var btn = $(this);
+                var id = btn.data("id");
+                $.ajax({
+                    //url: '/admin/category/IsActive',
+                    url: '@Url.Action("IsHome", "Products")',
+                    type: 'POST',
+                    data: { id: id },
+                    success: function (rs) {
+                        if (rs.success) {
+                            if (rs.isHome) {
+                                btn.html("<i class='fa fa-check text-success'></i>")
+                            } else {
+                                btn.html("<i class='fas fa-times text-danger'></i>")
+                            }
+                        }
+                    }
+                });
             });
+
+            //bật tắt hot
+            $('body').on('click', '.btnHot', function (e) {
+                //e.prevetDefault();
+                var btn = $(this);
+                var id = btn.data("id");
+                $.ajax({
+                    url: '@Url.Action("IsHot", "Products")',
+                    type: 'POST',
+                    data: { id: id },
+                    success: function (rs) {
+                        if (rs.success) {
+                            if (rs.isHot) {
+                                btn.html("<i class='fa fa-check text-success'></i>")
+                            } else {
+                                btn.html("<i class='fas fa-times text-danger'></i>")
+                            }
+                        }
+                    }
+                });
+            });
+
+
         });
     </script>
 }

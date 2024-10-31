@@ -73,7 +73,7 @@
                         <th>Size</th>
                         <th>Màu sắc</th>
                         <th>Số lượng</th>
-                        <th>Giá</th>
+                        @*<th>Giá</th>*@
                         <th class="text-center" style="width:150px">Hiển thị</th>
                         <th style="width:150px"></th>
                     </tr>
@@ -90,9 +90,11 @@
                                 <td>@i</td>
                                 <td>@(item.Product.Title.Length > 22 ? item.Product.Title.Substring(0, 22) + "..." : item.Product.Title)</td>
                                 <td>@item.Size.Name</td>
-                                <td>@item.Color.Name</td>
+                                <td>
+                                    <div class="color-box" style="background-color: @item.Color.Code; width: 20px; height: 20px; border: 2px solid #000;"></div>
+                                </td>
                                 <td>@item.Quantity</td>
-                                <td>@item.Price</td>
+                                @*<td>@item.Price</td>*@
                                 <td class="text-center">
                                     <a href='#' data-id="@item.Id" class="btnActive">@Html.Raw(strCheck)</a>
                                 </td>
