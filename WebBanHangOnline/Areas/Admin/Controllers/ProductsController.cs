@@ -43,8 +43,7 @@ namespace WebBanHangOnline.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Add(Product model, List<string> Images, List<int> rDefault)
         {
-            var productCategory = db.ProductCategories.FirstOrDefault(pc => pc.Id == model.ProductCategoryId);
-            var pcName = productCategory != null ? productCategory.Title : "Unknown";
+            
 
             if (ModelState.IsValid)
             {
@@ -80,7 +79,7 @@ namespace WebBanHangOnline.Areas.Admin.Controllers
                     model.SeoTitle = model.Title;
                 }
                 model.Alias = WebBanHangOnline.Models.Commons.Filter.FilterChar(model.Title);
-                //model.ProductCode = WebBanHangOnline.Models.Commons.Filter.FilterChar(pcName);
+                
                 db.Products.Add(model);
                 db.SaveChanges();
                 return RedirectToAction("Index");

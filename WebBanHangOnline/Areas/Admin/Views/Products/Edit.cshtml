@@ -53,13 +53,13 @@
                     {
                         @Html.AntiForgeryToken()
                         @Html.ValidationSummary(true)
-                        @Html.HiddenFor(x=>x.Id)
-                        @Html.HiddenFor(x=>x.CreatedDate)
+                        @Html.HiddenFor(x => x.Id)
+                        @Html.HiddenFor(x => x.CreatedDate)
                         <div class="card">
                             <div class="card-header p-2">
                                 <ul class="nav nav-pills">
                                     <li class="nav-item"><a class="nav-link active" href="#activity" data-toggle="tab">Thông tin chung</a></li>
-                                    @*<li class="nav-item"><a class="nav-link" href="#images" data-toggle="tab">Hình ảnh</a></li>*@ 
+                                    @*<li class="nav-item"><a class="nav-link" href="#images" data-toggle="tab">Hình ảnh</a></li>*@
                                     <li class="nav-item"><a class="nav-link" href="#seo" data-toggle="tab">SEO </a></li>
                                 </ul>
                             </div><!-- /.card-header -->
@@ -96,31 +96,31 @@
                                             @Html.TextAreaFor(x => x.Detail, new { @class = "form-control", @id = "txtDetail" })
                                             @Html.ValidationMessageFor(x => x.Detail, null, new { @class = "text-danger" })
                                         </div>
-                                        <!--<div class="row">-->
-                                            @*<div class="col-4">
+                                        <div class="row">
+                                            <div class="col-4">
                                                 <div class="form-group">
                                                     <label for="exampleInputEmail1">Số lượng sản phẩm</label>
-                                                    @Html.TextBoxFor(x => x.Quatity, new { @class = "form-control", @Value = "1" })
+                                                    @Html.TextBoxFor(x => x.Quatity, new { @class = "form-control" })
                                                     @Html.ValidationMessageFor(x => x.Quatity, null, new { @class = "text-danger" })
                                                 </div>
-                                            </div>*@
-                                            <!--<div class="col-12">
+                                            </div>
+                                            <div class="col-4">
                                                 <div class="form-group">
                                                     <label for="exampleInputEmail1">Giá sản phẩm</label>
-                                                    @*<input type="text" name="demoPrice" id="demoPrice" value="@Model.Price" class="form-control autoNum" placeholder="Giá sản phẩm" data-a-dec="," data-a-sep=".">
+                                                    <input type="text" name="demoPrice" id="demoPrice" value="@Model.Price" class="form-control autoNum" placeholder="Giá sản phẩm" data-a-dec="," data-a-sep=".">
                                                     @Html.HiddenFor(x => x.Price, new { @class = "", @placeholder = "Giá" })
                                                     @Html.ValidationMessageFor(x => x.Price, null, new { @class = "text-danger" })
                                                 </div>
-                                            </div>-->
-                                            @*<div class="col-4">
+                                            </div>
+                                            <div class="col-4">
                                                 <div class="form-group">
                                                     <label for="exampleInputEmail1">Giá khuyến mãi</label>
                                                     <input type="text" name="demoPriceSale" id="demoPriceSale" value="@Model.PriceSale" class="form-control autoNum" placeholder="Giá khuyến mãi" data-a-dec="," data-a-sep=".">
                                                     @Html.HiddenFor(x => x.PriceSale, new { @class = "", @placeholder = "Giá khuyến mãi" })
                                                     @Html.ValidationMessageFor(x => x.PriceSale, null, new { @class = "text-danger" })
                                                 </div>
-                                            </div>*@
-                                        <!--</div>-->
+                                            </div>
+                                        </div>
                                         <div class="row">
                                             <div class="col-3">
                                                 <div class="form-group">
@@ -143,9 +143,9 @@
                                             <div class="col-3">
                                                 <div class="form-group">
                                                     <div class="custom-control custom-checkbox">
-                                                        @Html.CheckBoxFor(x => x.IsFeature, new { @class = "custom-control-input", @id = "IsFeatureCheckbox" })
+                                                        @Html.CheckBoxFor(x => x.IsHome, new { @class = "custom-control-input", @id = "IsFeatureCheckbox" })
                                                         @*<input class="custom-control-input" type="checkbox" id="customCheckbox2" checked="">*@
-                                                        <label for="IsFeatureCheckbox" class="custom-control-label">Nổi bật</label>
+                                                        <label for="IsFeatureCheckbox" class="custom-control-label">Home</label>
                                                     </div>
                                                 </div>
                                             </div>
@@ -236,7 +236,7 @@
             CKEDITOR.replace('txtDetail', {
                 customConfig: '/content/ckeditor/config.js',
                 extraAllowedContent: 'span',
-            });         
+            });
         });
     </script>
 }

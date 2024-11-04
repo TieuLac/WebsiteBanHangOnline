@@ -81,23 +81,7 @@
                         <li><i class="fa fa-star-o" aria-hidden="true"></i></li>
                     </ul>*@
 
-                <div class="product_color">
-                    <span>Chọn màu:</span>
-                    @*<ul id="colorList">
-            @foreach (var item in Model.ProductDetail)
-            {
-                <li style="background: @item.Color.Code; border: 2px solid; cursor: pointer;" data-color="@item.Color.Code"></li>
-            }
-
-        </ul>*@
-
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">Màu sắc</label>
-                        @Html.DropDownListFor(x => x.ProductDetail, ViewBag.ProductColor as SelectList, "-Chọn màu sắc-", new { @class = "form-control" })
-                        @Html.ValidationMessageFor(x => x.ProductDetail, null, new { @class = "text-danger" })
-                    </div>
-                </div>
-
+                
                     <div class="quantity d-flex flex-column flex-sm-row align-items-sm-center">
                         <span>Quantity:</span>
                         <div class="quantity_selector">
@@ -143,32 +127,7 @@
 
                     <!-- Tab Additional Info -->
 
-                    <div id="tab_2" class="tab_container">
-                        <div class="row">
-                            <div class="col additional_info_col">
-                                <div class="tab_title additional_info_title">
-                                    <h4>Additional Information</h4>
-                                </div>
-                                <p>
-                                    Màu sắc:
-                                    @foreach (var item in Model.ProductDetail)
-                                    {
-                                        <span>@item.Color.Name</span>
-                                    }
-
-                                </p>
-                                <p>
-                                    Kích thước:
-                                    @foreach (var item in Model.ProductDetail)
-                                    {
-                                        <span>@item.Size.Name</span>
-                                    }
-
-                                </p>
-                                
-                            </div>
-                        </div>
-                    </div>
+                    
 
                     <!-- Tab Reviews -->
 
