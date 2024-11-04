@@ -1151,8 +1151,6 @@ section
 .add_to_cart_button
 {
 	width: 100%;
-	visibility: hidden;
-	opacity: 0;
 	-webkit-transition: all 0.3s ease;
 	-moz-transition: all 0.3s ease;
 	-ms-transition: all 0.3s ease;

@@ -31,6 +31,7 @@ namespace WebBanHangOnline.Models.EF
 
         public bool IsActive { get; set; }
 
+        [Required]
         public int ProductId { get; set; }
 
         [ForeignKey("ProductId")]
