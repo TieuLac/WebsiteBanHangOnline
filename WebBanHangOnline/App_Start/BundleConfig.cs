@@ -25,6 +25,26 @@ namespace WebBanHangOnline
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
+
+            // Core CSS
+            bundles.Add(new StyleBundle("~/Content/core").Include(
+                "~/Content/assets/styles/bootstrap4/bootstrap.min.css"));
+
+            // Plugin CSS
+            bundles.Add(new StyleBundle("~/Content/plugins").Include(
+                "~/Content/assets/plugins/font-awesome-4.7.0/css/font-awesome.min.css",
+                "~/Content/assets/plugins/OwlCarousel2-2.2.1/owl.carousel.css",
+                "~/Content/assets/plugins/OwlCarousel2-2.2.1/owl.theme.default.css",
+                "~/Content/assets/plugins/OwlCarousel2-2.2.1/animate.css",
+                "~/Content/assets/plugins/jquery-ui-1.12.1.custom/jquery-ui.css"));
+
+            // Global CSS
+            bundles.Add(new StyleBundle("~/Content/global").Include(
+                "~/Content/assets/styles/main_styles.css",
+               
+                "~/Content/assets/styles/responsive.css"
+               
+                ));
         }
     }
 }
