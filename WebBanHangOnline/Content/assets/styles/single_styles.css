@@ -919,62 +919,81 @@ section
 5. Single Product Section
 *********************************/
 
-.single_product_container
-{
+.single_product_container {
 	margin-top: 150px;
 	padding-bottom: 80px;
 	border-bottom: solid 1px #ebebeb;
 }
-.single_product_thumbnails
-{
+
+.single_product_thumbnails {
 	height: 527px;
+	overflow-y: auto;
+	scrollbar-width: thin; /* Làm cho thanh cuộn mỏng */
+	scrollbar-color: #888 #f1f1f1; /* Màu của thanh cuộn và nền */
 }
-.single_product_thumbnails ul li
-{
-	position: relative;
-	height: 136px;
-	margin-bottom: 30px;
-	cursor: pointer;
-}
-.single_product_thumbnails ul li::after
-{
-	display: block;
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	border: solid 1px #fe4c50;
-	content: '';
-	visibility: hidden;
-}
-.single_product_thumbnails ul li.active::after,
-.single_product_thumbnails ul li:hover::after
-{
-	visibility: visible;
-}
-.single_product_thumbnails ul li img
-{
-	width: 100%;
-}
-.image_col
-{
+	/*.single_product_thumbnails::-webkit-scrollbar {
+		width: 4px;*/ /* Điều chỉnh độ rộng của thanh cuộn */
+	/*}
+	.single_product_thumbnails::-webkit-scrollbar-thumb {
+		background-color: #888;*/ /* Màu sắc của thanh cuộn */
+		/*border-radius: 5px;*/ /* Làm tròn góc của thanh cuộn */
+	/*}
+	.single_product_thumbnails::-webkit-scrollbar-track {
+		background-color: #f1f1f1;*/ /* Màu nền của thanh cuộn */
+	/*}*/
+
+
+	.single_product_thumbnails ul li {
+		position: relative;
+		height: 136px;
+		margin-bottom: 30px;
+		cursor: pointer;
+		object-fit:contain;
+	}
+
+		.single_product_thumbnails ul li::after {
+			display: block;
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			border: solid 1px #fe4c50;
+			content: '';
+			visibility: hidden;
+		}
+
+		.single_product_thumbnails ul li.active::after,
+		.single_product_thumbnails ul li:hover::after {
+			visibility: visible;
+		}
+
+		.single_product_thumbnails ul li img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+		}
+
+.image_col {
 	padding-right: 30px;
+	position: relative; /* Thêm position relative */
 }
-.single_product_image
-{
+
+.single_product_image {
 	width: 100%;
 	height: 527px;
+	position: relative; /* Thêm position relative */
+    overflow: hidden; /* Ngăn ảnh chính tràn ra */
 }
-.single_product_image_background
-{
+
+.single_product_image_background {
 	position: absolute;
 	top: 0;
 	left: 0;
 	width: 100%;
 	height: 100%;
 	background-repeat: no-repeat;
-	background-size: cover;
+	background-size: contain;
 	background-position: center center;
 }
 
@@ -1066,12 +1085,15 @@ section
 .product_color ul li
 {
 	display: inline-block;
-	width: 12px;
-	height: 12px;
+	width: 20px;
+	height: 20px;
 	border-radius: 50%;
 	margin-right: 29px;
 	cursor: pointer;
 }
+	.product_color li.selected {
+		border: 4px solid #00ff90; /* Đổi border để phân biệt màu được chọn */
+	}
 .quantity
 {
 	width: 100%;
