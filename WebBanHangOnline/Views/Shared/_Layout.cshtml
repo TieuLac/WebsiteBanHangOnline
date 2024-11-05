@@ -17,13 +17,15 @@
     <link rel="stylesheet" type="text/css" href="~/Content/assets/plugins/jquery-ui-1.12.1.custom/jquery-ui.css">
     @Styles.Render("~/Content/plugins")
     <!-- 3. Custom Global CSS -->
-    
-    <link rel="stylesheet" type="text/css" href="~/Content/assets/styles/responsive.css">                                
+
+    <link rel="stylesheet" type="text/css" href="~/Content/assets/styles/responsive.css">
     @Styles.Render("~/Content/global")
     <!-- 4. Page Specific CSS -->
     @RenderSection("styles", required: false)
 
     @Scripts.Render("~/bundles/modernizr")
+    <script src="~/Content/assets/js/jquery-3.2.1.min.js"></script>
+    @Scripts.Render("~/bundles/jqueryval")
 </head>
 <body>
     <div class="super_container">
@@ -109,9 +111,9 @@
                                     <li><a href="#"><i class="fa fa-search" aria-hidden="true"></i></a></li>
                                     <li><a href="#"><i class="fa fa-user" aria-hidden="true"></i></a></li>
                                     <li class="checkout">
-                                        <a href="#">
+                                        <a href="/gio-hang">
                                             <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                                            @*<span id="checkout_items" class="checkout_items">2</span>*@
+                                            <span id="checkout_items" class="checkout_items">0</span>
                                         </a>
                                     </li>
                                 </ul>
@@ -238,7 +240,7 @@
     </div>
 
     @*@Scripts.Render("~/bundles/jquery")*@
-    <script src="~/Content/assets/js/jquery-3.2.1.min.js"></script>
+    
     <script src="~/Content/assets/styles/bootstrap4/popper.js"></script>
     <script src="~/Content/assets/styles/bootstrap4/bootstrap.min.js"></script>
     <script src="~/Content/assets/plugins/Isotope/isotope.pkgd.min.js"></script>
@@ -246,8 +248,10 @@
     <script src="~/Content/assets/plugins/easing/easing.js"></script>
     <script src="~/Content/assets/plugins/jquery-ui-1.12.1.custom/jquery-ui.js"></script>
     <script src="~/Content/assets/js/custom.js"></script>
-
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
     @*    @Scripts.Render("~/bundles/bootstrap")*@
+    <script src="~/Scripts/jsShopping.js"></script>
     @RenderSection("scripts", required: false)
 </body>
 </html>

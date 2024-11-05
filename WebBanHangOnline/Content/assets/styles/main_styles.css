@@ -1148,9 +1148,10 @@ section
 {
 	right: 15px;
 }
-.add_to_cart_button
-{
+.add_to_cart_button {
 	width: 100%;
+	visibility: hidden;
+	opacity: 0;
 	-webkit-transition: all 0.3s ease;
 	-moz-transition: all 0.3s ease;
 	-ms-transition: all 0.3s ease;
@@ -1212,7 +1213,7 @@ section
 6. Deal of the week
 *********************************/
 
-.deal_ofthe_week
+	.deal_ofthe_week
 {
 	width: 100%;
 	margin-top: 41px;

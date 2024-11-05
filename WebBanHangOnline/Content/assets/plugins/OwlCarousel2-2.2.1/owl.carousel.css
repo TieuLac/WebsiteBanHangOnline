@@ -53,9 +53,9 @@
     -moz-transform: translate3d(0, 0, 0);
     -ms-transform: translate3d(0, 0, 0);
 }
-    .owl-carousel .owl-item {
-        margin-right: 15px; /* Tùy chỉnh khoảng cách */
-    }
+    /*.owl-carousel .owl-item {
+        margin-right: 15px;*/ /* Tùy chỉnh khoảng cách */
+    /*}*/
 
 .owl-carousel .owl-item
 {
