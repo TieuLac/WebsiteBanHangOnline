@@ -7,7 +7,18 @@
     <link rel="stylesheet" type="text/css" href="~/Content/assets/styles/single_styles.css">
     <link rel="stylesheet" type="text/css" href="~/Content/assets/styles/single_responsive.css">
 }
-
+<style>
+    .add_to_cart_button {
+        width: 100%;
+        visibility: visible;
+        opacity: 100;
+        -webkit-transition: all 0.3s ease;
+        -moz-transition: all 0.3s ease;
+        -ms-transition: all 0.3s ease;
+        -o-transition: all 0.3s ease;
+        transition: all 0.3s ease;
+    }
+</style>
 @if (Model != null)
 {
     <div class="container single_product_container">
@@ -70,45 +81,37 @@
                         <p>@Model.Description</p>
                     </div>
 
-                    @*<div class="original_price">@WebBanHangOnline.Common.Common.FormatNumber(Model.Price)</div>*@
-                    <div class="product_price">@WebBanHangOnline.Common.Common.FormatNumber(Model.Price)</div>
+                    @if (Model.PriceSale > 0)
+                    {
+                        <div class="original_price">@WebBanHangOnline.Common.Common.FormatNumber(Model.Price, 0)</div>
+                        <div class="product_price">@WebBanHangOnline.Common.Common.FormatNumber(Model.PriceSale, 0)</div>
+                    }
+                    else
+                    {
+                        <div class="product_price">@WebBanHangOnline.Common.Common.FormatNumber(Model.Price, 0)</div>
+                    }
 
-                    @*<ul class="star_rating">
-                        <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                        <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                        <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                        <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                        <li><i class="fa fa-star-o" aria-hidden="true"></i></li>
-                    </ul>*@
 
-                <div class="product_color">
-                    <span>Chọn màu:</span>
-                    @*<ul id="colorList">
-            @foreach (var item in Model.ProductDetail)
-            {
-                <li style="background: @item.Color.Code; border: 2px solid; cursor: pointer;" data-color="@item.Color.Code"></li>
-            }
+                        @*<ul class="star_rating">
+                <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                <li><i class="fa fa-star-o" aria-hidden="true"></i></li>
+            </ul>*@
 
-        </ul>*@
 
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">Màu sắc</label>
-                        @Html.DropDownListFor(x => x.ProductDetail, ViewBag.ProductColor as SelectList, "-Chọn màu sắc-", new { @class = "form-control" })
-                        @Html.ValidationMessageFor(x => x.ProductDetail, null, new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                    <div class="quantity d-flex flex-column flex-sm-row align-items-sm-center">
-                        <span>Quantity:</span>
-                        <div class="quantity_selector">
-                            <span class="minus"><i class="fa fa-minus" aria-hidden="true"></i></span>
-                            <span id="quantity_value">1</span>
-                            <span class="plus"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                        <div class="quantity d-flex flex-column flex-sm-row align-items-sm-center">
+                            <span>Số lượng:</span>
+                            <div class="quantity_selector">
+                                <span class="minus"><i class="fa fa-minus" aria-hidden="true"></i></span>
+                                <span id="quantity_value">1</span>
+                                <span class="plus"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                            </div>
+                            <div class="red_button add_to_cart_button"><a href="#" class="btnAddToCart" data-id="@Model.Id">THÊM VÀO GIỎ HÀNG  @*<i class="fas fa-shopping-cart"></i>*@</a></div>
+                            <div class="product_favorite d-flex flex-column align-items-center justify-content-center"></div>
                         </div>
-                        <div class="red_button add_to_cart_button"><a href="#">add to cart</a></div>
-                        <div class="product_favorite d-flex flex-column align-items-center justify-content-center"></div>
                     </div>
-                </div>
             </div>
         </div>
 
@@ -124,7 +127,7 @@
                     <div class="tabs_container">
                         <ul class="tabs d-flex flex-sm-row flex-column align-items-left align-items-md-center justify-content-center">
                             <li class="tab active" data-active-tab="tab_1"><span>Description</span></li>
-                            <li class="tab" data-active-tab="tab_2"><span>Additional Information</span></li>
+                            
                             <li class="tab" data-active-tab="tab_3"><span>Reviews (2)</span></li>
                         </ul>
                     </div>
@@ -143,32 +146,7 @@
 
                     <!-- Tab Additional Info -->
 
-                    <div id="tab_2" class="tab_container">
-                        <div class="row">
-                            <div class="col additional_info_col">
-                                <div class="tab_title additional_info_title">
-                                    <h4>Additional Information</h4>
-                                </div>
-                                <p>
-                                    Màu sắc:
-                                    @foreach (var item in Model.ProductDetail)
-                                    {
-                                        <span>@item.Color.Name</span>
-                                    }
-
-                                </p>
-                                <p>
-                                    Kích thước:
-                                    @foreach (var item in Model.ProductDetail)
-                                    {
-                                        <span>@item.Size.Name</span>
-                                    }
-
-                                </p>
-                                
-                            </div>
-                        </div>
-                    </div>
+                    
 
                     <!-- Tab Reviews -->
 
