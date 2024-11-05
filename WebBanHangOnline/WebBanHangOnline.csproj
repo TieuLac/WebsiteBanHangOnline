@@ -185,6 +185,7 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\MenuController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
+    <Compile Include="Controllers\ShoppingCartController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -220,6 +221,7 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Commons\Common.cs" />
     <Compile Include="Models\Commons\Filter.cs" />
+    <Compile Include="Models\CustomerViewModel.cs" />
     <Compile Include="Models\EF\Adv.cs" />
     <Compile Include="Models\EF\Category.cs" />
     <Compile Include="Models\CommonAbstract.cs" />
@@ -235,6 +237,8 @@
     <Compile Include="Models\EF\SystemSetting.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\OrderViewModel.cs" />
+    <Compile Include="Models\ShoppingCart.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -3271,6 +3275,7 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\jsShopping.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Uploads\images\1fd487a12a4073f0050cf05b02790618.png" />
     <Content Include="Uploads\_thumbs\Images\1fd487a12a4073f0050cf05b02790618.png" />
@@ -3318,6 +3323,12 @@
     <Content Include="Views\Menu\_MenuLeft.cshtml" />
     <Content Include="Views\Products\ProductCategory.cshtml" />
     <Content Include="Views\Products\Detail.cshtml" />
+    <Content Include="Views\ShoppingCart\Index.cshtml" />
+    <Content Include="Views\ShoppingCart\Partial_Item_Cart.cshtml" />
+    <Content Include="Views\ShoppingCart\CheckOut.cshtml" />
+    <Content Include="Views\ShoppingCart\Partial_CheckOut.cshtml" />
+    <Content Include="Views\ShoppingCart\Partial_Item_ThanhToan.cshtml" />
+    <Content Include="Views\ShoppingCart\CheckOutSuccess.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
