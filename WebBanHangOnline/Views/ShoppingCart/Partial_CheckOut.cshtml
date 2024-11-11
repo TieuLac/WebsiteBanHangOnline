@@ -16,7 +16,8 @@
 
 }, new { @Id = "myForm" }))
 {
-    <script>function OnBeginCO() {
+    <script>
+        function OnBeginCO() {
             $('#btnCheckOut').attr("disabled", "disabled");
             $('#load_send').html('<h2>Đang gửi....</h2>');
         }
@@ -28,9 +29,14 @@
                 else {
                     location.href = res.Url;
                 }
+            } else {
+                alert("Lỗi: " + res.Message);
+                $('#btnCheckOut').removeAttr("disabled"); // Bật lại nút "Đặt hàng"
+                $('#load_send').html(''); // Xóa thông báo "Đang gửi..."
+                //$('#myForm')[0].reset(); // Reset lại form
             }
         }
-                                            //function OnFailure() {
+        //function OnFailure() {
 
         //}
     </script>
@@ -103,3 +109,5 @@
         <button type="submit" class="btn btn-block btn-success" id="btnCheckOut">Đặt hàng</button>
     </div>
 }
+
+
