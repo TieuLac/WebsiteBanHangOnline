@@ -180,6 +180,7 @@
     <Compile Include="Areas\Admin\Controllers\CategoryController.cs" />
     <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
     <Compile Include="Areas\Admin\Controllers\NewsController.cs" />
+    <Compile Include="Areas\Admin\Controllers\OrderController.cs" />
     <Compile Include="Areas\Admin\Controllers\PostsController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductCategoryController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductImagesController.cs" />
@@ -3280,6 +3281,9 @@
     <Content Include="Content\assets\plugins\themify-icons\fonts\themify.eot" />
     <Content Include="Content\assets\plugins\themify-icons\fonts\themify.ttf" />
     <Content Include="Content\assets\plugins\themify-icons\fonts\themify.woff" />
+    <Content Include="Areas\Admin\Views\Order\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Order\View.cshtml" />
+    <Content Include="Areas\Admin\Views\Order\Partial_SanPham.cshtml" />
     <None Include="Scripts\jquery-3.7.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.7.1.js" />
     <Content Include="Scripts\jquery-3.7.1.min.js" />

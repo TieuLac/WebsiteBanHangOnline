@@ -61,6 +61,7 @@ namespace WebBanHangOnline.Controllers
                         if (itemOrder != null)
                         {
                             itemOrder.Status = 2;//đã thanh toán
+                            itemOrder.OrderStatus = 2;
                             db.Orders.Attach(itemOrder);
                             db.Entry(itemOrder).State = System.Data.Entity.EntityState.Modified;
                             db.SaveChanges();
@@ -159,6 +160,7 @@ namespace WebBanHangOnline.Controllers
                         order.Address = req.Address;
                         order.Email = req.Email;
                         order.Status = 1; // chưa thanh toán
+                        order.OrderStatus = 1;
                         cart.Items.ForEach(x => order.OrderDetails.Add(new OrderDetail
                         {
                             ProductId = x.ProductId,
