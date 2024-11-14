@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using WebBanHangOnline.Models.Commons
+<!DOCTYPE html>
 <html>
 <head>
     <title>N&N Shop</title>
@@ -38,15 +39,15 @@
 
             <div class="top_nav">
                 <div class="container">
-                    @*<div class="row">
-                            <div class="col-md-6">
-                                <div class="top_nav_left">free shipping on all u.s orders over $50</div>
-                            </div>
-                            <div class="col-md-6 text-right">
-                                <div class="top_nav_right">
-                                    <ul class="top_nav_menu">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="top_nav_left">Hotline: @SettingHelper.GetValue("SettingHotline")</div>
+                        </div>
+                        <div class="col-md-6 text-right">
+                            <div class="top_nav_right">
+                                <ul class="top_nav_menu">
 
-                                         Currency / Language / My Account
+                                    @*Currency / Language / My Account
 
                                         <li class="currency">
                                             <a href="#">
@@ -71,21 +72,42 @@
                                                 <li><a href="#">German</a></li>
                                                 <li><a href="#">Spanish</a></li>
                                             </ul>
-                                        </li>
-                                        <li class="account">
+                                        </li>*@
+                                    <li class="account">
+
+                                        @if (!Request.IsAuthenticated)
+                                        {
                                             <a href="#">
-                                                My Account
+                                                Tài khoản
                                                 <i class="fa fa-angle-down"></i>
                                             </a>
-                                            <ul class="account_selection">
-                                                <li><a href="#"><i class="fa fa-sign-in" aria-hidden="true"></i>Sign In</a></li>
-                                                <li><a href="#"><i class="fa fa-user-plus" aria-hidden="true"></i>Register</a></li>
+                                            <ul class="account_selection" style="width:125px">
+                                                <li><a href="/account/login"><i class="fa fa-sign-in" aria-hidden="true"></i>Đăng nhập</a></li>
+                                                <li><a href="/account/register"><i class="fa fa-user-plus" aria-hidden="true"></i>Đăng ký</a></li>
                                             </ul>
-                                        </li>
-                                    </ul>
-                                </div>
+                                        }
+                                        else
+                                        {
+                                            <a href="#">
+                                                @User.Identity.Name
+                                                <i class="fa fa-angle-down"></i>
+                                            </a>
+                                            <ul class="account_selection" style="width:200px">
+                                                <li><a href="/"><i class="fa-solid fa-user"></i>Thông tin cá nhân</a></li>
+                                                <li>
+                                                    <a href="javascript:void(0);" onclick="confirmLogout()" class="nav-link">
+                                                        <i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i>
+                                                        Đăng xuất
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        }
+
+                                    </li>
+                                </ul>
                             </div>
-                        </div>*@
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -108,7 +130,7 @@
                                 @Html.Action("MenuTop", "Menu")
 
                                 <ul class="navbar_user">
-                                    <li><a href="#"><i class="fa fa-search" aria-hidden="true"></i></a></li>
+                                    @*<li><a href="#"><i class="fa fa-search" aria-hidden="true"></i></a></li>*@
                                     <li><a href="#"><i class="fa fa-user" aria-hidden="true"></i></a></li>
                                     <li class="checkout">
                                         <a href="/gio-hang">
@@ -128,78 +150,59 @@
 
         </header>
 
-        <div class="fs_menu_overlay"></div>
-        <div class="hamburger_menu">
-            <div class="hamburger_close"><i class="fa fa-times" aria-hidden="true"></i></div>
-            <div class="hamburger_menu_content text-right">
-                <ul class="menu_top_nav">
-                    <li class="menu_item has-children">
-                        <a href="#">
-                            usd
-                            <i class="fa fa-angle-down"></i>
-                        </a>
-                        <ul class="menu_selection">
-                            <li><a href="#">cad</a></li>
-                            <li><a href="#">aud</a></li>
-                            <li><a href="#">eur</a></li>
-                            <li><a href="#">gbp</a></li>
-                        </ul>
-                    </li>
-                    <li class="menu_item has-children">
-                        <a href="#">
-                            English
-                            <i class="fa fa-angle-down"></i>
-                        </a>
-                        <ul class="menu_selection">
-                            <li><a href="#">French</a></li>
-                            <li><a href="#">Italian</a></li>
-                            <li><a href="#">German</a></li>
-                            <li><a href="#">Spanish</a></li>
-                        </ul>
-                    </li>
-                    <li class="menu_item has-children">
-                        <a href="#">
-                            My Account
-                            <i class="fa fa-angle-down"></i>
-                        </a>
-                        <ul class="menu_selection">
-                            <li><a href="#"><i class="fa fa-sign-in" aria-hidden="true"></i>Sign In</a></li>
-                            <li><a href="#"><i class="fa fa-user-plus" aria-hidden="true"></i>Register</a></li>
-                        </ul>
-                    </li>
-                    <li class="menu_item"><a href="#">home</a></li>
-                    <li class="menu_item"><a href="#">shop</a></li>
-                    <li class="menu_item"><a href="#">promotion</a></li>
-                    <li class="menu_item"><a href="#">pages</a></li>
-                    <li class="menu_item"><a href="#">blog</a></li>
-                    <li class="menu_item"><a href="#">contact</a></li>
-                </ul>
-            </div>
-        </div>
+        @*<div class="fs_menu_overlay"></div>
+            <div class="hamburger_menu">
+                <div class="hamburger_close"><i class="fa fa-times" aria-hidden="true"></i></div>
+                <div class="hamburger_menu_content text-right">
+                    <ul class="menu_top_nav">
+                        <li class="menu_item has-children">
+                            <a href="#">
+                                usd
+                                <i class="fa fa-angle-down"></i>
+                            </a>
+                            <ul class="menu_selection">
+                                <li><a href="#">cad</a></li>
+                                <li><a href="#">aud</a></li>
+                                <li><a href="#">eur</a></li>
+                                <li><a href="#">gbp</a></li>
+                            </ul>
+                        </li>
+                        <li class="menu_item has-children">
+                            <a href="#">
+                                English
+                                <i class="fa fa-angle-down"></i>
+                            </a>
+                            <ul class="menu_selection">
+                                <li><a href="#">French</a></li>
+                                <li><a href="#">Italian</a></li>
+                                <li><a href="#">German</a></li>
+                                <li><a href="#">Spanish</a></li>
+                            </ul>
+                        </li>
+                        <li class="menu_item has-children">
+                            <a href="#">
+                                My Account
+                                <i class="fa fa-angle-down"></i>
+                            </a>
+                            <ul class="menu_selection">
+                                <li><a href="#"><i class="fa fa-sign-in" aria-hidden="true"></i>Sign In</a></li>
+                                <li><a href="#"><i class="fa fa-user-plus" aria-hidden="true"></i>Register</a></li>
+                            </ul>
+                        </li>
+                        <li class="menu_item"><a href="#">home</a></li>
+                        <li class="menu_item"><a href="#">shop</a></li>
+                        <li class="menu_item"><a href="#">promotion</a></li>
+                        <li class="menu_item"><a href="#">pages</a></li>
+                        <li class="menu_item"><a href="#">blog</a></li>
+                        <li class="menu_item"><a href="#">contact</a></li>
+                    </ul>
+                </div>
+            </div>*@
         @RenderBody()
 
         <!-- Newsletter -->
 
-        <div class="newsletter">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-6">
-                        <div class="newsletter_text d-flex flex-column justify-content-center align-items-lg-start align-items-md-center text-center">
-                            <h4>Bảng tin</h4>
-                            <p>Đăng ký để được giảm 20% cho lần mua hàng đầu tiên của bạn!</p>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <form action="post">
-                            <div class="newsletter_form d-flex flex-md-row flex-column flex-xs-column align-items-center justify-content-lg-end justify-content-center">
-                                <input id="newsletter_email" type="email" placeholder="Nhập Email" required="required" data-error="Valid email is required.">
-                                <button id="newsletter_submit" type="submit" class="newsletter_submit_btn trans_300" value="Submit">Đăng ký</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
+        @Html.Action("Partial_Subcrice", "Home")
 
         <!-- Footer -->
 
@@ -254,5 +257,32 @@
     @*    @Scripts.Render("~/bundles/bootstrap")*@
     <script src="~/Scripts/jsShopping.js"></script>
     @RenderSection("scripts", required: false)
+
+
+    @if (Request.IsAuthenticated)
+    {
+        <div style="display:none">
+            @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { @id = "logOffForm" }))
+            {
+                @Html.AntiForgeryToken()
+            }
+        </div>
+    }
+
+    <script>
+        function confirmLogout() {
+            Swal.fire({
+                title: 'Bạn có chắc chắn muốn đăng xuất không?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'OK',
+                cancelButtonText: 'Hủy',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('logOffForm').submit();
+                }
+            });
+        }
+    </script>
 </body>
 </html>
