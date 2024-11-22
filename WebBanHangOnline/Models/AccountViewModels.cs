@@ -90,6 +90,15 @@ namespace WebBanHangOnline.Models
 
     public class RegisterViewModel
     {
+        public List<string> Roles { get; set; }
+
+        [Required]
+        public string UserName { get; set; }
+        [Required]
+        public string FullName { get; set; }
+
+        public string Phone { get; set; }
+
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]

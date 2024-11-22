@@ -52,7 +52,8 @@
                     @if (Model != null && Model.Any())
                     {
                         var i = ((ViewBag.Page - 1) * ViewBag.PageSize) + 1;
-                        foreach (var item in Model)
+                        var approvedOrders = Model.Where(x => x.IsApprove == true);
+                        foreach (var item in approvedOrders)
                         {
                             <tr>
                                 <td>@i</td>

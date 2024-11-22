@@ -1,6 +1,27 @@
 ﻿@model WebBanHangOnline.Models.OrderViewModel
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<style>
+    .form-control {
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 10px;
+        color: #000; /* Màu chữ trong text box */
+    }
 
+    .custom-loading {
+        background: rgba(255, 255, 255, 0.9);
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+    }
+</style>
 @{
     if (ViewBag.User != null)
     {
@@ -15,32 +36,80 @@
     OnSuccess = "OnSuccessCO",
     OnFailure = "OnFailure",
     OnBegin = "OnBeginCO"
-
 }, new { @Id = "myForm" }))
 {
     <script>
-        function OnBeginCO() {
-            $('#btnCheckOut').attr("disabled", "disabled");
-            $('#load_send').html('<h2><i class="fas fa-duotone fa-spinner fa-spin fa-2x"></i></h2>');
+        function showLoading(message) {
+            Swal.fire({
+                title: message || 'Đang xử lý đơn hàng...',
+                html: 'Vui lòng không tắt trình duyệt',
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                showConfirmButton: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
         }
+
+        function hideLoading() {
+            Swal.close();
+        }
+
+        function OnBeginCO() {
+            $('#btnCheckOut').prop("disabled", true);
+            showLoading('Đang xử lý đơn hàng của bạn...');
+        }
+
         function OnSuccessCO(res) {
+            hideLoading();
             if (res.Success) {
                 if (res.Code == 1) {
-                    location.href = "/ShoppingCart/CheckOutSuccess";
-                }
-                else {
+                    Swal.fire({
+                        title: 'Thành công!',
+                        text: 'Đơn hàng của bạn đã được đặt thành công',
+                        icon: 'success',
+                        showConfirmButton: false,
+                        timer: 2000
+                    }).then(() => {
+                        location.href = "/ShoppingCart/CheckOutSuccess";
+                    });
+                } else {
                     location.href = res.Url;
                 }
             } else {
-                alert("Lỗi: " + res.Message);
-                $('#btnCheckOut').removeAttr("disabled"); // Bật lại nút "Đặt hàng"
-                $('#load_send').html(''); // Xóa thông báo "Đang gửi..."
-                //$('#myForm')[0].reset(); // Reset lại form
+                Swal.fire({
+                    title: 'Lỗi!',
+                    text: res.Message || 'Có lỗi xảy ra, vui lòng thử lại',
+                    icon: 'error',
+                    confirmButtonText: 'Đóng'
+                });
+                $('#btnCheckOut').prop("disabled", false);
             }
         }
-        //function OnFailure() {
 
-        //}
+        function OnFailure(xhr, status, error) {
+            hideLoading();
+            Swal.fire({
+                title: 'Lỗi!',
+                text: 'Không thể kết nối đến máy chủ. Vui lòng thử lại sau.',
+                icon: 'error',
+                confirmButtonText: 'Đóng'
+            });
+            $('#btnCheckOut').prop("disabled", false);
+        }
+
+        // Xử lý hiển thị form thanh toán VNPAY
+        $(document).ready(function () {
+            $('#drTypePayment').change(function () {
+                var value = $(this).val();
+                if (value == 2) {
+                    $('#load_form_payment').show();
+                } else {
+                    $('#load_form_payment').hide();
+                }
+            });
+        });
     </script>
     @Html.AntiForgeryToken()
 
@@ -108,7 +177,9 @@
     </div>
     <div class="form-group" id="load_send"></div>
     <div class="form-group">
-        <button type="submit" class="btn btn-block btn-success" id="btnCheckOut">Đặt hàng</button>
+        <button type="submit" class="btn btn-block btn-success" id="btnCheckOut">
+            <i class="fas fa-shopping-cart"></i> Đặt hàng
+        </button>
     </div>
 }
 

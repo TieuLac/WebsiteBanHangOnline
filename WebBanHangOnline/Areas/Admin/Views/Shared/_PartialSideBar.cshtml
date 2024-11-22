@@ -10,7 +10,7 @@
             <img src="~/Content/clients/dist/img/imgava.jpg" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-            <a href="#" class="d-block">Admin</a>
+            <a href="#" style="text-decoration: none" class="d-block">Admin</a>
         </div>
     </div>
 
@@ -121,11 +121,44 @@
             </li>
 
             <li class="nav-item">
-                <a href="/admin/order" class="nav-link">
-                    @*<i class="nav-icon fas fa-th"></i>*@
-                    <i class="fas fa-shopping-bag" style="width:25px; height:25px"></i>
+                <a href="#" class="nav-link">
+                    @*<i class="nav-icon fas fa-tachometer-alt"></i>*@
+                    <i class="fa-solid fa-cart-shopping" style="width:25px; height:25px"></i>
                     <p>
-                        Đơn hàng
+                        Quản lý đơn hàng
+                        <i class="right fas fa-angle-left"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a href="/admin/approveorder" class="nav-link">
+                            @*<i class="far fa-circle nav-icon"></i>*@
+                            <i class="fa-solid fa-xmark" style="width:25px; height:25px"></i>
+                            <p>Đơn hàng chưa duyệt</p>
+                        </a>
+                    </li>
+
+
+                    <li class="nav-item">
+                        <a href="/admin/order" class="nav-link">
+                            @*<i class="nav-icon fas fa-th"></i>*@
+                            <i class="fas fa-shopping-bag" style="width:25px; height:25px"></i>
+                            <p>
+                                Đơn hàng
+                                @*<span class="right badge badge-danger">New</span>*@
+                            </p>
+                        </a>
+                    </li>
+
+                </ul>
+            </li>
+            
+            <li class="nav-item">
+                <a href="/admin/salesstatistics" class="nav-link">
+                    @*<i class="nav-icon fas fa-th"></i>*@
+                    <i class="fa-solid fa-chart-simple" style="width:25px; height:25px"></i>
+                    <p>
+                        Thống kê
                         @*<span class="right badge badge-danger">New</span>*@
                     </p>
                 </a>

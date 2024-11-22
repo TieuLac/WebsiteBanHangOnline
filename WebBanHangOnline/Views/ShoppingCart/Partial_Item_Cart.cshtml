@@ -1,56 +1,246 @@
 ﻿@model IEnumerable<WebBanHangOnline.Models.ShoppingCartItem>
 @using WebBanHangOnline.Common
-<table class="table">
-    <tr class="align-middle">
-        <th>STT</th>
-        <th>Ảnh sản phẩm</th>
-        <th>Tên sản phẩm</th>
-        <th>Danh mục</th>
-        <th>Giá</th>
 
-        <th style="width:100px;">Số lượng</th>
-        <th>Thành tiền</th>
-        <th style="width:200px;">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
-        </th>
-    </tr>
+<style>
+    .cart-container {
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        padding: 20px;
+        margin: 20px 0;
+    }
+
+    .cart-header {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+    }
+
+    .cart-item {
+        border-bottom: 1px solid #eee;
+        padding: 15px 0;
+        transition: all 0.3s ease;
+    }
+
+        .cart-item:hover {
+            background: #f8f9fa;
+        }
+
+    .product-image {
+        width: 100px;
+        height: 100px;
+        object-fit: contain;
+        border-radius: 8px;
+        border: 1px solid #eee;
+        padding: 5px;
+    }
+
+    .product-name {
+        color: #333;
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.3s ease;
+    }
+
+        .product-name:hover {
+            color: #007bff;
+        }
+
+    .quantity-input {
+        width: 80px;
+        text-align: center;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 5px;
+    }
+
+        .quantity-input:focus {
+            border-color: #007bff;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(0,123,255,0.25);
+        }
+
+    .btn-action {
+        padding: 6px 12px;
+        border-radius: 5px;
+        transition: all 0.3s ease;
+    }
+
+    .btn-delete {
+        background: #dc3545;
+        color: white;
+        border: none;
+    }
+
+        .btn-delete:hover {
+            background: #c82333;
+            transform: translateY(-1px);
+        }
+
+    .btn-update {
+        background: #007bff;
+        color: white;
+        border: none;
+    }
+
+        .btn-update:hover {
+            background: #0056b3;
+            transform: translateY(-1px);
+        }
+
+    .cart-total {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 8px;
+        margin-top: 20px;
+    }
+
+    .empty-cart {
+        text-align: center;
+        padding: 50px 20px;
+    }
+
+        .empty-cart i {
+            font-size: 48px;
+            color: #dee2e6;
+            margin-bottom: 15px;
+        }
+
+    .category-badge {
+        background: #e9ecef;
+        padding: 5px 10px;
+        border-radius: 15px;
+        font-size: 0.85em;
+        color: #6c757d;
+    }
+
+    .price {
+        font-weight: 600;
+        color: black;
+        
+    }
+
+    .total-price {
+        font-size: 1.2em;
+        font-weight: 700;
+        color: #dc3545;
+        
+    }
+</style>
+
+<div class="cart-container">
+    <h2 class="mb-4">Giỏ hàng của bạn</h2>
+
     @if (Model != null && Model.Any())
     {
         var i = 0;
         var tongtien = decimal.Zero;
+
+        <div class="cart-header">
+            <div class="row align-items-center">
+                <div class="col-1">#</div>
+                <div class="col-2">Sản phẩm</div>
+                <div class="col-3">Thông tin</div>
+                <div class="col-2">Giá</div>
+                <div class="col-2">Số lượng</div>
+                <div class="col-2">Thao tác</div>
+            </div>
+        </div>
+
         foreach (var item in Model)
         {
             tongtien += item.TotalPrice;
-            <tr id="trow_@item.ProductId">
-                <td class="text-center align-middle">@(i+1)</td>
-                <td class="align-middle"><img src="@item.ProductImg" width="100" height="100" style="object-fit:contain" /></td>
-                <td class="align-middle">
-                    <a href="/chi-tiet/@item.Alias-p@(item.ProductId)" style="color:black">
-                        @item.ProductName
-                    </a>
-                </td>
-                <td class="align-middle">@item.CategoryName</td>
-                <td class="align-middle">@Common.FormatNumber(item.Price, 0)</td>
-                <td class="align-middle"><input type="number" class="form-control" style="color:black" id="Quantity_@item.ProductId" value="@item.Quantity" /></td>
-                <th class="align-middle">@Common.FormatNumber(item.TotalPrice, 2)</th>
-                <td class="align-middle">
-                    <a href="#" data-id="@item.ProductId" class="btn btn-sm btn-danger btnDelete">Xóa</a>
-                    <a href="#" data-id="@item.ProductId" class="btn btn-sm btn-primary btnUpdate">Cập nhật</a>
-                </td>
-            </tr>
+            <div class="cart-item" id="trow_@item.ProductId">
+                <div class="row align-items-center">
+                    <div class="col-1 text-center">@(i + 1)</div>
+                    <div class="col-2">
+                        <img src="@item.ProductImg" class="product-image" alt="@item.ProductName" />
+                    </div>
+                    <div class="col-3">
+                        <a href="/chi-tiet/@item.Alias-p@(item.ProductId)" class="product-name">
+                            @item.ProductName
+                        </a>
+                        <div class="mt-2">
+                            <span class="category-badge">@item.CategoryName</span>
+                        </div>
+                    </div>
+                    <div class="col-2">
+                        <div class="price">@Common.FormatNumber(item.Price, 0) đ</div>
+                    </div>
+                    <div class="col-2">
+                        <input type="number"
+                               class="quantity-input"
+                               id="Quantity_@item.ProductId"
+                               value="@item.Quantity"
+                               min="1"
+                               max="99" />
+                    </div>
+                    <div class="col-2">
+                        <button class="btn-action btn-delete btnDelete mb-2" data-id="@item.ProductId">
+                            <i class="fas fa-trash-alt"></i> Xóa
+                        </button>
+                        <button class="btn-action btn-update btnUpdate" data-id="@item.ProductId">
+                            <i class="fas fa-sync-alt"></i> Cập nhật
+                        </button>
+                    </div>
+                </div>
+            </div>
             i++;
         }
-        <tr>
-            <th colspan="6" class="text-right">Tổng: </th>
-            <th class="text-center">@Common.FormatNumber(tongtien, 0)</th>
-            <th></th>
-        </tr>
 
+        <div class="cart-total">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    @*<a href="/san-pham" class="btn btn-outline-primary">
+                        <i class="fas fa-arrow-left"></i> Tiếp tục mua sắm
+                    </a>*@
+                </div>
+                <div class="col-md-6 text-right">
+                    <div class="d-flex justify-content-end align-items-center">
+                        <span class="mr-3">Tổng tiền:</span>
+                        <span class="total-price">@Common.FormatNumber(tongtien, 0) đ</span>
+                    </div>
+                    <a href="#" class="btn btn-danger mt-2 btnDeleteAll">
+                        <i class="fas fa-trash-alt"></i> Xóa
+                    </a>
+                    <a href="/thanh-toan" class="btn btn-success mt-2">
+                        <i class="fas fa-shopping-cart"></i> Thanh toán
+                    </a>
+                </div>
+            </div>
+        </div>
     }
     else
     {
-        <tr>
-            <th colspan="7">Không có sản phẩm trong giỏ hàng!!</th>
-        </tr>
+        <div class="empty-cart">
+            <i class="fas fa-shopping-cart"></i>
+            <h3>Giỏ hàng trống</h3>
+            <p class="text-muted">Bạn chưa có sản phẩm nào trong giỏ hàng</p>
+            <a href="/san-pham" class="btn btn-primary mt-3">
+                <i class="fas fa-shopping-bag"></i> Mua sắm ngay
+            </a>
+        </div>
     }
-</table>
+</div>
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            // Code xử lý sự kiện update và delete có thể giữ nguyên
+            // Thêm animation cho các thao tác
+            $('.btnDelete').click(function () {
+                $(this).closest('.cart-item').fadeOut();
+            });
+
+            // Validate số lượng
+            $('.quantity-input').on('input', function() {
+                var value = parseInt($(this).val());
+                if (value < 1) $(this).val(1);
+                if (value > 99) $(this).val(99);
+            });
+        });
+    </script>
+}

@@ -2,6 +2,7 @@
 @{
     ViewBag.Title = "Detail";
 }
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
 @section styles {
     <link rel="stylesheet" type="text/css" href="~/Content/assets/styles/single_styles.css">
@@ -9,14 +10,31 @@
 }
 <style>
     .add_to_cart_button {
-        width: 100%;
+        /*width: 100%;*/
         visibility: visible;
         opacity: 100;
+        width: 160px;
+        margin-left: 19px;
         -webkit-transition: all 0.3s ease;
         -moz-transition: all 0.3s ease;
         -ms-transition: all 0.3s ease;
         -o-transition: all 0.3s ease;
         transition: all 0.3s ease;
+    }
+
+    .quantity_selector {
+        display: -webkit-box;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        width: 132px;
+        height: 100%;
+        border: solid 1px #e5e5e5;
+        margin-left: 29px;
     }
 </style>
 @if (Model != null)
@@ -29,7 +47,7 @@
 
                 <div class="breadcrumbs d-flex flex-row align-items-center">
                     <ul>
-                        <li><a href="/">Home</a></li>
+                        <li><a href="/">Trang chủ</a></li>
                         <li><a href="/danh-muc-san-pham/@Model.ProductCategory.Alias-@Model.ProductCategoryId"><i class="fa fa-angle-right" aria-hidden="true"></i>@Model.ProductCategory.Title</a></li>
                         <li class="active"><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i>@Model.Title</a></li>
                     </ul>
@@ -93,26 +111,26 @@
                     }
 
 
-                        @*<ul class="star_rating">
-                <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                <li><i class="fa fa-star-o" aria-hidden="true"></i></li>
-            </ul>*@
+                    @*<ul class="star_rating">
+                            <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                            <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                            <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                            <li><i class="fa fa-star" aria-hidden="true"></i></li>
+                            <li><i class="fa fa-star-o" aria-hidden="true"></i></li>
+                        </ul>*@
 
 
-                        <div class="quantity d-flex flex-column flex-sm-row align-items-sm-center">
-                            <span>Số lượng:</span>
-                            <div class="quantity_selector">
-                                <span class="minus"><i class="fa fa-minus" aria-hidden="true"></i></span>
-                                <span id="quantity_value">1</span>
-                                <span class="plus"><i class="fa fa-plus" aria-hidden="true"></i></span>
-                            </div>
-                            <div class="red_button add_to_cart_button"><a href="#" class="btnAddToCart" data-id="@Model.Id">THÊM VÀO GIỎ HÀNG  @*<i class="fas fa-shopping-cart"></i>*@</a></div>
-                            <div class="product_favorite d-flex flex-column align-items-center justify-content-center"></div>
+                    <div class="quantity d-flex flex-column flex-sm-row align-items-sm-center">
+                        <span style="width:70px">Số lượng:</span>
+                        <div class="quantity_selector">
+                            <span class="minus"><i class="fa fa-minus" aria-hidden="true"></i></span>
+                            <span id="quantity_value">1</span>
+                            <span class="plus"><i class="fa fa-plus" aria-hidden="true"></i></span>
                         </div>
+                        <div class="red_button add_to_cart_button"><a href="#" class="btnAddToCart" data-id="@Model.Id">THÊM VÀO GIỎ HÀNG  @*<i class="fas fa-shopping-cart"></i>*@</a></div>
+                        <div class="product_favorite d-flex flex-column align-items-center justify-content-center"></div>
                     </div>
+                </div>
             </div>
         </div>
 
@@ -127,9 +145,9 @@
                 <div class="col">
                     <div class="tabs_container">
                         <ul class="tabs d-flex flex-sm-row flex-column align-items-left align-items-md-center justify-content-center">
-                            <li class="tab active" data-active-tab="tab_1"><span>Description</span></li>
-                            
-                            <li class="tab" data-active-tab="tab_3"><span>Reviews (2)</span></li>
+                            <li class="tab active" data-active-tab="tab_1"><span>Chi tiết sản phẩm</span></li>
+
+                            <li class="tab" data-active-tab="tab_3"><span>Đánh giá</span></li>
                         </ul>
                     </div>
                 </div>
@@ -146,9 +164,6 @@
                     </div>
 
                     <!-- Tab Additional Info -->
-
-                    
-
                     <!-- Tab Reviews -->
 
                     <div id="tab_3" class="tab_container">
@@ -157,82 +172,14 @@
                             <!-- User Reviews -->
 
                             <div class="col-lg-6 reviews_col">
-                                <div class="tab_title reviews_title">
-                                    <h4>Reviews (2)</h4>
-                                </div>
-
-                                <!-- User Review -->
-
-                                <div class="user_review_container d-flex flex-column flex-sm-row">
-                                    <div class="user">
-                                        <div class="user_pic"></div>
-                                        <div class="user_rating">
-                                            <ul class="star_rating">
-                                                <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                                <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                                <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                                <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                                <li><i class="fa fa-star-o" aria-hidden="true"></i></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="review">
-                                        <div class="review_date">27 Aug 2016</div>
-                                        <div class="user_name">Brandon William</div>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                                    </div>
-                                </div>
-
-                                <!-- User Review -->
-
-                                <div class="user_review_container d-flex flex-column flex-sm-row">
-                                    <div class="user">
-                                        <div class="user_pic"></div>
-                                        <div class="user_rating">
-                                            <ul class="star_rating">
-                                                <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                                <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                                <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                                <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                                <li><i class="fa fa-star-o" aria-hidden="true"></i></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="review">
-                                        <div class="review_date">27 Aug 2016</div>
-                                        <div class="user_name">Brandon William</div>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                                    </div>
-                                </div>
+                                @Html.Action("_Load_Review", "Review", new { productId = Model.Id })
                             </div>
 
                             <!-- Add Review -->
 
                             <div class="col-lg-6 add_review_col">
 
-                                <div class="add_review">
-                                    <form id="review_form" action="post">
-                                        <div>
-                                            <h1>Add Review</h1>
-                                            <input id="review_name" class="form_input input_name" type="text" name="name" placeholder="Name*" required="required" data-error="Name is required.">
-                                            <input id="review_email" class="form_input input_email" type="email" name="email" placeholder="Email*" required="required" data-error="Valid email is required.">
-                                        </div>
-                                        <div>
-                                            <h1>Your Rating:</h1>
-                                            <ul class="user_star_rating">
-                                                <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                                <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                                <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                                <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                                <li><i class="fa fa-star-o" aria-hidden="true"></i></li>
-                                            </ul>
-                                            <textarea id="review_message" class="input_review" name="message" placeholder="Your Review" rows="4" required data-error="Please, leave us a review."></textarea>
-                                        </div>
-                                        <div class="text-left text-sm-right">
-                                            <button id="review_submit" type="submit" class="red_button review_submit_btn trans_300" value="Submit">submit</button>
-                                        </div>
-                                    </form>
-                                </div>
+                                @Html.Action("_Review", "Review", new { productId = Model.Id })
 
                             </div>
 
@@ -251,21 +198,21 @@
 }
 
 @*<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const colorList = document.getElementById('colorList');
-        colorList.addEventListener('click', function (e) {
-            if (e.target.tagName === 'LI') {
-                // Xóa lớp 'selected' khỏi tất cả các phần tử
-                const items = colorList.querySelectorAll('li');
-                items.forEach(item => item.classList.remove('selected'));
+        document.addEventListener('DOMContentLoaded', function () {
+            const colorList = document.getElementById('colorList');
+            colorList.addEventListener('click', function (e) {
+                if (e.target.tagName === 'LI') {
+                    // Xóa lớp 'selected' khỏi tất cả các phần tử
+                    const items = colorList.querySelectorAll('li');
+                    items.forEach(item => item.classList.remove('selected'));
 
-                // Thêm lớp 'selected' vào phần tử được click
-                e.target.classList.add('selected');
+                    // Thêm lớp 'selected' vào phần tử được click
+                    e.target.classList.add('selected');
 
-                // In ra màu được chọn (hoặc thực hiện hành động khác)
-                console.log('Màu đã chọn:', e.target.getAttribute('data-color'));
-            }
+                    // In ra màu được chọn (hoặc thực hiện hành động khác)
+                    console.log('Màu đã chọn:', e.target.getAttribute('data-color'));
+                }
+            });
         });
-    });
-</script>*@
+    </script>*@
 

@@ -58,10 +58,15 @@ namespace WebBanHangOnline.Areas.Admin.Controllers
                     return Json(new { message = "Không thể thay đổi trạng thái của đơn hàng", Success = false });
                 }
 
-                //nếu đơn hàng là "đang giao" thì không thể "hủy"
+                //nếu đơn hàng là "đang giao" thì không thể "hủy" 
                 if (item.OrderStatus == 5 && trangthai == 4)
                 {
                     return Json(new { message = "Không thể hủy đơn hàng đang giao", Success = false });
+                }
+                //nếu đơn hàng là "đang giao" thì không thể thay đổi trạng thái thành đang chuẩn bị hàng
+                if (item.OrderStatus == 5 && trangthai == 6)
+                {
+                    return Json(new { message = "Không thể thay đổi trạng thái khi đơn hàng đang giao", Success = false });
                 }
 
                 //nếu đơn hàng được cập nhật trạng thái thành "Hủy" hoặc "Giao không thành công" thì cộng lại số lượng sản phẩm vào bảng Product
@@ -78,9 +83,31 @@ namespace WebBanHangOnline.Areas.Admin.Controllers
                     }
                 }
 
-                //Nếu đơn hàng là COD
-                //Khi hoàn thành thì trạng thái thanh toán thành "Đã thanh toán"
-                if(item.Status == 1 && trangthai == 3)
+                //nếu đơn hàng đang ở trạng thái chuẩn bị hàng thì chỉ được thay đổi trạng thái thành hủy hoặc đang giao hàng
+                if(item.OrderStatus == 6)
+                {
+                    if(trangthai == 3) //khi đang chuẩn bị thì không được hoàn thành đơn
+                    {
+                        return Json(new { message = "Đơn hàng đang chuẩn bị không thể hoàn thành", Success = false });
+                    }
+                    else if(trangthai == 7) //khi đang chuẩn bị thì đơn hàng không được phép giao không thành công
+                    {
+                        return Json(new { message = "Đơn hàng đang chuẩn bị không thể giao hàng không thành công", Success = false });
+                    }
+                }
+
+                //khi vừa tiếp nhận đơn hàng thì phải chuẩn bị hàng mới tới bước tiếp theo
+                if (item.OrderStatus == 1 || item.OrderStatus == 2)
+                {
+                    if (trangthai == 3 || trangthai == 4 || trangthai == 5 || trangthai == 7) //khi đang chuẩn bị thì không được hoàn thành đơn
+                    {
+                        return Json(new { message = "Đơn hàng chưa được chuẩn bị", Success = false });
+                    }
+                }
+
+                    //Nếu đơn hàng là COD
+                    //Khi hoàn thành thì trạng thái thanh toán thành "Đã thanh toán"
+                    if (item.Status == 1 && trangthai == 3)
                 {
                     db.Orders.Attach(item);
                     item.Status = 2;
@@ -101,6 +128,7 @@ namespace WebBanHangOnline.Areas.Admin.Controllers
             }
             return Json(new { message = "Unsuccess", Success = false });
         }
+
 
         //public void ThongKe(string fromDate, string toDate)
         //{

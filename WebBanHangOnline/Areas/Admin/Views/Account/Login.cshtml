@@ -32,9 +32,9 @@
         <div class="input-group mb-3">
             @Html.PasswordFor(x => x.Password, new { @class = "form-control", @placeholder = "Mật khẩu", @autocomplete = "new-password", @id = "password" })
             <div class="input-group-append">
-                <div class="input-group-text">
+                @*<div class="input-group-text">
                     <span class="fas fa-lock"></span>
-                </div>
+                </div>*@
                 <div class="input-group-text" style="cursor: pointer" onclick="togglePass()">
                     <i class="fas fa-eye" id="toggleIcon"></i>
                 </div>

@@ -56,8 +56,9 @@ namespace WebBanHangOnline.Areas.Admin.Controllers
         // GET: Admin/Account
         public ActionResult Index()
         {
-            var ítems = db.Users.ToList();
-            return View(ítems);
+            var items = db.Users.ToList();
+            
+            return View(items);
         }
 
         //
@@ -185,6 +186,11 @@ namespace WebBanHangOnline.Areas.Admin.Controllers
             {
                 ModelState.AddModelError("", error);
             }
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
         }
     }
 }

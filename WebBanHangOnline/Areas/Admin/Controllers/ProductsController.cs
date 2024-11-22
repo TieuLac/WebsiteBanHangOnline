@@ -54,7 +54,7 @@ namespace WebBanHangOnline.Areas.Admin.Controllers
                     {
                         if (i + 1 == rDefault[0])
                         {
-                            model.Image = Images[0];
+                            model.Image = Images[i];
                             model.ProductImage.Add(new ProductImage
                             {
                                 ProductId = model.Id,
