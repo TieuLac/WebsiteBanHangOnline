@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity.EntityFramework;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -25,10 +26,15 @@ namespace WebBanHangOnline.Models.EF
         public string Phone { get; set; }
         [Required]
         public string Address { get; set; }
+        public string Email { get; set; }
         public decimal TotalAmount { get; set; }
         public int Quantity { get; set; }
         public int TypePayment { get; set; }
+        public string CustomerId { get; set; }
+        public int Status { get; set; } // trạng thái thanh toán
+        public int OrderStatus { get; set; } // trạng thái đơn hàng
+        public bool IsApprove { get; set; } //đơn hàng đã đc tiếp nhận hay chưa
 
-        public ICollection<OrderDetail> OrderDetails { get; set; }
+        public virtual ICollection<OrderDetail> OrderDetails { get; set; }
     }
 }

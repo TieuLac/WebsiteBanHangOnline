@@ -7,8 +7,14 @@
     .error {
         color: red;
     }
+
+    .fas.fa-times-circle {
+        color: red;
+        margin-bottom: 25px;
+    }
 </style>
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
 <link rel="stylesheet" type="text/css" href="~/Content/assets/styles/categories_styles.css">
 <link rel="stylesheet" type="text/css" href="~/Content/assets/styles/categories_responsive.css">
 <div class="container product_section_container">
@@ -26,31 +32,35 @@
 
             <!-- Sidebar -->
             <!-- Main Content -->
-            <div class="row">
 
-                <div class="col-md-12 text-center">
-                    <h1 class="">Thanh toán</h1>
-                    <p>Bạn hãy kiểm tra lại thông tin đơn hàng!</p>
-                </div>
 
-            </div>
-            <hr />
             @if (ViewBag.CheckCart != null)
             {
                 <div class="row">
                     <div id="show_success"></div>
-                    <div class="col-md-9">
-                        @Html.Action("Partial_CheckOut", "ShoppingCart")
-                    </div>
-                    <div class="col-md-3">
+                    <div class="col-md-6">
                         @Html.Action("Partial_Item_ThanhToan", "ShoppingCart")
+                        
+                    </div>
+                    <div class="col-md-6">
+                        @Html.Action("Partial_CheckOut", "ShoppingCart")
                     </div>
                 </div>
             }
             else
             {
+                <div class="row">
+
+                    <div class="col-md-12 text-center">
+                        <i class="fas fa-times-circle fa-5x"></i>
+                        @*<h2 class="">Thanh toán không thành công</h2>*@
+                        <p>Bạn hãy kiểm tra lại thông tin đơn hàng!</p>
+                    </div>
+
+                </div>
+                <hr />
                 <div>
-                    Bạn chưa có sản phẩm nào. Vui long quay lại trang <a href="/san-pham">sản phẩm</a> để mua hàng.
+                    Bạn chưa có sản phẩm nào. Vui lòng quay lại trang <a href="/san-pham">sản phẩm</a> để mua hàng.
                 </div>
             }
         </div>
@@ -59,16 +69,19 @@
 
 @section scripts{
     <script src="~/Content/assets/js/categories_custom.js"></script>
+    
     <script>
         function OnFailure(rs) {
             if (!rs.Success) {
                 $('#show_success').html("Bạn mua hàng thất bại! Xin vui lòng thử lại");
             }
         }
+
+        //chọn chuyển khoản thì hiện form
         $(document).ready(function () {
             $('body').on('change', '#drTypePayment', function () {
-                var type = $(this).val();
-                $('#load_form_payment').hide();
+                var type = $(this).val(); //lấy ra số đã chọn
+                $('#load_form_payment').hide(); //mặc định ẩn form
                 if (type == "2") {
                     $('#load_form_payment').show();
                 }

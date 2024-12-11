@@ -1,4 +1,7 @@
 ﻿<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+<link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
+
 <!-- Sidebar -->
 <div class="sidebar">
     <!-- Sidebar user (optional) -->
@@ -7,7 +10,7 @@
             <img src="~/Content/clients/dist/img/imgava.jpg" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-            <a href="#" class="d-block">Admin</a>
+            <a href="#" style="text-decoration: none" class="d-block">Admin</a>
         </div>
     </div>
 
@@ -27,11 +30,31 @@
     <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
             <!-- Add icons to the links using the .nav-icon class
-            with font-awesome or any other icon font library -->
+    with font-awesome or any other icon font library -->
+            <li class="nav-item">
+                <a href="/admin/role" class="nav-link">
+                    @*<i class="nav-icon fas fa-tachometer-alt"></i>*@
+                    <i class="fa-solid fa-person" style="width:25px; height:25px"></i>
+                    <p>
+                        Quyền người dùng
+                        @*<i class="right fas fa-angle-left"></i>*@
+                    </p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/admin/account" class="nav-link">
+                    @*<i class="nav-icon fas fa-tachometer-alt"></i>*@
+                    <i class="fa-solid fa-user" style="width:25px; height:25px"></i>
+                    <p>
+                        Quản lý tài khoản
+                        @*<i class="right fas fa-angle-left"></i>*@
+                    </p>
+                </a>
+            </li>
             <li class="nav-item">
                 <a href="/admin/Category" class="nav-link">
                     @*<i class="nav-icon fas fa-tachometer-alt"></i>*@
-                    <i class="fas fa-list"></i>
+                    <i class="fas fa-list" style="width:25px; height:25px"></i>
                     <p>
                         Danh mục
                         @*<i class="right fas fa-angle-left"></i>*@
@@ -41,7 +64,7 @@
             <li class="nav-item">
                 <a href="/admin/news" class="nav-link">
                     @*<i class="nav-icon fas fa-th"></i>*@
-                    <i class="fas fa-newspaper"></i>
+                    <i class="fas fa-newspaper" style="width:25px; height:25px"></i>
                     <p>
                         Tin tức
                         @*<span class="right badge badge-danger">New</span>*@
@@ -51,7 +74,7 @@
             <li class="nav-item">
                 <a href="/admin/posts" class="nav-link">
                     @*<i class="nav-icon fas fa-th"></i>*@
-                    <i class="fas fa-file-alt"></i>
+                    <i class="fas fa-file-alt" style="width:25px; height:25px"></i>
                     <p>
                         Bài viết
                         @*<span class="right badge badge-danger">New</span>*@
@@ -59,18 +82,18 @@
                 </a>
             </li>
             <!--<li class="nav-item">
-            <a href="/news" class="nav-link">
-                <i class="nav-icon fas fa-th"></i>
-                <p>
-                    Quảng cáo-->
+    <a href="/news" class="nav-link">
+        <i class="nav-icon fas fa-th"></i>
+        <p>
+            Quảng cáo-->
             @*<span class="right badge badge-danger">New</span>*@
             <!--</p>
-                </a>
-            </li>-->
+        </a>
+    </li>-->
             <li class="nav-item">
                 <a href="#" class="nav-link">
                     @*<i class="nav-icon fas fa-tachometer-alt"></i>*@
-                    <i class="fas fa-tshirt"></i>
+                    <i class="fas fa-tshirt" style="width:25px; height:25px"></i>
                     <p>
                         Quản lý sản phẩm
                         <i class="right fas fa-angle-left"></i>
@@ -80,33 +103,125 @@
                     <li class="nav-item">
                         <a href="/admin/productcategory" class="nav-link">
                             @*<i class="far fa-circle nav-icon"></i>*@
-                            <i class="fas fa-th"></i>
+                            <i class="fas fa-th" style="width:25px; height:25px"></i>
                             <p>Danh mục sản phẩm</p>
                         </a>
                     </li>
-                    
+
 
                     <li class="nav-item">
                         <a href="/admin/products" class="nav-link">
                             @*<i class="far fa-circle nav-icon"></i>*@
-                            <i class="fas fa-box-open"></i>
+                            <i class="fas fa-box-open" style="width:25px; height:25px"></i>
                             <p>Sản phẩm</p>
                         </a>
                     </li>
 
                 </ul>
             </li>
+
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    @*<i class="nav-icon fas fa-tachometer-alt"></i>*@
+                    <i class="fa-solid fa-cart-shopping" style="width:25px; height:25px"></i>
+                    <p>
+                        Quản lý đơn hàng
+                        <i class="right fas fa-angle-left"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a href="/admin/approveorder" class="nav-link">
+                            @*<i class="far fa-circle nav-icon"></i>*@
+                            <i class="fa-solid fa-xmark" style="width:25px; height:25px"></i>
+                            <p>Đơn hàng chưa duyệt</p>
+                        </a>
+                    </li>
+
+
+                    <li class="nav-item">
+                        <a href="/admin/order" class="nav-link">
+                            @*<i class="nav-icon fas fa-th"></i>*@
+                            <i class="fas fa-shopping-bag" style="width:25px; height:25px"></i>
+                            <p>
+                                Đơn hàng
+                                @*<span class="right badge badge-danger">New</span>*@
+                            </p>
+                        </a>
+                    </li>
+
+                </ul>
+            </li>
+            
+            <li class="nav-item">
+                <a href="/admin/salesstatistics" class="nav-link">
+                    @*<i class="nav-icon fas fa-th"></i>*@
+                    <i class="fa-solid fa-chart-simple" style="width:25px; height:25px"></i>
+                    <p>
+                        Thống kê
+                        @*<span class="right badge badge-danger">New</span>*@
+                    </p>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a href="/admin/settingsystem" class="nav-link">
+                    @*<i class="nav-icon fas fa-th"></i>*@
+                    <i class="fa-solid fa-gear" style="width:25px; height:25px"></i>
+                    <p>
+                        Cấu hình hệ thống
+                        @*<span class="right badge badge-danger">New</span>*@
+                    </p>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a href="javascript:void(0);" onclick="confirmLogout()" class="nav-link">
+                    @*<i class="nav-icon fas fa-th"></i>*@
+                    <i class="fa-solid fa-right-from-bracket" style="width:25px; height:25px"></i>
+                    <p>
+                        Đăng xuất
+                        @*<span class="right badge badge-danger">New</span>*@
+                    </p>
+                </a>
+            </li>
             <!--<li class="nav-item">
-            <a href="/news" class="nav-link">
-                <i class="nav-icon fas fa-th"></i>
-                <p>
-                    Cấu hình hệ thống-->
+    <a href="/news" class="nav-link">
+        <i class="nav-icon fas fa-th"></i>
+        <p>
+            Cấu hình hệ thống-->
             @*<span class="right badge badge-danger">New</span>*@
             <!--</p>
-                </a>
-            </li>-->
+        </a>
+    </li>-->
         </ul>
     </nav>
     <!-- /.sidebar-menu -->
 </div>
 <!-- /.sidebar -->
+
+@if (Request.IsAuthenticated)
+{
+    <div style="display:none">
+        @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { @id = "logOffForm" }))
+        {
+            @Html.AntiForgeryToken()
+        }
+    </div>
+}
+
+<script>
+    function confirmLogout() {
+        Swal.fire({
+            title: 'Bạn có chắc chắn muốn đăng xuất không?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'OK',
+            cancelButtonText: 'Hủy',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('logOffForm').submit();
+            }
+        });
+    }
+</script>

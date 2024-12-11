@@ -1,0 +1,254 @@
+﻿@model PagedList.PagedList<WebBanHangOnline.Models.EF.Wishlist>
+@using PagedList.Mvc;
+@using PagedList;
+
+@{
+    ViewBag.Title = "Sản phẩm yêu thích";
+}
+
+<link rel="stylesheet" type="text/css" href="~/Content/assets/styles/main_styles.css">
+<link rel="stylesheet" type="text/css" href="~/Content/PagedList.css">
+
+<style>
+    .wishlist-container {
+        margin-top: 170px;
+        padding: 30px 0;
+    }
+
+    .wishlist-title {
+        font-size: 28px;
+        font-weight: 600;
+        color: #333;
+        padding-bottom: 15px;
+        margin-bottom: 30px;
+        border-bottom: 2px solid #e0e0e0;
+    }
+
+    .wishlist-item {
+        background: #fff;
+        padding: 20px;
+        margin-bottom: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+    }
+
+        .wishlist-item:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+        }
+
+    .product-image {
+        width: 100%;
+        height: 200px;
+        object-fit: contain;
+        border-radius: 4px;
+    }
+
+    .product-title {
+        font-size: 18px;
+        font-weight: 500;
+        margin: 15px 0;
+        color: #333;
+        text-decoration: none;
+        display: block;
+    }
+
+        .product-title:hover {
+            color: #dc3545;
+        }
+
+    .product-description {
+        color: #666;
+        font-size: 14px;
+        line-height: 1.6;
+        margin-bottom: 15px;
+    }
+
+    .remove-btn {
+        padding: 8px 15px;
+        background-color: #dc3545;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        transition: all 0.3s ease;
+    }
+
+        .remove-btn:hover {
+            background-color: #c82333;
+            text-decoration: none;
+            color: white;
+        }
+
+    /* Phân trang */
+    .pagination {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 30px;
+    }
+
+        .pagination > li {
+            display: inline-block;
+            margin: 0 2px;
+        }
+
+            .pagination > li > a,
+            .pagination > li > span {
+                padding: 8px 16px;
+                border: 1px solid #ddd;
+                color: #333;
+                background-color: #fff;
+                text-decoration: none;
+                border-radius: 4px;
+                transition: all 0.3s ease;
+            }
+
+                .pagination > li > a:hover {
+                    background-color: #f8f9fa;
+                    border-color: #ddd;
+                }
+
+        .pagination > .active > a,
+        .pagination > .active > span {
+            background-color: #007bff;
+            border-color: #007bff;
+            color: #fff;
+        }
+
+    .empty-wishlist {
+        text-align: center;
+        padding: 50px 20px;
+        color: #666;
+    }
+</style>
+
+<div class="container wishlist-container">
+    <h1 class="wishlist-title">Sản phẩm yêu thích</h1>
+
+    @if (Model != null && Model.Any())
+    {
+        foreach (var item in Model)
+        {
+            <div class="wishlist-item">
+                <div class="row align-items-center">
+                    <div class="col-md-3">
+                        <a href="/@item.Product.Alias-n@(item.ProductId)" title="@item.Product.Title">
+                            <img src="@item.Product.Image" alt="@item.Product.Title" class="product-image" />
+                        </a>
+                    </div>
+                    <div class="col-md-8">
+                        <a href="/@item.Product.Alias-n@(item.ProductId)" class="product-title" title="@item.Product.Title">
+                            @item.Product.Title
+                        </a>
+                        <div class="product-description">
+                            @item.Product.Description
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <a href="#" data-id="@item.Id" class="remove-btn">
+                            <i class="fas fa-trash-alt"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <div class="row">
+            <div class="col-12">
+                @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="empty-wishlist">
+            <h3>Danh sách yêu thích của bạn đang trống</h3>
+            <p>Hãy thêm sản phẩm vào danh sách yêu thích để xem sau nhé!</p>
+        </div>
+    }
+</div>
+
+@section scripts {
+    <!-- Thêm thư viện SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('body').on('click', '.remove-btn', function (e) {
+                e.preventDefault();
+                var btn = $(this);
+                var id = btn.data('id');
+                var productName = btn.closest('.wishlist-item').find('.product-title').text().trim();
+
+                Swal.fire({
+                    title: 'Xác nhận xóa?',
+                    text: `Bạn có chắc muốn xóa "${productName}" khỏi danh sách yêu thích?`,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#dc3545',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Xóa',
+                    cancelButtonText: 'Hủy',
+                    customClass: {
+                        confirmButton: 'btn btn-danger',
+                        cancelButton: 'btn btn-secondary'
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Hiển thị loading
+                        Swal.fire({
+                            title: 'Đang xử lý...',
+                            allowOutsideClick: false,
+                            didOpen: () => {
+                                Swal.showLoading();
+                            }
+                        });
+
+                        // Gọi API xóa
+                        $.ajax({
+                            //url: '/Wishlist/PostDeleteWishlist',
+                            url: '@Url.Action("PostDeleteWishlist", "Wishlist")',
+                            type: 'POST',
+                            data: { id: id },
+                            success: function (rs) {
+                                if (rs.success) {
+                                    Swal.fire({
+                                        title: 'Đã xóa!',
+                                        text: 'Sản phẩm đã được xóa khỏi danh sách yêu thích',
+                                        icon: 'success',
+                                        timer: 1500,
+                                        showConfirmButton: false
+                                    }).then(() => {
+                                        location.reload();
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        title: 'Lỗi!',
+                                        text: rs.message || 'Có lỗi xảy ra, vui lòng thử lại',
+                                        icon: 'error',
+                                        confirmButtonColor: '#dc3545'
+                                    });
+                                }
+                            },
+                            
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+
+    <style>
+        .swal2-popup {
+            font-size: 0.9rem !important;
+        }
+
+        .swal2-styled {
+            padding: 0.5rem 1.5rem;
+        }
+
+        .swal2-icon {
+            width: 5em;
+            height: 5em;
+        }
+    </style>
+}

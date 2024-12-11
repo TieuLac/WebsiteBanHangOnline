@@ -1,4 +1,4 @@
-/* JS Document */
+﻿/* JS Document */
 
 /******************************
 
@@ -233,38 +233,83 @@ jQuery(document).ready(function($)
 
 	*/
 
-    function initFavorite()
-    {
-    	if($('.favorite').length)
-    	{
-    		var favs = $('.favorite');
+    
 
-    		favs.each(function()
-    		{
-    			var fav = $(this);
-    			var active = false;
-    			if(fav.hasClass('active'))
-    			{
-    				active = true;
-    			}
+	function initFavorite() {
+		if ($('.favorite').length) {
+			var favs = $('.favorite');
 
-    			fav.on('click', function()
-    			{
-    				if(active)
-    				{
-    					fav.removeClass('active');
-    					active = false;
-    				}
-    				else
-    				{
-    					fav.addClass('active');
-    					active = true;
-    				}
-    			});
-    		});
-    	}
-    }
+			favs.each(function () {
+				var fav = $(this);
+				var active = false;
+				if (fav.hasClass('active')) {
+					active = true;
+				}
 
+				fav.on('click', function () {
+					var id = $(this).data('id');
+					if (active) {
+						fav.removeClass('active');
+						active = false;
+						DeleteWishlist(id);
+					}
+					else {
+						fav.addClass('active');
+						active = true;
+						AddWishlist(id);
+					}
+				});
+			});
+		}
+	}
+
+	function DeleteWishlist(id) {
+		$.ajax({
+			url: '/wishlist/PostDeleteWishlist',
+			type: 'POST',
+			data: { ProductId: id },
+			success: function (res) {
+				if (res.Success == false) {
+					alert(res.Message);
+				}
+			}
+		});
+	}
+	function AddWishlist(id) {
+		$.ajax({
+			url: '/Wishlist/PostWishlist',
+			type: 'POST',
+			data: { ProductId: id },
+			success: function (res) {
+				if (res.NeedLogin) {
+					//alert(res.Message);
+					Swal.fire({
+						icon: 'warning',
+						title: 'Chưa đăng nhập!',
+						text: res.Message,
+						confirmButtonText: 'Đăng nhập ngay',
+						showCancelButton: true,
+						cancelButtonText: 'Hủy'
+					}).then((result) => {
+						if (result.isConfirmed) {
+							// Chuyển hướng đến trang đăng nhập
+							window.location.href = '/Account/Login';
+						}
+					});
+				} else if (res.IsActive) {
+					Swal.fire({
+						icon: 'warning',
+						title: 'Lỗi!',
+						text: res.Message,
+						position: 'center',
+						timer: 2000,
+						showConfirmButton: true
+					});
+					
+				}
+			}
+		});
+	}
     /* 
 
 	6. Init Fix Product Border

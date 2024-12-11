@@ -3,22 +3,26 @@
 
 @if (Model != null && Model.Any())
 {
-    <h3>GIỎ HÀNG <span style="float:right;position:relative"><small>@Model.Count()</small></span></h3>
+    <h3>GIỎ HÀNG <span style="float:right;position:relative"><small></small></span></h3>
     var i = 0;
     var tongtien = decimal.Zero;
-    <div style="border:1px solid #808080;">
+    <div style="border:1px solid #d3d3d3; border-radius:4px">
         <table class="table">
             @foreach (var item in Model)
             {
                 tongtien += item.TotalPrice;
                 <tr>
-                    <td>@item.ProductName</td>
-                    <td>@Common.FormatNumber(item.Price, 0)</td>
+                    <td><img style="width:100px; height:100px; object-fit:contain" src="@item.ProductImg"/></td>
+                    <td class="align-middle">@item.ProductName</td>
+                    <td class="align-middle">@item.Quantity</td>
+                    <td class="align-middle">@Common.FormatNumber(item.Price, 0)</td>
                 </tr>
             }
             <tr>
                 <td>Tổng tiền</td>
-                <td>@Common.FormatNumber(tongtien, 0)</td>
+                <td></td>
+                <td></td>
+                <td><b>@Common.FormatNumber(tongtien, 0)</b></td>
             </tr>
         </table>
     </div>

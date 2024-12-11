@@ -25,6 +25,7 @@ namespace WebBanHangOnline
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
+                      "~/Content/assets/dist/css/adminlte.min.css",
                       "~/Content/site.css"));
 
             // Core CSS

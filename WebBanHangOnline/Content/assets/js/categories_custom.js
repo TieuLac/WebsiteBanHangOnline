@@ -17,6 +17,7 @@
 
 ******************************/
 
+
 jQuery(document).ready(function ($) {
 	"use strict";
 
@@ -151,7 +152,7 @@ jQuery(document).ready(function ($) {
 	4. Init Favorite
 
 	*/
-
+	
 	function initFavorite() {
 		if ($('.favorite').length) {
 			var favs = $('.favorite');
@@ -168,12 +169,12 @@ jQuery(document).ready(function ($) {
 					if (active) {
 						fav.removeClass('active');
 						active = false;
-						//DeleteWishlist(id);
+						DeleteWishlist(id);
 					}
 					else {
 						fav.addClass('active');
 						active = true;
-						//AddWishlist(id);
+						AddWishlist(id);
 					}
 				});
 			});
@@ -194,12 +195,35 @@ jQuery(document).ready(function ($) {
 	}
 	function AddWishlist(id) {
 		$.ajax({
-			url: '/wishlist/postwishlist',
+			url: '/Wishlist/PostWishlist',
 			type: 'POST',
 			data: { ProductId: id },
 			success: function (res) {
-				if (res.Success == false) {
-					alert(res.Message);
+				if (res.NeedLogin) {
+					//alert(res.Message);
+					Swal.fire({
+						icon: 'warning',
+						title: 'Chưa đăng nhập!',
+						text: res.Message,
+						confirmButtonText: 'Đăng nhập ngay',
+						showCancelButton: true,
+						cancelButtonText: 'Hủy'
+					}).then((result) => {
+						if (result.isConfirmed) {
+							// Chuyển hướng đến trang đăng nhập
+							window.location.href = '/Account/Login';
+						}
+					});
+				} else if (res.IsActive) {
+					Swal.fire({
+						icon: 'warning',
+						title: 'Lỗi!',
+						text: res.Message,
+						position: 'center',
+						timer: 2000,
+						showConfirmButton: true
+					});
+
 				}
 			}
 		});
