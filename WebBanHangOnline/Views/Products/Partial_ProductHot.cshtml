@@ -32,13 +32,27 @@
                                 {
                                     strImage = img.Image;
                                 }
+                                var wishlist = item.Wishlists.FirstOrDefault(x => x.UserName == User.Identity.Name);
+                                var isWishlist = false;
+                                if (wishlist != null)
+                                {
+                                    isWishlist = true;
+                                }
                                 <div class="owl-item product_slider_item">
                                     <div class="product-item">
                                         <div class="product discount">
                                             <div class="product_image">
                                                 <img src="@strImage" alt="">
                                             </div>
-                                            <div class="favorite favorite_left"></div>
+                                            @if (isWishlist == true)
+                                            {
+                                                <div data-id="@item.Id" class="favorite favorite_left active"></div>
+                                            }
+                                            else
+                                            {
+                                                <div data-id="@item.Id" class="favorite favorite_left"></div>
+
+                                            }
                                             @if (item.PriceSale > 0)
                                             {
                                                 <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>sale</span></div>

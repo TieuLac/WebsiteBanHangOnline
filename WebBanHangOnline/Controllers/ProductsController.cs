@@ -1,10 +1,12 @@
-﻿using System;
+﻿using PagedList;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Web;
 using System.Web.Mvc;
 using WebBanHangOnline.Models;
+using WebBanHangOnline.Models.EF;
 
 namespace WebBanHangOnline.Controllers
 {
@@ -12,7 +14,7 @@ namespace WebBanHangOnline.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
         // GET: Products
-        public ActionResult Index(int? id)
+        public ActionResult Index(int? id, int? page)
         {
             var items = db.Products.ToList();
             if (id != null)
@@ -20,6 +22,7 @@ namespace WebBanHangOnline.Controllers
                 items = items.Where(x => x.ProductCategoryId == id).ToList();
             }
             return View(items);
+
         }
 
         public ActionResult Detail(string alias, int id)
@@ -60,8 +63,10 @@ namespace WebBanHangOnline.Controllers
 
         public ActionResult Partial_ProductHot()
         {
-            var items = db.Products.Where(x => x.IsHot && x.IsActive).ToList();
+            var items = db.Products.Where(x => x.IsHot && x.IsActive).Take(10).ToList();
             return PartialView(items);
         }
+
+        
     }
 }

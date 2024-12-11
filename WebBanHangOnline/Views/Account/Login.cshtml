@@ -1,65 +1,232 @@
 ﻿@using WebBanHangOnline.Models
 @model LoginViewModel
 @{
-    ViewBag.Title = "Log in";
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+    ViewBag.Title = "Đăng nhập";
+}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(120deg, #7f7fd5, #86a8e7, #91eae4);
+        }
+
+        .login-container {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            width: 400px;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .login-header h1 {
+            color: #333;
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .login-header p {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e1e1e1;
+            border-radius: 10px;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .input-group input:focus {
+            border-color: #7f7fd5;
+        }
+
+        .input-group label {
+            position: absolute;
+            left: 15px;
+            top: -10px;
+            background: white;
+            padding: 0 5px;
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .remember-forgot {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #666;
+        }
+
+        .forgot-password {
+            color: #7f7fd5;
+            text-decoration: none;
+            font-size: 0.9em;
+        }
+
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(120deg, #7f7fd5, #86a8e7);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .login-button:hover {
+            transform: translateY(-2px);
+        }
+
+        .signup-link {
+            text-align: center;
+            margin-top: 25px;
+            color: #666;
+        }
+
+        .signup-link a {
+            color: #7f7fd5;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .signup-link a:hover {
+            text-decoration: underline;
+        }
+
+        @*@media (max-width: 480px) {
+            .login-container {
+                width: 90%;
+                padding: 20px;
+            }
+        }*@
+
+/*    .password-field {
+        position: relative;
+        width: 100%;
+    }*/
+
+        .password-field input {
+            width: 100%;
+            padding-right: 40px; /* Tạo khoảng trống cho icon */
+        }
+
+    .toggle-password {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        z-index: 2;
+    }
+
+        .toggle-password i {
+            color: #666;
+        }
+
+        .toggle-password:hover i {
+            color: #333;
+        }
+
+</style>
+
+@using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="login-container">
+        <div class="login-header">
+            <h1>Đăng nhập</h1>
+            <p>Điền thông tin xác thực để đăng nhập</p>
+        </div>
+
+        <div class="input-group">
+            @Html.LabelFor(m => m.UserName, "Tên đăng nhập")
+            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="input-group">
+            @Html.LabelFor(m => m.Password, "Mật khẩu")
+            <div class="password-field">
+                @Html.PasswordFor(m => m.Password, new { @class = "form-control", @autocomplete = "new-password", @id = "password" })
+                <div class="toggle-password" onclick="togglePass()">
+                    <i class="fas fa-eye" id="toggleIcon"></i>
+                </div>
+            </div>
+            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="remember-forgot">
+            <label class="remember-me">
+                @Html.CheckBoxFor(m => m.RememberMe)
+                Ghi nhớ tài khoản
+            </label>
+            <a href="/account/ForgotPassword" class="forgot-password">Quên mật khẩu?</a>
+        </div>
+        <button type="submit" class="login-button">Đăng nhập</button>
+        <div class="signup-link">
+            Bạn chưa có tài khoản? @Html.ActionLink("Đăng ký", "Register", "Account")
+        </div>
+
+    </div>
 }
 
-<main aria-labelledby="title">
-    <h2 id="title">@ViewBag.Title.</h2>
-    <div class="row">
-        <div class="col-md-8">
-            <section id="loginForm">
-                @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { role = "form" }))
-                {
-                    @Html.AntiForgeryToken()
-                    <h4>Use a local account to log in.</h4>
-                    <hr />
-                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                    <div class="row">
-                        @Html.LabelFor(m => m.Email, new { @class = "col-md-2 col-form-label" })
-                        <div class="col-md-10">
-                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-                    <div class="row">
-                        @Html.LabelFor(m => m.Password, new { @class = "col-md-2 col-form-label" })
-                        <div class="col-md-10">
-                            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="offset-md-2 col-md-10">
-                            <div class="checkbox">
-                                @Html.CheckBoxFor(m => m.RememberMe)
-                                @Html.LabelFor(m => m.RememberMe)
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="offset-md-2 col-md-10">
-                            <input type="submit" value="Log in" class="btn btn-outline-dark" />
-                        </div>
-                    </div>
-                    <p>
-                        @Html.ActionLink("Register as a new user", "Register")
-                    </p>
-                    @* Enable this once you have account confirmation enabled for password reset functionality
-                        <p>
-                            @Html.ActionLink("Forgot your password?", "ForgotPassword")
-                        </p>*@
-                }
-            </section>
-        </div>
-        <div class="col-md-4">
-            <section id="socialLoginForm">
-                @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
-            </section>
-        </div>
-    </div>
-</main>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+<script>
+    function togglePass() {
+        var password = document.getElementById("password");
+        var toggleIcon = document.getElementById("toggleIcon");
+
+        if (password.type === "password") {
+            password.type = "text";
+            toggleIcon.classList.remove("fa-eye");
+            toggleIcon.classList.add("fa-eye-slash");
+        } else {
+            password.type = "password";
+            toggleIcon.classList.remove("fa-eye-slash");
+            toggleIcon.classList.add("fa-eye");
+        }
+    }
+</script>
 }
+
+
