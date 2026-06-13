@@ -4,6 +4,8 @@
 }
 <link rel="stylesheet" type="text/css" href="~/Content/assets/styles/main_styles.css">
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <style>
     .profile-container {
         margin-top: 220px;
@@ -56,13 +58,57 @@
             background-color: #218838;
             border-color: #1e7e34;
         }
+
+    .status-badge {
+        display: inline-block;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 0.9em;
+        font-weight: bold;
+        text-align: center;
+        white-space: nowrap;
+    }
+
+    .status-paid {
+        background-color: #e9ecef;
+        color: cadetblue;
+    }
+
+    .status-unpaid {
+        background-color: #e9ecef;
+        color: blueviolet;
+    }
+
+    .status-cancelled {
+        background-color: #e9ecef;
+        color: red;
+    }
+
+    .status-completed {
+        background-color: #e9ecef;
+        color: forestgreen;
+    }
+
+    .status-preparing {
+        background-color: #e9ecef;
+        color: palevioletred;
+    }
+
+    .status-delivering {
+        background-color: #e9ecef;
+        color: goldenrod;
+    }
+
+    .status-unsuccessful {
+        background-color: #e9ecef;
+        color: orange;
+    }
 </style>
 
 
 <div class="container profile-container">
     <div class="profile-header">
         <h2>Thông tin cá nhân</h2>
-        @*<button class="btn btn-primary">Đổi mật khẩu</button>*@
     </div>
 
     @using (Html.BeginForm("PostProfile", "Account", FormMethod.Post))
@@ -93,4 +139,130 @@
             <button type="submit" class="btn btn-success">Cập nhật</button>
         </div>
     }
+
+    <!-- Thêm phần danh sách đơn hàng -->
+    <div class="profile-header mt-4">
+        <h2>Lịch sử đơn hàng</h2>
+    </div>
+    <table class="table table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>Mã đơn hàng</th>
+                <th>Ngày đặt</th>
+                <th>Tổng tiền</th>
+                <th>Trạng thái</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Model.Orders)
+            {
+
+                <tr>
+
+                    <td>@order.Code</td>
+                    <td>@order.CreatedDate.ToString("dd/MM/yyyy")</td>
+                    <td>@order.TotalAmount.ToString("N0") VNĐ</td>
+                    <td>
+                        @if (order.OrderStatus == 1)
+                        {
+                            <span class="status-badge status-unpaid"><b>Chưa thanh toán</b></span>
+                        }
+                        @if (order.OrderStatus == 2)
+                        {
+                            <span class="status-badge status-paid"><b>Đã thanh toán</b></span>
+                        }
+                        @if (order.OrderStatus == 3)
+                        {
+                            <span class="status-badge status-completed"><b>Hoàn thành</b></span>
+                        }
+                        @if (order.OrderStatus == 4)
+                        {
+                            <span class="status-badge status-cancelled"><b>Hủy</b></span>
+                        }
+                        @if (order.OrderStatus == 5)
+                        {
+                            <span class="status-badge status-delivering"><b>Đang giao</b></span>
+                        }
+                        @if (order.OrderStatus == 6)
+                        {
+                            <span class="status-badge status-preparing"><b>Đang chuẩn bị hàng</b></span>
+                        }
+                        @if (order.OrderStatus == 7)
+                        {
+                            <span class="status-badge status-unsuccessful"><b>Giao hàng không thành công</b></span>
+                        }
+                    </td>
+                    <td>
+                        <a href="@Url.Action("OrderDetailUser", "Account", new { id = order.Id })" class="btn btn-info btn-sm">Xem chi tiết</a>
+                    </td>
+                    <td>
+                        @if (order.OrderStatus == 1 || order.OrderStatus == 2 || order.OrderStatus == 6)
+                        {
+                            <button id="btnCancelOrder" class="btn btn-danger" data-id="@order.Id">
+                                Hủy
+                            </button>
+                        }
+                        <p id="cancelMessage" class="text-success" style="display: none;">Đơn hàng đã được hủy thành công!</p>
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>
+
+<script>
+    $(document).ready(function () {
+        $("#btnCancelOrder").click(function () {
+            var id = $(this).data("id");
+
+            // Hiển thị hộp thoại xác nhận bằng SweetAlert2
+            Swal.fire({
+                title: "Bạn có chắc muốn hủy đơn hàng này?",
+                text: "Hành động này không thể hoàn tác!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#3085d6",
+                confirmButtonText: "Có",
+                cancelButtonText: "Không"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '@Url.Action("CancelOrder", "Account")',
+                        type: 'POST',
+                        data: { id: id },
+                        success: function (response) {
+                            if (response.success) {
+                                $("#btnCancelOrder").hide();
+                                $("#cancelMessage").show();
+                                Swal.fire(
+                                    "Đã hủy!",
+                                    "Đơn hàng của bạn đã được hủy thành công.",
+                                    "success"
+                                );
+                            } else {
+                                Swal.fire(
+                                    "Lỗi!",
+                                    "Hủy đơn hàng thất bại. Vui lòng thử lại.",
+                                    "error"
+                                );
+                            }
+                        },
+                        error: function () {
+                            Swal.fire(
+                                "Lỗi!",
+                                "Đã xảy ra lỗi khi hủy đơn hàng.",
+                                "error"
+                            );
+                        }
+                    });
+                }
+            });
+        });
+    });
+</script>
+
+

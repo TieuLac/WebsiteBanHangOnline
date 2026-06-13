@@ -1,4 +1,6 @@
-﻿using System.Data.Entity;
+﻿using System.Collections.Generic;
+using System.Data.Entity;
+using System.Reflection;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
@@ -19,6 +21,8 @@ namespace WebBanHangOnline.Models
             // Add custom user claims here
             return userIdentity;
         }
+
+        public virtual ICollection<Order> Orders { get; set; } = new List<Order>(); // Thêm danh sách đơn hàng
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
@@ -43,6 +47,9 @@ namespace WebBanHangOnline.Models
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
         public DbSet<Subscribe> Subscribes { get; set; }
+        public DbSet<ProductSize> ProductSizes { get; set; }
+        public DbSet<ProductColor> ProductColors { get; set; }
+        public DbSet<ProductInventory> ProductInventories { get; set; }
 
         public static ApplicationDbContext Create()
         {
@@ -53,6 +60,16 @@ namespace WebBanHangOnline.Models
         {
             
             base.OnModelCreating(modelBuilder);
+
+            
+
+            modelBuilder.Entity<OrderDetail>()
+            .HasRequired(od => od.ProductInventory) // mỗi OrderDetail phải có ProductInventory
+            .WithMany(pi => pi.OrderDetails) // Một ProductInventory có nhiều OrderDetail
+            .HasForeignKey(od => od.ProductInventoryId) // Khóa ngoại
+            .WillCascadeOnDelete(false); // Tắt xóa chuỗi để tránh lỗi
+
+
         }
 
     }

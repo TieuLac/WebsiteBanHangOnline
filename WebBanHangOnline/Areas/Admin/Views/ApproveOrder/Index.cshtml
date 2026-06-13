@@ -8,6 +8,15 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
 
+<style>
+    .status-badge {
+        background: #e9ecef;
+        padding: 5px 10px;
+        border-radius: 15px;
+        font-size: 0.85em;
+        color: #6c757d;
+    }
+</style>
 @section naviheader{
     <!-- Left navbar links -->
     <ul class="navbar-nav">
@@ -32,7 +41,23 @@
             <h3 class="card-title">Danh sách đơn hàng chưa duyệt</h3>
         </div>
         <div class="card-body">
-            <table class="table table-bordered">
+            <div class="row">
+                <div class="col-6">
+                    @using (Html.BeginForm("index", "ApproveOrder", FormMethod.Get, new { }))
+                    {
+                        <div class="input-group input-group-sm">
+                            @*@Html.TextBox("Searchtext")*@
+                            @Html.TextBox("Searchtext", null, new { @class = "form-control", placeholder = "Nhập mã đơn hàng, tên hoặc số điện thoại..." })
+                            @*<input type="text" name="searchtext" class="form-control">*@
+                            <span class="input-group-append">
+                                <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+                            </span>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <table class="table table-bordered" style="margin-top:20px">
                 <thead>
                     <tr>
                         <th>#</th>
@@ -42,7 +67,6 @@
                         <th>Tiền</th>
                         <th>Phương thức thanh toán</th>
                         <th>Thanh toán</th>
-                        
                         <th>Ngày tạo</th>
                         <th></th>
                     </tr>
@@ -65,14 +89,14 @@
                                 <td>
                                     @if (item.Status == 1)
                                     {
-                                        <span style="color:blueviolet"><b>Chưa thanh toán</b></span>
+                                        <span class="status-badge" style="color:blueviolet"><b>Chưa thanh toán</b></span>
                                     }
                                     @if (item.Status == 2)
                                     {
-                                        <span style="color:cadetblue"><b>Đã thanh toán</b></span>
+                                        <span class="status-badge" style="color:cadetblue"><b>Đã thanh toán</b></span>
                                     }
                                 </td>
-                                
+
                                 <td>@item.CreatedDate.ToString("dd/MM/yyyy")</td>
                                 <td>
                                     <a href="/admin/order/view/@item.Id" class="btn btn-sm btn-success">Xem</a>
@@ -81,6 +105,12 @@
                             </tr>
                             i++;
                         }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="4">Không có bản ghi nào!</td>
+                        </tr>
                     }
                 </tbody>
             </table>

@@ -61,16 +61,16 @@
                     </p>
                 </a>
             </li>
-            <li class="nav-item">
-                <a href="/admin/news" class="nav-link">
+            <!--<li class="nav-item">
+                <a href="/admin/news" class="nav-link">-->
                     @*<i class="nav-icon fas fa-th"></i>*@
-                    <i class="fas fa-newspaper" style="width:25px; height:25px"></i>
+                    <!--<i class="fas fa-newspaper" style="width:25px; height:25px"></i>
                     <p>
-                        Tin tức
+                        Tin tức-->
                         @*<span class="right badge badge-danger">New</span>*@
-                    </p>
+                    <!--</p>
                 </a>
-            </li>
+            </li>-->
             <li class="nav-item">
                 <a href="/admin/posts" class="nav-link">
                     @*<i class="nav-icon fas fa-th"></i>*@
@@ -103,8 +103,25 @@
                     <li class="nav-item">
                         <a href="/admin/productcategory" class="nav-link">
                             @*<i class="far fa-circle nav-icon"></i>*@
-                            <i class="fas fa-th" style="width:25px; height:25px"></i>
+                            @*<i class="fas fa-th" style="width:25px; height:25px"></i>*@
+                            <i class="fas fa-list" style="width:25px; height:25px"></i>
                             <p>Danh mục sản phẩm</p>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="/admin/productsize" class="nav-link">
+                            @*<i class="far fa-circle nav-icon"></i>*@
+                            <i class="fas fa-ruler" style="width:25px; height:25px"></i>
+                            <p>Kích thước</p>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="/admin/productcolor" class="nav-link">
+                            @*<i class="far fa-circle nav-icon"></i>*@
+                            <i class="fas fa-palette" style="width:25px; height:25px"></i>
+                            <p>Màu sắc</p>
                         </a>
                     </li>
 
@@ -117,13 +134,22 @@
                         </a>
                     </li>
 
+                    <li class="nav-item">
+                        <a href="/admin/productinventory" class="nav-link">
+                            @*<i class="far fa-circle nav-icon"></i>*@
+                            <i class="fas fa-warehouse" style="width:25px; height:25px"></i>
+                            <p>Kho sản phẩm</p>
+                        </a>
+                    </li>
+
                 </ul>
             </li>
 
             <li class="nav-item">
                 <a href="#" class="nav-link">
                     @*<i class="nav-icon fas fa-tachometer-alt"></i>*@
-                    <i class="fa-solid fa-cart-shopping" style="width:25px; height:25px"></i>
+                    @*<i class="fa-solid fa-cart-shopping" style="width:25px; height:25px"></i>*@
+                    <i class="fas fa-shopping-bag" style="width:25px; height:25px"></i>
                     <p>
                         Quản lý đơn hàng
                         <i class="right fas fa-angle-left"></i>
@@ -142,9 +168,22 @@
                     <li class="nav-item">
                         <a href="/admin/order" class="nav-link">
                             @*<i class="nav-icon fas fa-th"></i>*@
-                            <i class="fas fa-shopping-bag" style="width:25px; height:25px"></i>
+                            @*<i class="fas fa-shopping-bag" style="width:25px; height:25px"></i>*@
+                            <i class="fa-solid fa-spinner" style="width:25px; height:25px"></i>
                             <p>
-                                Đơn hàng
+                                Đơn hàng đang xử lý
+                                @*<span class="right badge badge-danger">New</span>*@
+                            </p>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="/admin/ordercompleted" class="nav-link">
+                            @*<i class="nav-icon fas fa-th"></i>*@
+                            @*<i class="fas fa-shopping-bag" style="width:25px; height:25px"></i>*@
+                            <i class="fa-solid fa-check-circle" style="width:25px; height:25px"></i>
+                            <p>
+                                Đơn hàng hoàn thành
                                 @*<span class="right badge badge-danger">New</span>*@
                             </p>
                         </a>

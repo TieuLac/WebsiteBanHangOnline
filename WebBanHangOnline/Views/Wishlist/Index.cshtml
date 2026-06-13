@@ -131,8 +131,8 @@
             <div class="wishlist-item">
                 <div class="row align-items-center">
                     <div class="col-md-3">
-                        <a href="/@item.Product.Alias-n@(item.ProductId)" title="@item.Product.Title">
-                            <img src="@item.Product.Image" alt="@item.Product.Title" class="product-image" />
+                        <a href="/chi-tiet/@item.Product.Alias-p@(item.ProductId)" title="@item.Product.Title">
+                            <img src="@item.Product.ProductImage.FirstOrDefault(x=>x.IsDefault).Image" alt="@item.Product.Title" class="product-image" />
                         </a>
                     </div>
                     <div class="col-md-8">
@@ -144,7 +144,7 @@
                         </div>
                     </div>
                     <div class="col-md-1">
-                        <a href="#" data-id="@item.Id" class="remove-btn">
+                        <a href="#" data-id="@item.ProductId" class="remove-btn">
                             <i class="fas fa-trash-alt"></i>
                         </a>
                     </div>
@@ -208,9 +208,9 @@
                             //url: '/Wishlist/PostDeleteWishlist',
                             url: '@Url.Action("PostDeleteWishlist", "Wishlist")',
                             type: 'POST',
-                            data: { id: id },
+                            data: { ProductId: id },
                             success: function (rs) {
-                                if (rs.success) {
+                                if (rs.Success) {
                                     Swal.fire({
                                         title: 'Đã xóa!',
                                         text: 'Sản phẩm đã được xóa khỏi danh sách yêu thích',
@@ -223,7 +223,7 @@
                                 } else {
                                     Swal.fire({
                                         title: 'Lỗi!',
-                                        text: rs.message || 'Có lỗi xảy ra, vui lòng thử lại',
+                                        text: rs.Message || 'Có lỗi xảy ra, vui lòng thử lại',
                                         icon: 'error',
                                         confirmButtonColor: '#dc3545'
                                     });

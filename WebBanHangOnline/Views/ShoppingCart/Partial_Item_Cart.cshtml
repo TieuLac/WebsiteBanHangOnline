@@ -126,9 +126,12 @@
     .total-price {
         font-size: 1.2em;
         font-weight: 700;
-        color: #dc3545;
+/*        color: #dc3545;*/
+        color: #ca3232;
         
     }
+
+
 </style>
 
 <div class="cart-container">
@@ -140,50 +143,58 @@
         var tongtien = decimal.Zero;
 
         <div class="cart-header">
-            <div class="row align-items-center">
-                <div class="col-1">#</div>
-                <div class="col-2">Sản phẩm</div>
-                <div class="col-3">Thông tin</div>
-                <div class="col-2">Giá</div>
-                <div class="col-2">Số lượng</div>
-                <div class="col-2">Thao tác</div>
+            <div class="row align-items-center" style="font-weight:bold">
+                <div class="col-1 text-center">#</div>
+                <div class="col-2 text-center">Sản phẩm</div>
+                <div class="col-2 text-center">Thông tin</div>
+                <div class="col-1 text-center">Size</div>
+                <div class="col-1 text-center">Màu</div> 
+                <div class="col-2 text-center">Giá</div>
+                <div class="col-2 text-center">Số lượng</div>
+                <div class="col-1 text-center"></div>
             </div>
         </div>
 
         foreach (var item in Model)
         {
             tongtien += item.TotalPrice;
-            <div class="cart-item" id="trow_@item.ProductId">
+            <div class="cart-item" id="trow_@item.ProductInventoryId">
                 <div class="row align-items-center">
                     <div class="col-1 text-center">@(i + 1)</div>
-                    <div class="col-2">
+                    <div class="col-2 text-center">
                         <img src="@item.ProductImg" class="product-image" alt="@item.ProductName" />
                     </div>
-                    <div class="col-3">
-                        <a href="/chi-tiet/@item.Alias-p@(item.ProductId)" class="product-name">
+                    <div class="col-2 text-center">
+                        <a href="/chi-tiet/@item.Alias-p@(item.ProductInventoryId)" class="product-name">
                             @item.ProductName
                         </a>
                         <div class="mt-2">
                             <span class="category-badge">@item.CategoryName</span>
                         </div>
                     </div>
-                    <div class="col-2">
-                        <div class="price">@Common.FormatNumber(item.Price, 0) đ</div>
+                    <div class="col-1 text-center">
+                        <span class="size">@item.SizeName</span> 
                     </div>
-                    <div class="col-2">
+                    <div class="col-1 text-center">
+                        <span class="color">@item.ColorName</span> 
+                    </div>
+                    <div class="col-2 text-center">
+                        <div class="price">@Common.FormatNumber(item.Price, 0)đ</div>
+                    </div>
+                    <div class="col-2 text-center">
                         <input type="number"
                                class="quantity-input"
-                               id="Quantity_@item.ProductId"
+                               id="Quantity_@item.ProductInventoryId"
                                value="@item.Quantity"
                                min="1"
                                max="99" />
                     </div>
-                    <div class="col-2">
-                        <button class="btn-action btn-delete btnDelete mb-2" data-id="@item.ProductId">
-                            <i class="fas fa-trash-alt"></i> Xóa
+                    <div class="col-1 text-center">
+                        <button class="btn-action btn-delete btnDelete mb-2" data-id="@item.ProductInventoryId">
+                            <i class="fas fa-trash-alt"></i>
                         </button>
-                        <button class="btn-action btn-update btnUpdate" data-id="@item.ProductId">
-                            <i class="fas fa-sync-alt"></i> Cập nhật
+                        <button class="btn-action btn-update btnUpdate" data-id="@item.ProductInventoryId">
+                            <i class="fas fa-sync-alt"></i>
                         </button>
                     </div>
                 </div>

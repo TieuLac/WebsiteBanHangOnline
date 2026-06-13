@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using WebBanHangOnline.Models;
 using WebBanHangOnline.Models.EF;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace WebBanHangOnline.Controllers
 {
@@ -58,7 +59,11 @@ namespace WebBanHangOnline.Controllers
         [HttpPost]
         public ActionResult PostDeleteWishlist(int ProductId)
         {
-            var checkItem = db.Wishlists.FirstOrDefault(x => x.ProductId == ProductId && x.UserName == User.Identity.Name);
+            Console.WriteLine("ProductId nhận được: " + ProductId);
+            Console.WriteLine("User.Identity.Name: " + User.Identity.Name);
+            //var checkItem = db.Wishlists.FirstOrDefault(x => x.ProductId == ProductId && x.UserName == User.Identity.Name);
+            var checkItem = db.Wishlists.FirstOrDefault(x => x.ProductId == ProductId && x.UserName.ToLower() == User.Identity.Name.ToLower());
+
             if (checkItem != null)
             {
                 var item = db.Wishlists.Find(checkItem.Id);

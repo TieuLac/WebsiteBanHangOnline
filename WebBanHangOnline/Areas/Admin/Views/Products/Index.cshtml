@@ -73,7 +73,6 @@
                         <th>Tên sản phẩm</th>
                         <th>Danh mục</th>
                         @*<th>Số lượng</th>*@
-                        <th>Giá</th>
                         <th>Ngày tạo</th>
                         <th>Home</th>
                         <th>Hot</th>
@@ -97,7 +96,7 @@
                                 <td>@(item.Title.Length > 22 ? item.Title.Substring(0, 22) + "..." : item.Title)</td>
                                 <td>@item.ProductCategory.Title</td>
                                 @*<td>@item.Quatity</td>*@
-                                <td>@item.Price</td>
+                                @*<td>@item.Price</td>*@
                                 <td>@item.CreatedDate.ToString("dd/MM/yyyy")</td>
                                 <td class="text-center">
                                     <a href='#' data-id="@item.Id" class="btnHome">@Html.Raw(strCheckHome)</a>

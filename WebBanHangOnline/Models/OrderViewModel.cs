@@ -18,5 +18,20 @@ namespace WebBanHangOnline.Models
         public string CustomerId { get; set; }
         public int TypePayment { get; set; }
         public int TypePaymentVN { get; set; }
+        public string FullAddress { get; set;
+        }
+        [Required(ErrorMessage = "Vui lòng chọn tỉnh/thành phố.")]
+        public string Province { get; set; }
+
+        [Required(ErrorMessage = "Vui lòng chọn quận/huyện.")]
+        public string District { get; set; }
+
+        [Required(ErrorMessage = "Vui lòng chọn phường/xã.")]
+        public string Ward { get; set; }
+
+        //public string FullAddress
+        //{
+        //    get { return $"{Address}, {Ward}, {District}, {Province}"; }
+        //}
     }
 }

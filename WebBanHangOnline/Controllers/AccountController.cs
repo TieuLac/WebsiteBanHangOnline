@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Entity;
 using System.Globalization;
 using System.Linq;
 using System.Security.Claims;
@@ -55,13 +56,24 @@ namespace WebBanHangOnline.Controllers
 
         public async Task<ActionResult> Profile()
         {
-            var user = await UserManager.FindByNameAsync(User.Identity.Name);
-            var item = new CreateAccountViewModel();
-            item.Email = user.Email;
-            item.FullName = user.FullName;
-            item.Phone = user.Phone;
-            item.UserName = user.UserName;
-            return View(item);
+            var user = User.Identity.Name;
+            var account = db.Users.Include("Orders").FirstOrDefault(x => x.UserName == user);
+
+            if (account == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var model = new CreateAccountViewModel
+            {
+                FullName = account.FullName,
+                UserName = account.UserName,
+                Phone = account.Phone,
+                Email = account.Email,
+                Orders = account.Orders.OrderByDescending(x => x.CreatedDate).ToList() // Lấy danh sách đơn hàng của user
+            };
+
+            return View(model);
         }
 
         [HttpPost]
@@ -78,6 +90,49 @@ namespace WebBanHangOnline.Controllers
             }
             return View(req);
         }
+
+        public ActionResult OrderDetailUser(int id)
+        {
+            var order = db.Orders
+                .Include(o => o.OrderDetails)
+                .FirstOrDefault(o => o.Id == id);
+
+            if (order == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(order);
+        }
+
+        [HttpPost]
+        public JsonResult CancelOrder(int id)
+        {
+            var order = db.Orders.Include(o => o.OrderDetails).FirstOrDefault(o => o.Id == id);
+
+
+            if (order == null || order.OrderStatus == 3 || order.OrderStatus == 4 || order.OrderStatus == 5 || order.OrderStatus == 7)
+            {
+                return Json(new { success = false });
+            }
+
+            order.OrderStatus = 4;
+
+            foreach (var item in order.OrderDetails)
+            {
+                var productInventory = db.ProductInventories.FirstOrDefault(p => p.Id == item.ProductInventoryId);
+                if (productInventory != null)
+                {
+                    productInventory.Quantity += item.Quantity; 
+                }
+            }
+
+            db.SaveChanges();
+
+            return Json(new { success = true });
+        }
+
+
 
         //
         // GET: /Account/Login

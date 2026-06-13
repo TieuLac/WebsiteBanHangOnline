@@ -100,13 +100,25 @@
                     'Email': {
                         required: true,
                         email: true
-                    }
+                    },
+                    'Province': {
+                        required: true
+                    },
+                    'District': {
+                        required: true
+                    },
+                    'Ward': {
+                        required: true
+                    },
                 },
                 messages: {
                     'CustomerName': 'Bạn khổng để trống trường này',
                     'Phone': 'Bạn khổng để trống trường này',
                     'Address': 'Bạn khổng để trống trường này',
-                    'Email': 'Email chưa hợp lệ'
+                    'Email': 'Email chưa hợp lệ',
+                    'Province': 'Bạn không được để trống trường này',
+                    'District': 'Bạn không được để trống trường này',
+                    'Ward': 'Bạn không được để trống trường này'
                 }
             });
         });

@@ -1,0 +1,119 @@
+﻿@model WebBanHangOnline.Models.EF.ProductColor
+@{
+    ViewBag.Title = "Cập nhật màu sắc sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@section naviheader{
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="/admin" class="nav-link">Trang chủ</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="/admin/productcolor" class="nav-link">Màu sắc sản phẩm</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="#" class="nav-link">Cập nhật</a>
+        </li>
+    </ul>
+}
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Cập nhật màu sắc sản phẩm</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Màu sắc sản phẩm</a></li>
+                    <li class="breadcrumb-item active">Cập nhật</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+
+    <!-- Default box -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Thông tin cập nhật màu sắc sản phẩm</h3>
+        </div>
+        <div class="card-body">
+            @if (Model != null)
+            {
+                <div class="bs-stepper-content">
+                    @using (Html.BeginForm("Edit", "ProductColor", FormMethod.Post, new { }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true)
+                        @Html.HiddenFor(x => x.Id)
+                        <div id="logins-part" class="content" role="tabpanel" aria-labelledby="logins-part-trigger">
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Tên màu sắc</label>
+                                @Html.TextBoxFor(x => x.ColorName, new { @class = "form-control", @placeholder = "Tên màu sắc" })
+                                @Html.ValidationMessageFor(x => x.ColorName, null, new { @class = "text-danger" })
+                            </div>
+
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Màu</label>
+                                <input type="color" id="colorPicker">
+                                @Html.HiddenFor(x => x.ColorCode, new { id = "colorCodeInput" })
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary">Lưu</button>
+                                <a href="/admin/productcolor" class="btn btn-danger">Quay lại</a>
+                            </div>
+                        </div>
+
+                    }
+
+                </div>
+            }
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer">
+
+        </div>
+        <!-- /.card-footer-->
+    </div>
+    <!-- /.card -->
+
+</section>
+<!-- /.content -->
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            var colorPicker = $("#colorPicker");
+            var colorCodeInput = $("#colorCodeInput");
+
+            // Khởi tạo Spectrum với giá trị từ input nếu có
+            colorPicker.spectrum({
+                color: "#ff0000", // Màu mặc định (đỏ)
+                showInput: true, // Hiển thị input nhập mã màu
+                showAlpha: false, // Ẩn tùy chọn độ trong suốt
+                showButtons: false, // Ẩn nút "OK" và "Cancel"
+                preferredFormat: "hex", // Hiển thị mã màu theo định dạng HEX
+
+                clickoutFiresChange: true, // Chọn màu khi click ra ngoài
+                togglePaletteOnly: true, // Chỉ mở khi click
+                change: function (color) {
+                    colorCodeInput.val(color.toHexString()); // Cập nhật giá trị khi chọn màu
+                }
+            });
+
+            // Đồng bộ color picker với giá trị input nếu có
+            if (colorCodeInput.val()) {
+                colorPicker.spectrum("set", colorCodeInput.val());
+            }
+        });
+    </script>
+}

@@ -153,6 +153,10 @@
                                         {
                                             isWishlist = true;
                                         }
+
+                                        var productInventory = item.ProductInventories?.FirstOrDefault();
+                                        var price = productInventory?.Price ?? 0;
+
                                         <div class="product-item men">
                                             <div class="product discount product_filter">
                                                 <div class="product_image">
@@ -170,11 +174,12 @@
                                                 @*<div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>-$20</span></div>*@
                                                 <div class="product_info">
                                                     <h6 class="product_name"><a href="/chi-tiet/@item.Alias-p@(item.Id)">@item.Title</a></h6>
-                                                    <div class="product_price">@WebBanHangOnline.Common.Common.FormatNumber(item.Price) vnđ</div>
-                                                    <div style="display:none;" class="in_product_price">@item.Price</div>
+                                                    <div class="product_price">@WebBanHangOnline.Common.Common.FormatNumber(price) vnđ</div>
+                                                    <div style="display:none;" class="in_product_price">@price</div>
                                                 </div>
                                             </div>
-                                            <div class="red_button add_to_cart_button"><a href="#" class="btnAddToCart" data-id="@item.Id">THÊM VÀO GIỎ HÀNG  @*<i class="fas fa-shopping-cart"></i>*@</a></div>
+                                            <!--<div class="red_button add_to_cart_button"><a href="#" class="btnAddToCart" data-id="@@item.Id">THÊM VÀO GIỎ HÀNG-->  @*<i class="fas fa-shopping-cart"></i>*@<!--</a></div>-->
+                                            <div class="red_button add_to_cart_button"><a href="/chi-tiet/@item.Alias-p@(item.Id)" data-id="@item.Id">XEM CHI TIẾT  @*<i class="fas fa-shopping-cart"></i>*@</a></div>
                                         </div>
                                     }
                                 }

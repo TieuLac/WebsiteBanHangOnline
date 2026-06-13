@@ -10,20 +10,32 @@ using PagedList;
 
 namespace WebBanHangOnline.Areas.Admin.Controllers
 {
-    [Authorize(Roles = "Admin,Employee")]
+    //[Authorize(Roles = "Admin,Employee")]
     public class OrderController : Controller
     {
 
         private ApplicationDbContext db = new ApplicationDbContext();
         // GET: Admin/Order
-        public ActionResult Index(int? page)
+        public ActionResult Index(string Searchtext, int? page)
         {
-            var items = db.Orders.OrderByDescending(x => x.CreatedDate).ToList();
+            //var items = db.Orders.OrderBy(x => x.CreatedDate).ToList();
+
+            var items = db.Orders
+                .Where(x => x.IsApprove == true && x.OrderStatus != 3 && x.OrderStatus != 4 && x.OrderStatus != 7)
+                .OrderBy(x => x.CreatedDate)
+                .ToList();
+
 
             if (page == null)
             {
                 page = 1;
             }
+
+            if (!string.IsNullOrEmpty(Searchtext))
+            {
+                items = items.Where(x => x.Phone.Contains(Searchtext) || x.CustomerName.Contains(Searchtext) || x.Code.Contains(Searchtext)).ToList();
+            }
+
             var pageNumber = page ?? 1;
             var pageSize = 10;
             ViewBag.PageSize = pageSize;
@@ -74,11 +86,11 @@ namespace WebBanHangOnline.Areas.Admin.Controllers
                 {
                     foreach (var orderDetail in item.OrderDetails)
                     {
-                        var product = db.Products.Find(orderDetail.ProductId);
-                        if (product != null)
+                        var productInventory = db.ProductInventories.Find(orderDetail.ProductInventoryId);
+                        if (productInventory != null)
                         {
-                            product.Quatity += orderDetail.Quantity;
-                            db.Entry(product).Property(x => x.Quatity).IsModified = true;
+                            productInventory.Quantity += orderDetail.Quantity;
+                            db.Entry(productInventory).Property(x => x.Quantity).IsModified = true;
                         }
                     }
                 }
@@ -99,7 +111,8 @@ namespace WebBanHangOnline.Areas.Admin.Controllers
                 //khi vừa tiếp nhận đơn hàng thì phải chuẩn bị hàng mới tới bước tiếp theo
                 if (item.OrderStatus == 1 || item.OrderStatus == 2)
                 {
-                    if (trangthai == 3 || trangthai == 4 || trangthai == 5 || trangthai == 7) //khi đang chuẩn bị thì không được hoàn thành đơn
+                    //if (trangthai == 3 || trangthai == 4 || trangthai == 5 || trangthai == 7) //khi đang chuẩn bị thì không được hoàn thành đơn
+                    if (trangthai == 3 || trangthai == 5 || trangthai == 7) //khi đang chuẩn bị thì không được hoàn thành đơn
                     {
                         return Json(new { message = "Đơn hàng chưa được chuẩn bị", Success = false });
                     }
@@ -128,7 +141,6 @@ namespace WebBanHangOnline.Areas.Admin.Controllers
             }
             return Json(new { message = "Unsuccess", Success = false });
         }
-
 
         //public void ThongKe(string fromDate, string toDate)
         //{
