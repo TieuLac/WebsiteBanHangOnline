@@ -12,14 +12,24 @@ namespace WebBanHangOnline.Areas.Admin.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
         // GET: Admin/ApproveOrder
-        public ActionResult Index(int? page)
+        public ActionResult Index(string Searchtext, int? page)
         {
-            var items = db.Orders.OrderByDescending(x => x.CreatedDate).ToList();
+            //var items = db.Orders.OrderBy(x => x.CreatedDate).ToList();
+            var items = db.Orders
+                  .Where(x => x.IsApprove == false) // Chỉ lấy đơn hàng chưa duyệt
+                  .OrderBy(x => x.CreatedDate) // Sắp xếp theo ngày tạo
+                  .ToList();
 
             if (page == null)
             {
-                page = 1;
+                page = 1; 
             }
+
+            if (!string.IsNullOrEmpty(Searchtext))
+            {
+                items = items.Where(x => x.Phone.Contains(Searchtext) || x.CustomerName.Contains(Searchtext) || x.Code.Contains(Searchtext)).ToList();
+            }
+
             var pageNumber = page ?? 1;
             var pageSize = 10;
             ViewBag.PageSize = pageSize;

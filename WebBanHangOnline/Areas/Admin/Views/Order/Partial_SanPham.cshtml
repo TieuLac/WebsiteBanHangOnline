@@ -8,6 +8,8 @@
                 <th>#</th>
                 <th>Ảnh</th>
                 <th>Tên sản phẩm</th>
+                <th>Size</th>
+                <th>Màu sắc</th>
                 <th>Giá</th>
                 <th>Số lượng</th>
                 <th>Thành tiền</th>
@@ -19,8 +21,10 @@
             {
                 <tr>
                     <td>@i</td>
-                    <td><img style="width:100px; height:100px; object-fit: contain" src="@item.Product.ProductImage.FirstOrDefault(x=>x.IsDefault).Image"/></td>
-                    <td>@item.Product.Title</td>
+                    <td><img style="width:100px; height:100px; object-fit: contain" src="@item.ProductInventory.Product.ProductImage.FirstOrDefault(x=>x.IsDefault).Image"/></td>
+                    <td>@item.ProductInventory.Product.Title</td>
+                    <td>@item.ProductInventory.Size.SizeName</td>
+                    <td>@item.ProductInventory.Color.ColorName</td>
                     <td>@WebBanHangOnline.Common.Common.FormatNumber(@item.Price)</td>
                     <td>@item.Quantity</td>
                     <td>@WebBanHangOnline.Common.Common.FormatNumber((item.Price * item.Quantity), 0)</td>

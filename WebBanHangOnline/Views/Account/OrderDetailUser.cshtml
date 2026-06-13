@@ -1,0 +1,75 @@
+﻿@model WebBanHangOnline.Models.EF.Order
+
+@{
+    ViewBag.Title = "Chi tiết đơn hàng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .table th, .table td {
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    .text-center {
+        text-align: center;
+    }
+
+
+</style>
+<div class="container my-5">
+    <div class="card shadow-lg" style="margin-top:220px">
+        <div class="card-header" style="background: rgb(254, 76, 80)">
+            <h2 class="mb-0" style="color:snow">Chi tiết đơn hàng: <span>@Model.Code</span></h2>
+        </div>
+        <div class="card-body">
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <p><strong>Ngày đặt:</strong> @Model.CreatedDate.ToString("dd/MM/yyyy")</p>
+                </div>
+                <div class="col-md-6 text-md-right">
+                    <p><strong>Tổng tiền:</strong> @Model.TotalAmount.ToString("N0") VNĐ</p>
+                </div>
+            </div>
+
+            <h4 class="mb-3">Sản phẩm trong đơn hàng</h4>
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th class="col-2 text-center"></th>
+                            <th class="col-2 text-center">Sản phẩm</th>
+                            <th class="col-1 text-center">Size</th>
+                            <th class="col-1 text-center">Màu</th>
+                            <th class="col-2 text-center">Số lượng</th>
+                            <th class="col-2 text-center">Giá</th>
+                            <th class="col-2 text-center">Thành tiền</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.OrderDetails)
+                        {
+                            <tr class="text-center">
+                                <td><img src="@item.ProductInventory.Product.ProductImage.FirstOrDefault(x=>x.IsDefault).Image" style="width:100px;height:100px;object-fit:contain" /></td>
+                                <td class="">@(item.ProductInventory.Product.Title.Length > 22 ? item.ProductInventory.Product.Title.Substring(0, 22) + "..." : item.ProductInventory.Product.Title)</td>
+                                <td>@item.ProductInventory.Size.SizeName</td>
+                                <td>@item.ProductInventory.Color.ColorName</td>
+                                <td>@item.Quantity</td>
+                                <td>@item.Price.ToString("N0") VNĐ</td>
+                                <td>@((item.Quantity * item.Price).ToString("N0")) VNĐ</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="text-center mt-4">
+                <a href="@Url.Action("Profile", "Account")" class="btn btn-outline-primary btn-lg">
+                    <i class="fas fa-arrow-left"></i> Quay lại
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">

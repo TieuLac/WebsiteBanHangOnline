@@ -265,7 +265,7 @@ jQuery(document).ready(function($)
 
 	function DeleteWishlist(id) {
 		$.ajax({
-			url: '/wishlist/PostDeleteWishlist',
+			url: '/Wishlist/PostDeleteWishlist',
 			type: 'POST',
 			data: { ProductId: id },
 			success: function (res) {

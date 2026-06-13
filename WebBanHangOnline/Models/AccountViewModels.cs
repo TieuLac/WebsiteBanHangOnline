@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using WebBanHangOnline.Models.EF;
 
 namespace WebBanHangOnline.Models
 {
@@ -86,6 +87,8 @@ namespace WebBanHangOnline.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        public List<Order> Orders { get; set; } = new List<Order>();
     }
 
     public class RegisterViewModel

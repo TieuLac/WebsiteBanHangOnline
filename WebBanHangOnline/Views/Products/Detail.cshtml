@@ -36,9 +36,122 @@
         border: solid 1px #e5e5e5;
         margin-left: 29px;
     }
+
+    /* Style for color selection */
+    .color_selector {
+        margin: 15px 0;
+    }
+
+        .color_selector span {
+            width: 70px;
+            display: inline-block;
+        }
+
+    .color_list {
+        display: inline-flex;
+        flex-wrap: wrap;
+        list-style: none;
+        padding: 0;
+        margin: 0 0 0 29px;
+    }
+
+        .color_list li {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin-right: 10px;
+            cursor: pointer;
+            border: 2px solid #ddd;
+            position: relative;
+        }
+
+            .color_list li.selected:after {
+                content: "\f00c";
+                font-family: 'FontAwesome';
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                color: #909090;
+                text-shadow: 0 0 2px rgba(0,0,0,0.5);
+            }
+
+    /* Style for size selection */
+    .size_selector {
+        margin: 15px 0;
+    }
+
+        .size_selector span {
+            width: 70px;
+            display: inline-block;
+        }
+
+    .size_list {
+        display: inline-flex;
+        flex-wrap: wrap;
+        list-style: none;
+        padding: 0;
+        margin: 0 0 0 29px;
+    }
+
+        .size_list li {
+            min-width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            cursor: pointer;
+            border: 1px solid #ddd;
+            padding: 0 10px;
+        }
+
+            .size_list li.selected {
+                background-color: #fe4c50;
+                color: white;
+                border-color: #fe4c50;
+            }
+
+    .inventory_status {
+        margin-top: 10px;
+        font-size: 14px;
+        color: #666;
+    }
+
+    .out_of_stock {
+        color: #fe4c50;
+    }
+
+    .favorite {
+        position: absolute; /* Hoặc thử position: relative nếu cần */
+        top: 10px; /* Điều chỉnh vị trí theo nhu cầu */
+        right: 10px; /* Hoặc thay đổi thành left: 10px nếu cần */
+        z-index: 10; /* Đảm bảo không bị đè bởi các phần tử khác */
+        width: 30px; /* Điều chỉnh kích thước nếu cần */
+        height: 30px;
+        position: relative; /* Hoặc thử absolute nhưng cần top/right phù hợp */
+        margin-left: 10px; /* Đẩy icon ra xa chữ */
+        display:inline-block
+    }
+
+    .quantity {
+        display: flex;
+        align-items: center;
+        gap: 10px; /* Khoảng cách giữa các phần tử */
+        position: relative;
+    }
+
+
 </style>
 @if (Model != null)
 {
+    var productInventory = Model.ProductInventories?.FirstOrDefault();
+    var price = productInventory?.Price ?? 0;
+    var priceSale = productInventory?.PriceSale ?? 0;
+
+    var wishlist = Model.Wishlists.FirstOrDefault(x => x.UserName == User.Identity.Name);
+    var isWishlist = wishlist != null;
+
     <div class="container single_product_container">
         <div class="row">
             <div class="col">
@@ -60,6 +173,7 @@
             <div class="col-lg-7">
                 @if (Model.ProductImage != null && Model.ProductImage.Any())
                 {
+
 
                     <div class="single_product_pics">
                         <div class="row">
@@ -100,16 +214,15 @@
                         <p>Lượt xem: <b>@Model.ViewCount</b></p>
                     </div>
 
-                    @if (Model.PriceSale > 0)
+                    @if (priceSale > 0)
                     {
-                        <div class="original_price">@WebBanHangOnline.Common.Common.FormatNumber(Model.Price, 0)</div>
-                        <div class="product_price">@WebBanHangOnline.Common.Common.FormatNumber(Model.PriceSale, 0)</div>
+                        <div class="original_price">@WebBanHangOnline.Common.Common.FormatNumber(price, 0)</div>
+                        <div class="product_price" id="product_price">@WebBanHangOnline.Common.Common.FormatNumber(priceSale, 0)</div>
                     }
                     else
                     {
-                        <div class="product_price">@WebBanHangOnline.Common.Common.FormatNumber(Model.Price, 0)</div>
+                        <div class="product_price" id="product_price">@WebBanHangOnline.Common.Common.FormatNumber(price, 0)</div>
                     }
-
 
                     @*<ul class="star_rating">
                             <li><i class="fa fa-star" aria-hidden="true"></i></li>
@@ -119,17 +232,64 @@
                             <li><i class="fa fa-star-o" aria-hidden="true"></i></li>
                         </ul>*@
 
+                    @if (Model.ProductInventories != null && Model.ProductInventories.Any())
+                    {
+                        var colors = Model.ProductInventories.Where(x => x.ColorId.HasValue).Select(x => x.Color).Distinct().ToList();
+                        var sizes = Model.ProductInventories.Where(x => x.SizeId.HasValue).Select(x => x.Size).Distinct().ToList();
 
-                    <div class="quantity d-flex flex-column flex-sm-row align-items-sm-center">
-                        <span style="width:70px">Số lượng:</span>
-                        <div class="quantity_selector">
-                            <span class="minus"><i class="fa fa-minus" aria-hidden="true"></i></span>
-                            <span id="quantity_value">1</span>
-                            <span class="plus"><i class="fa fa-plus" aria-hidden="true"></i></span>
-                        </div>
-                        <div class="red_button add_to_cart_button"><a href="#" class="btnAddToCart" data-id="@Model.Id">THÊM VÀO GIỎ HÀNG  @*<i class="fas fa-shopping-cart"></i>*@</a></div>
-                        <div class="product_favorite d-flex flex-column align-items-center justify-content-center"></div>
+                        <input type="hidden" id="selectedInventoryId" value="@productInventory?.Id" />
+
+                        if (colors != null && colors.Any())
+                        {
+                            <div class="color_selector">
+                                <span>Màu sắc:</span>
+                                <ul class="color_list" id="colorList">
+                                    @foreach (var color in colors)
+                                    {
+                                        <li data-color-id="@color.Id" title="@color.ColorName" style="background-color: @color.ColorCode"></li>
+                                    }
+                                </ul>
+                            </div>
+                        }
+
+                        if (sizes != null && sizes.Any())
+                        {
+                            <div class="size_selector">
+                                <span>Kích cỡ:</span>
+                                <ul class="size_list" id="sizeList">
+                                    @foreach (var size in sizes)
+                                    {
+                                        <li data-size-id="@size.Id">@size.SizeName</li>
+                                    }
+                                </ul>
+                            </div>
+                        }
+
+                        <div class="inventory_status" id="inventory_status"></div>
+                    }
+
+                <div class="quantity d-flex flex-column flex-sm-row align-items-sm-center">
+                    <span style="width:80px">Số lượng:</span>
+                    <div class="quantity_selector">
+                        <span class="minus"><i class="fa fa-minus" aria-hidden="true"></i></span>
+                        <span id="quantity_value">1</span>
+                        <span class="plus"><i class="fa fa-plus" aria-hidden="true"></i></span>
                     </div>
+                    <div class="red_button add_to_cart_button"><a href="#" class="btnAddToCart" data-id="@Model.Id">THÊM VÀO GIỎ HÀNG  @*<i class="fas fa-shopping-cart"></i>*@</a></div>
+                    @*<div class="product_favorite d-flex flex-column align-items-center justify-content-center"></div>*@
+                    @if (isWishlist)
+                    {
+                        <div data-id="@Model.Id" class="product_favorite d-flex flex-column align-items-center justify-content-center active"></div>
+                    }
+                    else
+                    {
+                        <div data-id="@Model.Id" class="product_favorite d-flex flex-column align-items-center justify-content-center accent-blue"></div>
+                    }
+                    @if (priceSale > 0)
+                    {
+                        <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span>sale</span></div>
+                    }
+                </div>
                 </div>
             </div>
         </div>
@@ -194,25 +354,211 @@
 }
 
 @section scripts {
+    @{
+        var inventoriesData = Model.ProductInventories.Select(inv => new
+        {
+            Id = inv.Id,
+            ColorId = inv.ColorId,
+            SizeId = inv.SizeId,
+            Quantity = inv.Quantity,
+            Price = inv.Price,
+            PriceSale = inv.PriceSale
+        }).ToList();
+    }
     <script src="~/Content/assets/js/single_custom.js"></script>
-}
-
-@*<script>
+    <script>
         document.addEventListener('DOMContentLoaded', function () {
+            // Lấy danh sách các phần tử
             const colorList = document.getElementById('colorList');
-            colorList.addEventListener('click', function (e) {
-                if (e.target.tagName === 'LI') {
-                    // Xóa lớp 'selected' khỏi tất cả các phần tử
-                    const items = colorList.querySelectorAll('li');
-                    items.forEach(item => item.classList.remove('selected'));
+            const sizeList = document.getElementById('sizeList');
+            const inventoryStatus = document.getElementById('inventory_status');
+            const selectedInventoryId = document.getElementById('selectedInventoryId');
+            const productPrice = document.getElementById('product_price');
+            const quantityElement = document.getElementById('quantity_value');
+            const plusBtn = document.querySelector('.plus');
+            const minusBtn = document.querySelector('.minus');
+            const addToCartBtn = document.querySelector('.btnAddToCart');
 
-                    // Thêm lớp 'selected' vào phần tử được click
-                    e.target.classList.add('selected');
+            let selectedColorId = null;
+            let selectedSizeId = null;
+            let currentInventory = null;
 
-                    // In ra màu được chọn (hoặc thực hiện hành động khác)
-                    console.log('Màu đã chọn:', e.target.getAttribute('data-color'));
+            // Hàm lấy dữ liệu kho hàng dựa trên màu và kích cỡ đã chọn
+            function updateInventory() {
+                if (!selectedColorId || !selectedSizeId) return;
+
+                // Tìm Inventory trực tiếp từ dữ liệu Model (không dùng API)
+                let inventories = @Html.Raw(Json.Encode(inventoriesData));
+
+                currentInventory = inventories.find(inv =>
+                    inv.ColorId == selectedColorId && inv.SizeId == selectedSizeId
+                );
+
+                updateInventoryDisplay();
+            }
+
+
+            // Cập nhật hiển thị thông tin kho hàng
+            function updateInventoryDisplay() {
+                if (!currentInventory) {
+                    inventoryStatus.innerHTML = '<span class="out_of_stock">Vui lòng chọn phiên bản sản phẩm</span>';
+                    addToCartBtn.classList.add('disabled');
+                    return;
                 }
+
+                selectedInventoryId.value = currentInventory.Id;
+
+                if (currentInventory.Quantity <= 0) {
+                    inventoryStatus.innerHTML = '<span class="out_of_stock">Hết hàng</span>';
+                    addToCartBtn.classList.add('disabled');
+                } else {
+                    inventoryStatus.innerHTML = `<span>Còn hàng: ${currentInventory.Quantity} sản phẩm</span>`;
+                    addToCartBtn.classList.remove('disabled');
+                }
+
+                // Cập nhật giá hiển thị
+                if (currentInventory.PriceSale && currentInventory.PriceSale > 0) {
+                    productPrice.innerHTML = formatNumber(currentInventory.PriceSale);
+                } else {
+                    productPrice.innerHTML = formatNumber(currentInventory.Price);
+                }
+
+                // Cập nhật số lượng có thể mua
+                if (parseInt(quantityElement.innerText) > currentInventory.Quantity) {
+                    quantityElement.innerText = currentInventory.Quantity > 0 ? currentInventory.Quantity : 1;
+                }
+            }
+
+            // Định dạng số
+            function formatNumber(number) {
+                return new Intl.NumberFormat('vi-VN').format(number);
+            }
+
+            // Xử lý sự kiện chọn màu
+            if (colorList) {
+                colorList.addEventListener('click', function(e) {
+                    if (e.target.tagName === 'LI') {
+                        // Xóa lớp 'selected' khỏi tất cả các phần tử
+                        const items = colorList.querySelectorAll('li');
+                        items.forEach(item => item.classList.remove('selected'));
+
+                        // Thêm lớp 'selected' vào phần tử được click
+                        e.target.classList.add('selected');
+
+                        // Lưu ID màu đã chọn
+                        selectedColorId = e.target.getAttribute('data-color-id');
+
+                        // Cập nhật kho hàng
+                        updateInventory();
+                    }
+                });
+            }
+
+            // Xử lý sự kiện chọn kích cỡ
+            if (sizeList) {
+                sizeList.addEventListener('click', function(e) {
+                    if (e.target.tagName === 'LI') {
+                        // Xóa lớp 'selected' khỏi tất cả các phần tử
+                        const items = sizeList.querySelectorAll('li');
+                        items.forEach(item => item.classList.remove('selected'));
+
+                        // Thêm lớp 'selected' vào phần tử được click
+                        e.target.classList.add('selected');
+
+                        // Lưu ID kích cỡ đã chọn
+                        selectedSizeId = e.target.getAttribute('data-size-id');
+
+                        // Cập nhật kho hàng
+                        updateInventory();
+                    }
+                });
+            }
+
+            // Cập nhật sự kiện click cho nút thêm vào giỏ hàng
+
+            $('body').on('click', '.btnAddToCart', function (e) {
+                e.preventDefault();
+
+                console.log('Add to cart clicked');
+                console.log('Current state - Color:', selectedColorId, 'Size:', selectedSizeId);
+                console.log('Current inventory:', currentInventory);
+
+                if (!currentInventory || currentInventory.Quantity <= 0) {
+                    alert('Vui lòng chọn phiên bản sản phẩm còn hàng');
+                    return;
+                }
+
+                const quantity = parseInt(quantityElement.innerText);
+
+                if (!quantity || quantity <= 0) {
+                    alert('Số lượng sản phẩm không hợp lệ');
+                    return;
+                }
+
+                // Kiểm tra lại giá trị của inventoryId trước khi gửi
+                console.log('Adding to cart - Inventory ID:', currentInventory.Id, 'Quantity:', quantity);
+
+                // Gửi request thêm vào giỏ hàng
+                AddToCart(currentInventory.Id, quantity);
             });
+
+            //if (addToCartBtn) {
+            //    addToCartBtn.addEventListener('click', function (e) {
+            //        e.preventDefault();
+
+            //        if (!currentInventory || currentInventory.Quantity <= 0) {
+            //            alert('Vui lòng chọn phiên bản sản phẩm còn hàng');
+            //            return;
+            //        }
+
+            //        const quantity = parseInt(quantityElement.innerText);
+
+            //        if (!quantity || quantity <= 0) {
+            //            alert('Số lượng sản phẩm không hợp lệ');
+            //            return;
+            //        }
+
+            //        // Kiểm tra lại giá trị của inventoryId trước khi gửi
+            //        console.log('Adding to cart - Inventory ID:', currentInventory.Id, 'Quantity:', quantity);
+
+            //        // Gửi request thêm vào giỏ hàng
+            //        AddToCart(currentInventory.Id, quantity);
+            //    });
+            //}
+
+            // Hàm gọi AJAX để thêm vào giỏ hàng
+            function AddToCart(inventoryId, quantity) {
+                $.ajax({
+                    url: '@Url.Action("AddToCart", "ShoppingCart")',
+                    type: 'POST',
+                    data: {
+                        productInventoryId: inventoryId,
+                        quantity: quantity
+                    },
+                    success: function(rs) {
+                        if (rs.Success) {
+                            $('#checkout_items').html(rs.Count);
+                            alert(rs.msg);
+                        } else {
+                            alert(rs.msg || 'Có lỗi xảy ra khi thêm vào giỏ hàng.');
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.log('Error:', error);
+                        alert('Không thể thêm sản phẩm vào giỏ hàng.');
+                    }
+                });
+            }
+
+            // Chọn màu và kích cỡ mặc định nếu có
+            if (colorList && colorList.querySelector('li')) {
+                colorList.querySelector('li').click();
+            }
+
+            if (sizeList && sizeList.querySelector('li')) {
+                sizeList.querySelector('li').click();
+            }
         });
-    </script>*@
+    </script>
+}
 

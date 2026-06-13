@@ -21,6 +21,48 @@
         align-items: center;
         z-index: 9999;
     }
+
+    .payment-methods {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .payment-option {
+        display: flex;
+        align-items: center;
+        border: 2px solid #ccc;
+        border-radius: 8px;
+        padding: 10px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+        .payment-option input {
+            display: none;
+        }
+
+        .payment-option .option-content {
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+
+        .payment-option .icon {
+            width: 40px;
+            height: 40px;
+            margin-right: 15px;
+        }
+
+        .payment-option:hover, .payment-option input:checked + .option-content {
+            border-color: #4CAF50;
+            background-color: #f1f1f1;
+        }
+
+        .payment-option input:checked + .option-content {
+            border: 2px solid #4CAF50;
+            box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+        }
 </style>
 @{
     if (ViewBag.User != null)
@@ -57,6 +99,23 @@
         }
 
         function OnBeginCO() {
+            // Kiểm tra giá trị đang lấy từ dropdown
+            console.log("Province:", $("#provinceDropdown").val(), $("#provinceDropdown option:selected").text());
+            console.log("District:", $("#districtDropdown").val(), $("#districtDropdown option:selected").text());
+            console.log("Ward:", $("#wardDropdown").val(), $("#wardDropdown option:selected").text());
+
+            // Cập nhật FullAddress trước khi submit
+            let province = $("#provinceDropdown option:selected").text().trim();
+            let district = $("#districtDropdown option:selected").text().trim();
+            let ward = $("#wardDropdown option:selected").text().trim();
+            let houseNumber = $("#AddressNumber").val().trim();
+
+            let FullAddress = `${houseNumber}, ${ward}, ${district}, ${province}`;
+            $("#FullAddress").val(FullAddress);
+
+            // Kiểm tra dữ liệu FullAddress trước khi gửi đi
+            console.log("Full Address gửi lên:", FullAddress);
+
             $('#btnCheckOut').prop("disabled", true);
             showLoading('Đang xử lý đơn hàng của bạn...');
         }
@@ -118,23 +177,47 @@
     {
         <div class="form-group">
             <label>Họ tên khách hàng</label>
-            <input type="text" name="CustomerName" required class="form-control" autocomplete="off" />
+            <input type="text" name="CustomerName" required class="form-control" />
         </div>
 
 
         <div class="form-group">
             <label>Số điện thoại</label>
-            <input type="text" name="Phone" class="form-control" autocomplete="off" />
+            <input type="text" name="Phone" class="form-control" />
         </div>
 
 
         <div class="form-group">
             <label>Địa chỉ</label>
-            <input type="text" name="Address" class="form-control" autocomplete="off" />
+            <input type="text" name="Address" class="form-control" id="AddressNumber" />
         </div>
+
+        <div class="form-group">
+            <label>Tỉnh/Thành phố</label>
+            <select id="provinceDropdown" class="form-control" name="Province" style="height:50px">
+                <option value="">Chọn Tỉnh/Thành phố</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Quận/Huyện</label>
+            <select id="districtDropdown" class="form-control" name="District" style="height:50px">
+                <option value="">Chọn Quận/Huyện</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Phường/Xã</label>
+            <select id="wardDropdown" class="form-control" name="Ward" style="height:50px">
+                <option value="">Chọn Phường/Xã</option>
+            </select>
+        </div>
+
+        <input type="hidden" id="FullAddress" name="FullAddress" />
+
         <div class="form-group">
             <label>Email</label>
-            <input type="text" name="Email" class="form-control" autocomplete="off" />
+            <input type="text" name="Email" class="form-control" />
         </div>
     }
     else
@@ -142,39 +225,95 @@
         var user = (WebBanHangOnline.Models.ApplicationUser)ViewBag.User;
         <div class="form-group">
             <label>Họ tên khách hàng</label>
-            <input type="text" name="CustomerName" value="@user.FullName" class="form-control" autocomplete="off" />
+            <input type="text" name="CustomerName" value="@user.FullName" class="form-control" />
         </div>
         <div class="form-group">
             <label>Số điện thoại</label>
-            <input type="text" name="Phone" value="@user.Phone" class="form-control" autocomplete="off" />
+            <input type="text" name="Phone" value="@user.Phone" class="form-control" />
         </div>
         <div class="form-group">
             <label>Địa chỉ</label>
-            <input type="text" name="Address" class="form-control" autocomplete="off" />
+            <input type="text" name="Address" class="form-control" />
         </div>
         <div class="form-group">
+            <label>Tỉnh/Thành phố</label>
+            <select id="provinceDropdown" class="form-control" name="Province">
+                <option value="">Chọn Tỉnh/Thành phố</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Quận/Huyện</label>
+            <select id="districtDropdown" class="form-control" name="District">
+                <option value="">Chọn Quận/Huyện</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Phường/Xã</label>
+            <select id="wardDropdown" class="form-control" name="Ward">
+                <option value="">Chọn Phường/Xã</option>
+            </select>
+        </div>
+
+        <input type="hidden" id="FullAddress" name="FullAddress" />
+
+        <div class="form-group">
             <label>Email</label>
-            <input type="text" name="Email" value="@user.Email" class="form-control" autocomplete="off" />
+            <input type="text" name="Email" value="@user.Email" class="form-control" />
         </div>
     }
 
 
+    @*<div class="form-group">
+            <label>Hình thức thanh toán</label>
+            <select class="form-control" name="TypePayment" id="drTypePayment">
+                <option value="1" selected>COD</option>
+                <option value="2">Chuyển khoản</option>
+            </select>
+        </div>
+        <div class="form-group" id="load_form_payment" style="display:none;">
+            <h4> <label>Chọn phương thức thanh toán:</label><br /></h4>
+            <h5>Cách 1: Chuyển hướng sang VNPAY chọn phương thức thanh toán</h5>
+            <label><input type="radio" name="TypePaymentVN" value="0" checked /> Cổng thanh toán VNPAYQR </label>
+            <h5>Cách 2: Tách phương thức thanh toán tại site của Merchant</h5>
+            <label><input type="radio" name="TypePaymentVN" value="1" /> Thanh toán qua ứng dụng hỗ trợ VNPAYQR </label><br />
+            <label><input type="radio" name="TypePaymentVN" value="2" /> ATM-Tài khoản ngân hàng nội địa </label><br />
+            <label><input type="radio" name="TypePaymentVN" value="3" /> Thanh toán qua thẻ quốc tế </label><br />
+        </div>*@
+
     <div class="form-group">
-        <label>Hình thức thanh toán</label>
-        <select class="form-control" name="TypePayment" id="drTypePayment">
-            <option value="1" selected>COD</option>
-            <option value="2">Chuyển khoản</option>
-        </select>
+        <label><i class="fas fa-credit-card"></i> <strong>Phương thức thanh toán</strong></label>
+        <div class="payment-methods">
+            <label class="payment-option">
+                <input type="radio" name="TypePayment" value="1" checked>
+                <div class="option-content">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3081/3081559.png" alt="COD" class="icon">
+                    <div>
+                        <strong>Thanh toán khi nhận hàng</strong>
+                        <p>Thanh toán bằng tiền mặt khi nhận hàng</p>
+                    </div>
+                </div>
+            </label>
+
+
+
+            <label class="payment-option">
+                <input type="radio" name="TypePayment" value="2">
+                <div class="option-content">
+                    <img src="~/Content/assets/images/vnpaylogo.jpg" alt="VNPAY" class="icon">
+                    <div>
+                        <strong>VNPAY</strong>
+                        <p>Thanh toán qua VNPAY</p>
+                    </div>
+                </div>
+            </label>
+
+
+        </div>
     </div>
-    <div class="form-group" id="load_form_payment" style="display:none;">
-        <h4> <label>Chọn phương thức thanh toán:</label><br /></h4>
-        <h5>Cách 1: Chuyển hướng sang VNPAY chọn phương thức thanh toán</h5>
-        <label><input type="radio" name="TypePaymentVN" value="0" checked /> Cổng thanh toán VNPAYQR </label>
-        <h5>Cách 2: Tách phương thức thanh toán tại site của Merchant</h5>
-        <label><input type="radio" name="TypePaymentVN" value="1" /> Thanh toán qua ứng dụng hỗ trợ VNPAYQR </label><br />
-        <label><input type="radio" name="TypePaymentVN" value="2" /> ATM-Tài khoản ngân hàng nội địa </label><br />
-        <label><input type="radio" name="TypePaymentVN" value="3" /> Thanh toán qua thẻ quốc tế </label><br />
-    </div>
+
+
     <div class="form-group" id="load_send"></div>
     <div class="form-group">
         <button type="submit" class="btn btn-block btn-success" id="btnCheckOut">
@@ -182,5 +321,57 @@
         </button>
     </div>
 }
+
+<script>
+    $(document).ready(function () {
+        // Load danh sách Tỉnh/Thành phố
+        $.getJSON("https://provinces.open-api.vn/api/p/", function (data) {
+            $.each(data, function (i, province) {
+                $("#provinceDropdown").append('<option value="' + province.code + '">' + province.name + '</option>');
+            });
+        });
+
+        // Khi chọn Tỉnh/Thành phố, load Quận/Huyện tương ứng
+        $("#provinceDropdown").change(function () {
+            var provinceCode = $(this).val();
+            $("#districtDropdown").html('<option value="">Chọn Quận/Huyện</option>');
+            $("#wardDropdown").html('<option value="">Chọn Phường/Xã</option>');
+
+            if (provinceCode) {
+                $.getJSON("https://provinces.open-api.vn/api/p/" + provinceCode + "?depth=2", function (data) {
+                    $.each(data.districts, function (i, district) {
+                        $("#districtDropdown").append('<option value="' + district.code + '">' + district.name + '</option>');
+                    });
+                });
+            }
+        });
+
+        // Khi chọn Quận/Huyện, load Phường/Xã tương ứng
+        $("#districtDropdown").change(function () {
+            var districtCode = $(this).val();
+            $("#wardDropdown").html('<option value="">Chọn Phường/Xã</option>');
+
+            if (districtCode) {
+                $.getJSON("https://provinces.open-api.vn/api/d/" + districtCode + "?depth=2", function (data) {
+                    $.each(data.wards, function (i, ward) {
+                        $("#wardDropdown").append('<option value="' + ward.code + '">' + ward.name + '</option>');
+                    });
+                });
+            }
+        });
+
+        $("#wardDropdown, #AddressNumber").change(function () {
+            let province = $("#provinceDropdown option:selected").text();
+            let district = $("#districtDropdown option:selected").text();
+            let ward = $("#wardDropdown option:selected").text();
+            let houseNumber = $("#AddressNumber").val();
+            $("#FullAddress").val(`${houseNumber}, ${ward}, ${district}, ${province}`);
+        });
+
+
+
+    });
+</script>
+
 
 

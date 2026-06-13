@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.TypeScript.MSBuild.5.8.1\build\Microsoft.TypeScript.MSBuild.props" Condition="Exists('..\packages\Microsoft.TypeScript.MSBuild.5.8.1\build\Microsoft.TypeScript.MSBuild.props')" />
   <Import Project="..\packages\EntityFramework.6.5.1\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.5.1\build\EntityFramework.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -182,14 +183,18 @@
     <Compile Include="Areas\Admin\Controllers\CategoryController.cs" />
     <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
     <Compile Include="Areas\Admin\Controllers\NewsController.cs" />
+    <Compile Include="Areas\Admin\Controllers\OrderCompletedController.cs" />
     <Compile Include="Areas\Admin\Controllers\OrderController.cs" />
     <Compile Include="Areas\Admin\Controllers\PostsController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductCategoryController.cs" />
+    <Compile Include="Areas\Admin\Controllers\ProductColorController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductImagesController.cs" />
+    <Compile Include="Areas\Admin\Controllers\ProductInventoryController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductsController.cs" />
     <Compile Include="Areas\Admin\Controllers\RoleController.cs" />
     <Compile Include="Areas\Admin\Controllers\SalesStatisticsController.cs" />
     <Compile Include="Areas\Admin\Controllers\SettingSystemController.cs" />
+    <Compile Include="Areas\Admin\Controllers\ProductSizeController.cs" />
     <Compile Include="Common\Commons.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ContactController.cs" />
@@ -236,6 +241,14 @@
     <Compile Include="Migrations\202411061441114_CreateTBThongKe.Designer.cs">
       <DependentUpon>202411061441114_CreateTBThongKe.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202503071746105_SyncDatabase.cs" />
+    <Compile Include="Migrations\202503071746105_SyncDatabase.Designer.cs">
+      <DependentUpon>202503071746105_SyncDatabase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202503080623175_updateAll.cs" />
+    <Compile Include="Migrations\202503080623175_updateAll.Designer.cs">
+      <DependentUpon>202503080623175_updateAll.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Commons\Common.cs" />
@@ -253,7 +266,10 @@
     <Compile Include="Models\EF\Posts.cs" />
     <Compile Include="Models\EF\Product.cs" />
     <Compile Include="Models\EF\ProductCategory.cs" />
+    <Compile Include="Models\EF\ProductColor.cs" />
     <Compile Include="Models\EF\ProductImage.cs" />
+    <Compile Include="Models\EF\ProductInventory.cs" />
+    <Compile Include="Models\EF\ProductSize.cs" />
     <Compile Include="Models\EF\ReviewProduct.cs" />
     <Compile Include="Models\EF\Subscribe.cs" />
     <Compile Include="Models\EF\SystemSetting.cs" />
@@ -352,6 +368,7 @@
     <Content Include="Content\assets\images\single_3.jpg" />
     <Content Include="Content\assets\images\single_3_thumb.jpg" />
     <Content Include="Content\assets\images\slider_1.jpg" />
+    <Content Include="Content\assets\images\vnpaylogo.jpg" />
     <Content Include="Content\assets\js\categories_custom.js" />
     <Content Include="Content\assets\js\contact_custom.js" />
     <Content Include="Content\assets\js\custom.js" />
@@ -3527,6 +3544,16 @@
     <Content Include="Content\assets\plugins\moment\moment-with-locales.min.js.map" />
     <Content Include="Content\assets\plugins\moment\moment.min.js.map" />
     <Content Include="Areas\Admin\Views\ApproveOrder\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\ProductInventory\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\ProductSize\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\ProductSize\Add.cshtml" />
+    <Content Include="Areas\Admin\Views\ProductSize\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\ProductColor\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\ProductColor\Add.cshtml" />
+    <Content Include="Areas\Admin\Views\ProductColor\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\ProductInventory\Add.cshtml" />
+    <Content Include="Areas\Admin\Views\ProductInventory\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\OrderCompleted\Index.cshtml" />
     <None Include="Scripts\jquery-3.7.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.7.1.js" />
     <Content Include="Scripts\jquery-3.7.1.min.js" />
@@ -3541,6 +3568,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\jsShopping.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\pickr.min.js" />
     <Content Include="Uploads\images\1fd487a12a4073f0050cf05b02790618.png" />
     <Content Include="Uploads\_thumbs\Images\1fd487a12a4073f0050cf05b02790618.png" />
     <Content Include="Web.config" />
@@ -3602,6 +3630,8 @@
     <Content Include="Views\Review\_Review.cshtml" />
     <Content Include="Views\Review\_Load_Review.cshtml" />
     <Content Include="Views\Wishlist\Index.cshtml" />
+    <Content Include="Views\Account\OrderDetailUser.cshtml" />
+    <Content Include="Views\Contact\_PartialOrderDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -3663,6 +3693,15 @@
     <EmbeddedResource Include="Migrations\202411061441114_CreateTBThongKe.resx">
       <DependentUpon>202411061441114_CreateTBThongKe.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202503071746105_SyncDatabase.resx">
+      <DependentUpon>202503071746105_SyncDatabase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202503080623175_updateAll.resx">
+      <DependentUpon>202503080623175_updateAll.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -3699,9 +3738,12 @@
     <Error Condition="!Exists('..\packages\EntityFramework.6.5.1\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.5.1\build\EntityFramework.props'))" />
     <Error Condition="!Exists('..\packages\EntityFramework.6.5.1\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.5.1\build\EntityFramework.targets'))" />
     <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.4.1.0\build\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.4.1.0\build\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.TypeScript.MSBuild.5.8.1\build\Microsoft.TypeScript.MSBuild.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.TypeScript.MSBuild.5.8.1\build\Microsoft.TypeScript.MSBuild.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.TypeScript.MSBuild.5.8.1\build\Microsoft.TypeScript.MSBuild.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.TypeScript.MSBuild.5.8.1\build\Microsoft.TypeScript.MSBuild.targets'))" />
   </Target>
   <Import Project="..\packages\EntityFramework.6.5.1\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.5.1\build\EntityFramework.targets')" />
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.4.1.0\build\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.4.1.0\build\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets')" />
+  <Import Project="..\packages\Microsoft.TypeScript.MSBuild.5.8.1\build\Microsoft.TypeScript.MSBuild.targets" Condition="Exists('..\packages\Microsoft.TypeScript.MSBuild.5.8.1\build\Microsoft.TypeScript.MSBuild.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

@@ -15,7 +15,7 @@ namespace WebBanHangOnline.Models
 
         public void AddToCart(ShoppingCartItem item, int Quantity)
         {
-            var checkExits = Items.FirstOrDefault(x => x.ProductId == item.ProductId);
+            var checkExits = Items.FirstOrDefault(x => x.ProductInventoryId == item.ProductInventoryId);
             if (checkExits != null)
             {
                 checkExits.Quantity += Quantity;
@@ -29,7 +29,7 @@ namespace WebBanHangOnline.Models
 
         public void Remove(int id)
         {
-            var checkExits = Items.SingleOrDefault(x => x.ProductId == id);
+            var checkExits = Items.SingleOrDefault(x => x.ProductInventoryId == id);
             if (checkExits != null)
             {
                 Items.Remove(checkExits);
@@ -38,7 +38,7 @@ namespace WebBanHangOnline.Models
 
         public void UpdateQuantity(int id, int quantity)
         {
-            var checkExits = Items.SingleOrDefault(x => x.ProductId == id);
+            var checkExits = Items.SingleOrDefault(x => x.ProductInventoryId == id);
             if (checkExits != null)
             {
                 checkExits.Quantity = quantity;
@@ -63,13 +63,24 @@ namespace WebBanHangOnline.Models
 
     public class ShoppingCartItem
     {
-        public int ProductId { get; set; }
+        public int ProductInventoryId { get; set; }
+        
         public string ProductName { get; set; }
+        
         public string Alias { get; set; }
+        
         public string CategoryName { get; set; }
+        
         public string ProductImg { get; set; }
+        
+        public string ColorName { get; set; } 
+        
+        public string SizeName { get; set; }
+        
         public int Quantity { get; set; }
+        
         public decimal Price { get; set; }
+        
         public decimal TotalPrice { get; set; }
     }
 }

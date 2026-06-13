@@ -16,13 +16,17 @@ namespace WebBanHangOnline.Controllers
         // GET: Products
         public ActionResult Index(int? id, int? page)
         {
+            int pageSize = 12; // Số sản phẩm hiển thị trên mỗi trang
+            int pageNumber = (page ?? 1); // Trang mặc định là 1
+
             var items = db.Products.ToList();
+
             if (id != null)
             {
                 items = items.Where(x => x.ProductCategoryId == id).ToList();
             }
-            return View(items);
 
+            return View(items.ToPagedList(pageNumber, pageSize));
         }
 
         public ActionResult Detail(string alias, int id)

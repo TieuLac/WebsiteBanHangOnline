@@ -8,6 +8,54 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
 
+<style>
+    .status-badge {
+        display: inline-block;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 0.9em;
+        font-weight: bold;
+        text-align: center;
+        white-space: nowrap;
+    }
+
+    .status-paid {
+        background-color: #e9ecef;
+        color: cadetblue;
+    }
+
+    .status-unpaid {
+        background-color: #e9ecef;
+        color: blueviolet;
+    }
+
+    .status-cancelled {
+        background-color: #e9ecef;
+        color: red;
+    }
+
+    .status-completed {
+        background-color: #e9ecef;
+        color: forestgreen;
+    }
+
+    .status-preparing {
+        background-color: #e9ecef;
+        color: palevioletred;
+    }
+
+    .status-delivering {
+        background-color: #e9ecef;
+        color: goldenrod;
+    }
+
+    .status-unsuccessful {
+        background-color: #e9ecef;
+        color: orange;
+    }
+
+</style>
+
 @section naviheader{
     <!-- Left navbar links -->
     <ul class="navbar-nav">
@@ -32,7 +80,22 @@
             <h3 class="card-title">Danh sách đơn hàng</h3>
         </div>
         <div class="card-body">
-            <table class="table table-bordered">
+            <div class="row">
+                <div class="col-6">
+                    @using (Html.BeginForm("index", "Order", FormMethod.Get, new { }))
+                    {
+                        <div class="input-group input-group-sm">
+                            @*@Html.TextBox("Searchtext")*@
+                            @Html.TextBox("Searchtext", null, new { @class = "form-control", placeholder = "Nhập mã đơn hàng, tên hoặc số điện thoại..." })
+                            @*<input type="text" name="searchtext" class="form-control">*@
+                            <span class="input-group-append">
+                                <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+                            </span>
+                        </div>
+                    }
+                </div>
+            </div>
+            <table class="table table-bordered" style="margin-top: 20px">
                 <thead>
                     <tr>
                         <th>#</th>
@@ -52,7 +115,7 @@
                     @if (Model != null && Model.Any())
                     {
                         var i = ((ViewBag.Page - 1) * ViewBag.PageSize) + 1;
-                        var approvedOrders = Model.Where(x => x.IsApprove == true);
+                        var approvedOrders = Model.Where(x => x.IsApprove == true && (x.OrderStatus != 3 || x.OrderStatus != 4 || x.OrderStatus != 7));
                         foreach (var item in approvedOrders)
                         {
                             <tr>
@@ -65,41 +128,41 @@
                                 <td>
                                     @if (item.Status == 1)
                                     {
-                                        <span style="color:blueviolet"><b>Chưa thanh toán</b></span>
+                                        <span class="status-badge status-unpaid"><b>Chưa thanh toán</b></span>
                                     }
                                     @if (item.Status == 2)
                                     {
-                                        <span style="color:cadetblue"><b>Đã thanh toán</b></span>
+                                        <span class="status-badge status-paid"><b>Đã thanh toán</b></span>
                                     }
                                 </td>
                                 <td>
                                     @if (item.OrderStatus == 1)
                                     {
-                                        <span style="color:blueviolet"><b>Chưa thanh toán</b></span>
+                                        <span class="status-badge status-unpaid"><b>Chưa thanh toán</b></span>
                                     }
                                     @if (item.OrderStatus == 2)
                                     {
-                                        <span style="color:cadetblue"><b>Đã thanh toán</b></span>
+                                        <span class="status-badge status-paid"><b>Đã thanh toán</b></span>
                                     }
                                     @if (item.OrderStatus == 3)
                                     {
-                                        <span style="color:forestgreen"><b>Hoàn thành</b></span>
+                                        <span class="status-badge status-completed"><b>Hoàn thành</b></span>
                                     }
                                     @if (item.OrderStatus == 4)
                                     {
-                                        <span style="color:red"><b>Hủy</b></span>
+                                        <span class="status-badge status-cancelled"><b>Hủy</b></span>
                                     }
                                     @if (item.OrderStatus == 5)
                                     {
-                                        <span style="color:goldenrod"><b>Đang giao</b></span>
+                                        <span class="status-badge status-delivering"><b>Đang giao</b></span>
                                     }
                                     @if (item.OrderStatus == 6)
                                     {
-                                        <span style="color:palevioletred"><b>Đang chuẩn bị hàng</b></span>
+                                        <span class="status-badge status-preparing"><b>Đang chuẩn bị hàng</b></span>
                                     }
                                     @if (item.OrderStatus == 7)
                                     {
-                                        <span style="color: orange"><b>Giao hàng không thành công</b></span>
+                                        <span class="status-badge status-unsuccessful"><b>Giao hàng không thành công</b></span>
                                     }
                                 </td>
                                 <td>@item.CreatedDate.ToString("dd/MM/yyyy")</td>
